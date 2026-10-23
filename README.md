@@ -10,6 +10,8 @@ Guía de estudio de **Diseño de Sistemas de Información 2026 (UTN-FRT)**, cát
 - Los TP 1, 2 y 3 resueltos, más ejercicios de diseño orientado a objetos con solución.
 - 520 preguntas de repaso, cuestionario por módulo, simulacro por parcial, repaso de las falladas, galería de diagramas y fichas para memorizar.
 
+Sitio en GitHub Pages: [franco704.github.io/disenando-ando](https://franco704.github.io/disenando-ando/)
+
 No necesita instalación: es HTML, CSS y JavaScript. Para usarlo sin internet, descargá el repositorio y abrí `index.html`. El progreso se guarda en el navegador de cada persona.
 
 ## Agradecimientos
