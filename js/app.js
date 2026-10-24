@@ -4,6 +4,14 @@
   // Solo los módulos que ya tienen lecciones cargadas
   const MODULES = window.GUIDE.MODULES.filter((m) => LESSONS.some((l) => l.module === m.id));
   const $ = (s, el = document) => el.querySelector(s);
+  // Guías hermanas: página publicada y repositorio de cada una
+  const SIBLINGS = [
+    ['Backeando Ando', 'Desarrollo de software backend (C#, ASP.NET, EF Core)', 'backeando-ando'],
+    ['Fronteando Ando', 'Desarrollo frontend (HTML, CSS, JavaScript, React)', 'fronteando-ando'],
+    ['Iterando Ando', 'Matemática Superior (Laplace, métodos numéricos, Fourier)', 'iterando-ando'],
+    ['Economizar', 'Economía (micro y macro con gráficas)', 'economizar'],
+    ['Modulando Ando', 'Comunicación de Datos (señales, Shannon, errores, modulación)', 'modulando-ando'],
+  ];
   const main = $('#main');
   const toc = $('#toc');
   const rail = $('#rail');
@@ -185,6 +193,7 @@
             <a class="btn primary" href="#/${resume.id}">${done.size ? 'Seguir con' : 'Empezar con'} “${resume.title}”</a>
             <a class="btn" href="#/diagramas">Diagramas</a>
             <a class="btn" href="#/fichas">Fichas</a>
+            <button class="btn" type="button" data-act="also">También probá…</button>
             ${reviewIds().length ? `<a class="btn" href="#/repaso">Repasar ${reviewIds().length} preguntas falladas</a>` : ''}
           </div>
           ${weak ? `<p class="weak">Tu punto más flojo por ahora es <a href="#/quiz/${weak.m.id}">${weak.m.title}</a>, con ${weak.s}% de aciertos. Conviene repasarlo antes de seguir.</p>` : ''}
@@ -194,6 +203,10 @@
           <a class="exam-card" data-u="int" href="#/integral"><span class="ec-k">Integral</span><span class="ec-t">Integral de dificultad máxima</span><span class="ec-m">${Math.min(25, INT_QS.length)} preguntas de todo el año y ${INTEGRAL.cases.length} casos prácticos, con 90 minutos</span></a>
         </div>
         ${units}
+        <section class="home-links">
+          <h2 class="also-h" id="tambien">También probá:</h2>
+          <ul class="also">${SIBLINGS.map(([n, d, slug]) => `<li><a class="also-main" href="https://franco704.github.io/${slug}/" target="_blank" rel="noopener"><b>${n}</b><span>${d}</span></a><a class="also-repo" href="https://github.com/Franco704/${slug}" target="_blank" rel="noopener" aria-label="Repositorio de ${n}">repositorio</a></li>`).join('')}</ul>
+        </section>
         <section class="home-how">
           <h2>Cómo estudiar con esta guía</h2>
           <ol>
@@ -210,6 +223,7 @@
     const route = $('.route', main);
     route.style.setProperty('--cols', MODULES.length + 2);
     route.style.setProperty('--stop', curIdx + 1);
+    $('[data-act="also"]', main).addEventListener('click', () => $('#tambien').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }));
     requestAnimationFrame(() => route.classList.add('go'));
   }
 
