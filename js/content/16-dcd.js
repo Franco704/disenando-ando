@@ -237,5 +237,83 @@
       ],
       sources: [{ title: 'UML y Patrones, 2ª ed.', ref: 'Larman, cap. 19, págs. 267-280', points: ['Diagramas de clases de diseño: pasos, métodos, tipos, asociaciones, navegabilidad y dependencias.'] }],
     },
+
+    {
+      id: 'practica-segundo-parcial',
+      module: 'm16',
+      title: 'Para la práctica: del caso de uso real al DCD, resuelto de punta a punta',
+      keywords: 'práctica segundo parcial caso de uso real interfaz gráfica prototipo diagrama de colaboración diagrama de clases de diseño DCD canje de puntos banco controlador fachada creador experto multiobjeto secuencia en la interfaz grilla',
+      tldr: 'La práctica del 2do parcial repite la cadena <strong>caso de uso real → interfaz gráfica → diagrama de colaboración → diagrama de clases de diseño</strong> (y a veces despliegue). Esta lección la resuelve completa para el caso que la cátedra más tomó: el <mark>canje de puntos del banco</mark> (2do parcial 2022 y 2023), justificando cada mensaje con GRASP.',
+      goals: ['Escribir un caso de uso real coherente con una pantalla.', 'Dibujar la interfaz indicando la secuencia de uso.', 'Hacer un diagrama de colaboración por evento, justificando con GRASP.', 'Derivar el DCD de los diagramas de colaboración y del modelo de dominio.'],
+      body: `
+        <p>Partimos del modelo de dominio que dio la cátedra (Cliente, Tarjeta, Transacción, Catálogo, Canje, Sucursal; ver <a href="#/modelo-de-dominio">el modelo de dominio</a>) y del caso de uso esencial “Canjear Puntos” (ver <a href="#/casos-de-uso-dss-y-contratos">casos de uso, DSS y contratos</a>). La consigna: “Realizar la interfaz gráfica para el caso de uso real, cuando los clientes realizan el canje de puntos por productos (indicar en la misma la secuencia). Redactar el caso de uso real (como mínimo flujo de éxito). Realizar el diagrama de colaboración teniendo en cuenta que los clientes deben estar registrados”.</p>
+        <h2>1. La interfaz con la secuencia</h2>
+        ${fig(`<svg class="uml" viewBox="0 0 520 300" width="520" role="img" aria-label="Pantalla de canje de puntos con campos numerados">
+          <rect x="10" y="10" width="500" height="280" rx="6" class="u-box"/><rect x="10" y="10" width="500" height="28" rx="6" class="u-hd"/><text x="260" y="29" class="u-c u-b u-sans">Canje de puntos · Sucursal Centro</text>
+          <text x="26" y="62" class="u-sm">N.º de tarjeta</text><rect x="120" y="48" width="150" height="22" rx="3" class="u-box"/><rect x="280" y="48" width="70" height="22" rx="11" class="u-hd"/><text x="315" y="63" class="u-c u-sm">Buscar</text><text x="364" y="63" class="u-sm u-b">①</text>
+          <text x="26" y="94" class="u-sm">Cliente: Ana Pérez · DNI 30.111.222 · Puntos disponibles: 12.500</text><text x="470" y="94" class="u-sm u-b">②</text>
+          <text x="26" y="126" class="u-sm">Producto (código)</text><rect x="140" y="112" width="110" height="22" rx="3" class="u-box"/><text x="262" y="127" class="u-sm">Cant.</text><rect x="295" y="112" width="40" height="22" rx="3" class="u-box"/><rect x="345" y="112" width="70" height="22" rx="11" class="u-hd"/><text x="380" y="127" class="u-c u-sm">Agregar</text><text x="428" y="127" class="u-sm u-b">③</text>
+          <rect x="26" y="146" width="468" height="78" class="u-box"/><line x1="26" y1="164" x2="494" y2="164" class="u-sep"/>
+          <text x="34" y="159" class="u-sm u-b">Código</text><text x="110" y="159" class="u-sm u-b">Descripción</text><text x="300" y="159" class="u-sm u-b">Cant.</text><text x="360" y="159" class="u-sm u-b">Puntos</text><text x="430" y="159" class="u-sm u-b">Quitar</text>
+          <text x="34" y="182" class="u-sm">P-104</text><text x="110" y="182" class="u-sm">Auriculares</text><text x="300" y="182" class="u-sm">1</text><text x="360" y="182" class="u-sm">8.000</text><text x="440" y="182" class="u-sm">✕</text>
+          <text x="34" y="202" class="u-sm">P-220</text><text x="110" y="202" class="u-sm">Taza térmica</text><text x="300" y="202" class="u-sm">2</text><text x="360" y="202" class="u-sm">3.000</text><text x="440" y="202" class="u-sm">✕</text>
+          <text x="26" y="246" class="u-sm u-b">Total: 11.000 puntos · Quedan 1.500</text><text x="250" y="246" class="u-sm u-b">④</text>
+          <rect x="300" y="256" width="90" height="24" rx="12" class="u-hd"/><text x="345" y="272" class="u-c u-sm">Cancelar</text><rect x="400" y="256" width="94" height="24" rx="12" class="u-hd"/><text x="447" y="272" class="u-c u-sm u-b">Confirmar</text><text x="500" y="250" class="u-sm u-b">⑤</text>
+        </svg>`, 'Prototipo de la pantalla del canje. Los números marcan la secuencia que pide la consigna: buscar la tarjeta, ver al cliente, agregar productos, controlar el total y confirmar.')}
+        <h2>2. El caso de uso real (flujo de éxito)</h2>
+        ${table(['Actor (Operador de sucursal con el Cliente)', 'Sistema'], [
+          ['1. El cliente entrega su tarjeta; el operador ingresa el número en <em>N.º de tarjeta</em> y presiona <em>Buscar</em> ①.', '2. Valida que la tarjeta esté vigente y el cliente registrado; muestra nombre, DNI y puntos disponibles ②.'],
+          ['3. Ingresa el código del producto y la cantidad, y presiona <em>Agregar</em> ③.', '4. Verifica disponibilidad y agrega una fila a la grilla con código, descripción, cantidad y puntos; actualiza el total ④.'],
+          ['<em>Repite 3 y 4 por cada producto.</em>', ''],
+          ['5. Presiona <em>Confirmar</em> ⑤.', '6. Registra el canje (fecha, hora, sucursal y productos), descuenta los puntos, registra el movimiento, imprime el comprobante y limpia la pantalla.'],
+        ])}
+        <p>Alternativos: 2a. tarjeta vencida o cliente no registrado: mensaje “Cliente no registrado” y el foco vuelve a ①. 4a. producto no disponible: mensaje y no agrega la fila. 4b. puntos insuficientes: el total se pinta en rojo y <em>Confirmar</em> queda deshabilitado.</p>
+        ${note('Lo que distingue a un caso de uso <strong>real</strong>: nombra los controles de la pantalla (campos, botones, grilla). Tiene que ser coherente con el prototipo: cada paso del actor usa un control que está dibujado, en el orden de la numeración.', 'tip')}
+        <h2>3. Los diagramas de colaboración</h2>
+        <p>Los eventos del sistema son <code>identificarCliente(nroTarjeta)</code>, <code>agregarProducto(codigo, cant)</code> y <code>confirmarCanje()</code>: <strong>un diagrama por evento</strong>. El controlador es <code>:Banco</code> (controlador de fachada: representa al sistema).</p>
+        ${table(['Evento', 'Mensajes', 'Por qué (GRASP)'], [
+          ['identificarCliente(nro)', '1: cli := getCliente(nro) → :Cliente (multiobjeto de Banco)<br>2: c := crearCanje() → cli<br>2.1: create() → c:Canje', 'Controlador de fachada recibe el evento. Banco conoce a todos los clientes: Experto para buscar. Cliente <strong>registra</strong> sus canjes: Creador. Que los clientes estén registrados se ve en la búsqueda: si no está, no se crea el canje.'],
+          ['agregarProducto(cod, cant)', '1: p := getProducto(cod) → :Catalogo<br>1.1: p := find(cod) → :Producto (multiobjeto)<br>2: agregarLinea(p, cant) → c:Canje<br>2.1: create(p, cant) → l:LineaDeCanje<br>2.2: add(l) → :LineaDeCanje (multiobjeto)', 'Catálogo contiene los productos: Experto. Canje <strong>contiene</strong> sus líneas: Creador. Banco no crea la línea para mantener Bajo Acoplamiento y Alta Cohesión.'],
+          ['confirmarCanje()', '1: t := getTotal() → c:Canje<br>1.1*: st := getSubtotal() → :LineaDeCanje<br>1.1.1: pts := getPuntos() → :Producto<br>2: descontar(t) → cli:Cliente<br>2.1: create(t) → :Movimiento<br>3: setLugar(suc) → c', 'Cada uno calcula lo que sabe: Experto (como el total de la venta). Cliente conoce sus puntos y registra sus movimientos: Experto y Creador.'],
+        ])}
+        ${fig(U.svg(640, 250, `
+          ${U.obj(20, 40, 100, ':Banco', { cls: 'k-a' })}
+          ${U.obj(250, 40, 110, 'c:Canje', { cls: 'k-ok' })}
+          ${U.obj(470, 40, 140, ':LineaDeCanje')}<rect x="474" y="44" width="140" height="26" rx="2" class="u-box" style="fill:none"/>
+          ${U.obj(470, 170, 140, ':Producto')}
+          ${U.obj(250, 170, 110, 'cli:Cliente')}
+          ${U.obj(20, 170, 110, ':Movimiento')}
+          ${U.ln([[120, 53], [250, 53]])}${U.ln([[360, 53], [470, 53]])}${U.ln([[540, 66], [540, 170]])}${U.ln([[70, 66], [290, 170]])}${U.ln([[250, 183], [130, 183]])}
+          ${U.msg(4, 30, 30, 30, 'confirmarCanje()', { lx: 4, ly: 22, anchor: 'start' })}
+          ${U.msg(140, 44, 230, 44, '1: t := getTotal()', { ly: 34 })}
+          ${U.msg(380, 44, 460, 44, '1.1*: st := getSubtotal()', { ly: 34 })}
+          ${U.msg(552, 90, 552, 150, '1.1.1: pts := getPuntos()', { anchor: 'start', lx: 558, ly: 124 })}
+          ${U.msg(140, 100, 220, 140, '2: descontar(t)', { lx: 200, ly: 108, anchor: 'start' })}
+          ${U.msg(240, 196, 150, 196, '2.1: create(t)', { ly: 214 })}`, 'Diagrama de colaboración de confirmarCanje'),
+          'Colaboración de <code>confirmarCanje()</code>: el Canje suma los subtotales de sus líneas (Experto), y el Cliente descuenta sus puntos y crea su Movimiento (Experto y Creador). La línea duplicada indica un multiobjeto.')}
+        <h2>4. El diagrama de clases de diseño</h2>
+        <p>Siguiendo los <a href="#/diagramas-de-clases-de-diseno">8 pasos del DCD</a>: las clases salen de los diagramas de colaboración; los atributos, del modelo de dominio; los <strong>métodos</strong>, de los mensajes que cada clase <strong>recibe</strong>; las flechas de navegabilidad, de quién manda mensajes, crea o mantiene una conexión.</p>
+        ${table(['Clase', 'Atributos', 'Métodos', 'Navegabilidad y dependencias'], [
+          ['Banco', '—', 'identificarCliente(nro), agregarProducto(cod, cant), confirmarCanje()', '→ Cliente (1 a *, mantiene la colección), → Catalogo (1), → Canje (canje en curso)'],
+          ['Cliente', 'dni, nombreCompleto, domicilio, telefono, email, puntos: int', 'crearCanje(): Canje, descontar(t: int)', '→ Tarjeta, → Canje (*), → Movimiento (*)'],
+          ['Catalogo', '—', 'getProducto(cod): Producto', '→ Producto (*)'],
+          ['Canje', 'fechaHora, totalPuntos: int', 'agregarLinea(p, cant), getTotal(): int, setLugar(s)', '→ LineaDeCanje (1..*), → Sucursal; dependencia con Producto (parámetro de agregarLinea)'],
+          ['LineaDeCanje', 'cantidad: int', 'getSubtotal(): int', '→ Producto'],
+          ['Producto', 'codigo, descripcion, puntos: int, disponible: bool', 'getPuntos(): int', '—'],
+          ['Movimiento', 'fecha, detalle, puntos: int', 'create(t)', '—'],
+        ])}
+        ${note('Lo que la cátedra mira en la práctica: que los cuatro artefactos sean <strong>coherentes</strong> entre sí (el botón Confirmar dispara el evento confirmarCanje, que es el mensaje inicial del diagrama, cuyos métodos aparecen en el DCD), que cada mensaje tenga número y que puedas justificar con un patrón GRASP por qué cada objeto hace lo que hace. En 2022 la consigna agregó: el diagrama de clases “con sus atributos, métodos, tipos y asociaciones”: no te olvides de los tipos.', 'exam')}`,
+      quiz: [
+        { q: 'En el diagrama de colaboración del canje, ¿por qué el Canje crea las LineaDeCanje?', o: ['Por Creador: el Canje contiene sus líneas', 'Por Controlador: recibe el evento', 'Por Experto: conoce los puntos del cliente', 'Por Fabricación Pura'], a: 0, e: 'Quien contiene o agrega a B es buen candidato para crearlo.' },
+        { q: '¿De dónde salen los métodos de la clase Canje en el DCD?', o: ['De los mensajes que Canje recibe en los diagramas de colaboración', 'De los atributos del modelo de dominio', 'De los botones de la interfaz', 'De las postcondiciones directamente'], a: 0, e: 'Cada mensaje recibido es un método de la clase receptora.' },
+        { q: '¿Qué distingue al caso de uso real del esencial?', o: ['Nombra los controles concretos de la interfaz', 'Tiene flujos alternativos', 'Tiene actor principal', 'Usa contratos'], a: 0, e: 'Es el diseño concreto del caso de uso con su tecnología de entrada y salida.' },
+        { q: 'El cálculo del total de puntos del canje se asigna al Canje porque…', o: ['Es el experto: conoce sus líneas', 'Es el controlador', 'Lo crea el Banco', 'Tiene alta cohesión por definición'], a: 0, e: 'Igual que getTotal() de la Venta en NuevaEra.' },
+        { q: 'Canje recibe un Producto como parámetro en agregarLinea(p, cant). En el DCD eso es…', o: ['Una relación de dependencia (visibilidad de parámetro)', 'Una asociación navegable', 'Una generalización', 'Nada'], a: 0, e: 'La visibilidad no relacionada con atributos se muestra con una dependencia punteada.' },
+      ],
+      sources: [
+        { title: 'UML y Patrones, 2ª ed.', ref: 'Larman, caps. 17, 18 y 19', points: ['Realización de casos de uso con GRASP; un diagrama por operación del sistema.', 'Visibilidad y diagramas de clases de diseño.'] },
+        { title: 'Análisis y Diseño de Sistemas', ref: 'Kendall y Kendall, diseño de interfaces y casos de uso reales', points: ['Prototipo de pantalla con la secuencia de uso.'] },
+      ],
+    },
   );
 })();

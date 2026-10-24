@@ -206,5 +206,62 @@
       ],
       sources: [{ title: 'UML y Patrones, 2ª ed.', ref: 'Larman, cap. 16, págs. 201-207', points: ['Responsabilidades y métodos; patrones; GRASP.'] }],
     },
+
+    {
+      id: 'secuencia-colaboracion-y-estados',
+      module: 'm12',
+      title: 'A fondo: secuencia o colaboración, y cuándo usar diagramas de estados',
+      keywords: 'diagrama de secuencia diagrama de colaboración comunicación puntos fuertes puntos débiles ventajas desventajas espacio bifurcaciones concurrencia diagrama de estados máquina de estados evento estado transición dependiente del estado independiente casos de uso sesiones controlador Larman pareja',
+      tldr: 'Secuencia y colaboración muestran lo mismo con dos notaciones: el de <strong>secuencia</strong> deja ver claro el <strong>orden en el tiempo</strong> pero crece hacia la derecha; el de <strong>colaboración</strong> <strong>economiza espacio</strong> y se expande en dos dimensiones pero cuesta leer la secuencia. Un <mark>diagrama de estados</mark> conviene para los objetos <strong>dependientes del estado</strong> con comportamiento complejo: reaccionan distinto al mismo evento según su estado.',
+      goals: ['Comparar diagramas de secuencia y de colaboración con sus puntos fuertes y débiles.', 'Explicar por qué Larman prefiere los diagramas de colaboración y cómo aconseja crearlos.', 'Definir evento, estado y transición.', 'Decidir en qué casos conviene un diagrama de estados y por qué.'],
+      body: `
+        <h2>Dos notaciones para la misma interacción</h2>
+        ${table(['Tipo', 'Puntos fuertes', 'Puntos débiles'], [
+          ['<strong>Secuencia</strong>', 'Muestra claramente la secuencia u <strong>ordenación en el tiempo</strong> de los mensajes. Notación simple.', 'Obliga a extender hacia la derecha cuando se agregan objetos: <strong>consume espacio horizontal</strong>.'],
+          ['<strong>Colaboración</strong>', '<strong>Economiza espacio</strong>; flexibilidad para agregar objetos en dos dimensiones. Mejor para ilustrar bifurcaciones complejas, iteraciones y comportamiento concurrente.', 'Es <strong>difícil ver la secuencia</strong> de mensajes (hay que seguir los números). Notación más compleja.'],
+        ])}
+        <p class="muted-s">Larman, 2ª ed., cap. 15.1, tabla de puntos fuertes y débiles.</p>
+        ${note('Recuperatorio del 2do parcial 3K4 2024: “Explique las diferencias entre Diagramas de Colaboración y Diagramas de Secuencia; así como las ventajas y desventajas de cada formato”. Armá la tabla de arriba y agregá la equivalencia: los dos son diagramas de <strong>interacción</strong>, muestran los mismos objetos y mensajes, y las herramientas CASE pasan de uno a otro. La mayoría prefiere secuencia para ingeniería inversa del código, porque se ve el orden.', 'exam')}
+        <h2>Por qué Larman usa colaboración y cómo aconseja crearlos</h2>
+        <p>Esta pregunta salió en 3 segundos parciales (2022, 2023 y 2025). Larman usa sobre todo diagramas de colaboración por su <strong>eficiencia de espacio</strong>: en una hoja o pizarrón angosto, un objeto nuevo se agrega en cualquier dirección, y se dibujan bifurcaciones entendibles. Y sostiene el diseño con diagramas de interacción porque <strong>asignar responsabilidades y diseñar la colaboración es lo más importante y lo que más habilidad requiere</strong> del diseño; el código sale de ahí.</p>
+        <p>Cómo aconseja crearlos:</p>
+        ${h.flow('<strong>Un diagrama por operación del sistema</strong> (cada evento del DSS), con ese evento como mensaje inicial.', 'Si un diagrama se vuelve complejo, <strong>dividirlo</strong> en diagramas más chicos.', 'Partir de las <strong>responsabilidades y postcondiciones de los contratos</strong>, la descripción del caso de uso y el modelo de dominio, y diseñar objetos que interactúan aplicando los <strong>patrones GRASP</strong>.', 'Hacerlos <strong>en pareja</strong>, no solo: se diseña mejor y hay realimentación mutua.')}
+        <h2>Diagramas de estados</h2>
+        ${table(['Concepto', 'Definición (Larman cap. 29)', 'Ejemplo'], [
+          ['Evento', 'Un acontecimiento significativo o relevante.', 'Descolgar el teléfono; confirmar un turno.'],
+          ['Estado', 'La condición de un objeto en un momento del tiempo, entre eventos.', 'Teléfono inactivo; turno pendiente.'],
+          ['Transición', 'Relación entre dos estados: cuando ocurre un evento, el objeto pasa de uno a otro.', 'Pendiente → Revisado cuando el administrativo confirma.'],
+        ])}
+        <p>Un diagrama de estados muestra el <strong>ciclo de vida</strong> de un objeto: los eventos que le afectan, sus estados y sus transiciones. Se dibuja con estados como rectángulos redondeados, transiciones como flechas etiquetadas con el evento (y opcionalmente <code>[condición] / acción</code>), un punto negro como estado inicial y un círculo con punto como estado final.</p>
+        ${fig(U.svg(560, 130, `
+          <circle cx="24" cy="60" r="7" fill="currentColor"/>${U.ln([[31, 60], [80, 60]], { end: 'ar' })}<text x="56" y="52" class="u-c u-sm">lectura</text>
+          ${U.blk(80, 38, 120, 44, 'Pendiente', { rx: 18 })}
+          ${U.ln([[200, 60], [300, 60]], { end: 'ar' })}<text x="250" y="52" class="u-c u-sm">revisar</text>
+          ${U.blk(300, 38, 120, 44, 'Revisado', { rx: 18 })}
+          ${U.ln([[420, 60], [490, 60]], { end: 'ar' })}<text x="455" y="52" class="u-c u-sm">archivar</text>
+          <circle cx="500" cy="60" r="9" class="u-box"/><circle cx="500" cy="60" r="5" fill="currentColor"/>
+          ${U.ln([[140, 82], [140, 104], [190, 104], [190, 82]], { end: 'ar' })}<text x="165" y="120" class="u-c u-sm">[error] / registrar alarma</text>`, 'Diagrama de estados de un ingreso de la báscula: Pendiente, Revisado y final'),
+          'Ciclo de vida de un ingreso de la báscula (1er parcial 3K1 2023): al crearse queda <strong>Pendiente</strong>; cuando un administrativo lo revisa pasa a <strong>Revisado</strong>.')}
+        <h3>¿En qué casos conviene recurrir a ellos? ¿Por qué?</h3>
+        <p>Larman distingue objetos <strong>independientes del estado</strong> (siempre responden igual a un evento: el método no tiene lógica condicional) y <strong>dependientes del estado</strong> (reaccionan distinto según el estado en que están). La regla: <mark>crear máquinas de estado para los objetos dependientes del estado con comportamiento complejo</mark>. ¿Por qué? Porque ahí el orden válido de los eventos es difícil de ver en los diagramas de interacción, y el diagrama de estados lo deja explícito: qué eventos son legales en cada estado.</p>
+        <ul>
+          <li><strong>Casos de uso</strong>: Procesar Venta reacciona distinto a <code>finalizarVenta</code> según haya o no una venta en curso. El diagrama de estados del caso de uso muestra el orden legal de los eventos del sistema.</li>
+          <li><strong>Sesiones con estado</strong> del lado del servidor y <strong>controladores</strong> de flujo de pantallas en aplicaciones web.</li>
+          <li><strong>Ventanas</strong> y objetos de interfaz (Editar está deshabilitado si no hay nada seleccionado).</li>
+          <li><strong>Controladores</strong> de dispositivos, <strong>manejadores de transacciones</strong> y objetos de dominio con ciclo de vida (Reserva: pendiente, confirmada, cancelada).</li>
+        </ul>
+        <p>En los sistemas de información de gestión las clases realmente dependientes del estado son <strong>minoría</strong>; en control de procesos y telecomunicaciones abundan. Por eso no se hace un diagrama de estados para cada clase.</p>`,
+      quiz: [
+        { q: '¿Cuál es el punto fuerte del diagrama de secuencia?', o: ['Muestra claramente el orden en el tiempo de los mensajes', 'Economiza espacio en dos dimensiones', 'Muestra la estructura interna de las clases', 'Muestra los estados de un objeto'], a: 0, e: 'Su debilidad es que crece hacia la derecha.' },
+        { q: '¿Por qué Larman prefiere los diagramas de colaboración?', o: ['Por su eficiencia de espacio y flexibilidad para agregar objetos', 'Porque muestran mejor el orden de los mensajes', 'Porque UML no permite diagramas de secuencia en diseño', 'Porque no necesitan numerar los mensajes'], a: 0, e: 'El orden es justamente su punto débil.' },
+        { q: '¿Cuándo conviene un diagrama de estados según Larman?', o: ['Para objetos dependientes del estado con comportamiento complejo', 'Para todas las clases del modelo de dominio', 'Para cada operación del sistema', 'Para los objetos independientes del estado'], a: 0, e: 'Los independientes siempre responden igual: no aporta nada.' },
+        { q: 'Un objeto que siempre responde igual a un mensaje es…', o: ['Independiente del estado', 'Dependiente del estado', 'Un controlador', 'Una máquina de estados'], a: 0, e: 'Su método no tiene lógica condicional según el estado.' },
+        { q: '¿Qué es una transición?', o: ['La relación entre dos estados que se dispara por un evento', 'Un acontecimiento relevante', 'La condición de un objeto en un momento', 'Un mensaje numerado'], a: 0, e: 'Evento es el acontecimiento; estado, la condición.' },
+      ],
+      sources: [
+        { title: 'UML y Patrones, 2ª ed.', ref: 'Larman, cap. 15.1 y cap. 17', points: ['Puntos fuertes y débiles de los diagramas de secuencia y colaboración.', 'Importancia de los diagramas de interacción; cómo crearlos (uno por operación, en pareja, con contratos y GRASP).'] },
+        { title: 'UML y Patrones, 2ª ed.', ref: 'Larman, cap. 29', points: ['Eventos, estados y transiciones; diagramas de estados de casos de uso.', 'Objetos dependientes e independientes del estado; clases que se benefician de los diagramas de estados.'] },
+      ],
+    },
   );
 })();

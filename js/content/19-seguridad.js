@@ -180,5 +180,55 @@
       ],
       sources: [{ title: 'Ingeniería de Software, 9ª ed.', ref: 'Sommerville, cap. 14, págs. 375-386', points: ['Diseño para la seguridad: arquitectura, protección y distribución (figura 14.4).'] }],
     },
+
+    {
+      id: 'seguridad-vs-usabilidad',
+      module: 'm19',
+      title: 'A fondo: tensiones entre seguridad, usabilidad y rendimiento, y los 10 lineamientos',
+      keywords: 'tensiones seguridad usabilidad rendimiento compromiso contraseñas lineamientos política explícita punto único de falla defensa en profundidad seguridad en caso de falla registrar acciones redundancia diversidad validar entradas compartimentar activos diseñar para implementar recuperabilidad negación de servicio alta disponibilidad Sommerville integral 2026',
+      tldr: 'Diseñar un sistema seguro es siempre un <mark>compromiso</mark>: cada medida de seguridad cuesta <strong>rendimiento</strong> (cifrar y descifrar lleva tiempo) y <strong>usabilidad</strong> (más contraseñas, más comprobaciones). Pasado cierto punto, más seguridad empeora la seguridad: el usuario anota la contraseña imposible de recordar. Sommerville resume la práctica en <strong>10 lineamientos</strong>; el 4 es justamente el equilibrio entre seguridad y usabilidad.',
+      goals: ['Explicar las tensiones entre seguridad, rendimiento y usabilidad con ejemplos.', 'Enunciar los 10 lineamientos de diseño seguro y explicar al menos 3.', 'Relacionar la negación de servicio con la disponibilidad y la distribución de activos.'],
+      body: `
+        <h2>Las tensiones</h2>
+        <p>Sommerville (cap. 14.2): es posible agregar muchas medidas de seguridad que reduzcan la probabilidad de un ataque exitoso, pero:</p>
+        ${table(['Tensión', 'Por qué', 'Ejemplo'], [
+          ['Seguridad vs. <strong>rendimiento</strong>', 'Las medidas de seguridad requieren trabajo adicional de cómputo.', 'Cifrar la información confidencial obliga a esperar a que se descifre: el trabajo es más lento.'],
+          ['Seguridad vs. <strong>usabilidad</strong>', 'Las medidas piden al usuario recordar y proporcionar información adicional; si la olvida, no puede usar el sistema.', 'Varias contraseñas distintas, cambios frecuentes por cadenas imposibles de recordar: el usuario las <strong>anota</strong> y un atacante interno las encuentra.'],
+        ])}
+        <p>El equilibrio <strong>depende del tipo de sistema y de dónde se usa</strong>: en un sistema militar los usuarios están acostumbrados a la alta seguridad y aceptan comprobaciones periódicas; en un sistema de compraventa de acciones, interrumpir la operación para comprobaciones de seguridad sería inaceptable.</p>
+        ${note('<strong>Respuesta modelo (integral 10/02/2026)</strong>: “Las demandas de seguridad y usabilidad suelen ser contradictorias: para hacer seguro un sistema hay que comprobar que los usuarios están autorizados, lo que les exige recordar contraseñas, usar ciertas computadoras o pasar controles, y eso los hace más lentos. Pasado un punto es contraproducente: si se exigen contraseñas múltiples o que cambien seguido, las anotan, y un atacante interno puede encontrarlas. Por eso el diseñador busca un equilibrio según el tipo de sistema: un sistema militar tolera más controles que uno de compraventa de acciones.” Sumá un ejemplo propio (el doble factor en el home banking: más seguro, un paso más para el usuario).', 'exam')}
+        <h2>Los 10 lineamientos de diseño seguro</h2>
+        ${table(['Lineamiento', 'Idea'], [
+          ['1. Decisiones de seguridad con base en una <strong>política explícita</strong>', 'La política define el “qué” de la seguridad de la organización; el diseño la usa como marco para decidir.'],
+          ['2. Evitar un <strong>solo punto de falla</strong>', 'No depender de un único mecanismo: “defensa en profundidad” (contraseña más preguntas de seguridad; bitácora de cambios para recuperar datos).'],
+          ['3. <strong>Seguridad en caso de falla</strong>', 'Si el sistema falla, no debe quedar menos seguro: cifrar los datos que quedan en el cliente si el servidor se cae.'],
+          ['4. <strong>Equilibrio entre seguridad y usabilidad</strong>', 'Lo de arriba: agregar seguridad a costa de la usabilidad llega a ser contraproducente.'],
+          ['5. <strong>Registrar las acciones</strong> del usuario', 'Bitácora de quién hizo qué, cuándo y con qué activos: disuade, permite detectar anomalías y recuperarse.'],
+          ['6. Usar <strong>redundancia y diversidad</strong>', 'Mantener más de una versión del software o de los datos, en plataformas distintas, para que una vulnerabilidad no afecte a todas.'],
+          ['7. <strong>Validar todas las entradas</strong>', 'Muchos ataques (desbordamiento de búfer, inyección SQL) explotan entradas no validadas.'],
+          ['8. <strong>Compartimentar</strong> los activos', 'Organizar la información para que cada usuario acceda solo a lo que necesita; un atacante que entra no accede a todo.'],
+          ['9. <strong>Diseñar para implementar</strong>', 'Facilitar la configuración segura al desplegar el sistema: valores por defecto seguros, verificar la configuración.'],
+          ['10. Diseñar para la <strong>recuperabilidad</strong>', 'Suponer que el ataque va a ocurrir y prever cómo restaurar el sistema a un estado seguro.'],
+        ])}
+        ${note('El recuperatorio del 2do parcial 2024 pidió “enunciar 3 lineamientos”; otros parciales piden los dos lineamientos de la <strong>arquitectura</strong> (protección: cómo organizar el sistema para proteger los activos críticos, y distribución: cómo repartir los activos para minimizar los efectos de un ataque). Leé bien cuál piden. Están en <a href="#/seguridad-en-el-diseno">seguridad en el diseño</a>.', 'warn')}
+        <h2>Negación de servicio: cómo afrontarla</h2>
+        <p>En un ataque de negación de servicio el atacante busca hacer caer el sistema o impedir que atienda a los usuarios legítimos (ver <a href="#/sistemas-distribuidos">ataques en sistemas distribuidos</a>). Sommerville propone:</p>
+        <ul>
+          <li>Mecanismos de <strong>alta disponibilidad</strong>, que ayudan al sistema a recuperarse de estos ataques.</li>
+          <li><strong>Distribuir los activos</strong> (lineamiento arquitectónico de distribución) y evitar un único punto de falla, para que tumbar un nodo no tumbe todo.</li>
+          <li><strong>Redundancia y diversidad</strong>, y diseñar para la <strong>recuperabilidad</strong>.</li>
+        </ul>
+        <p>Ejemplo: un sitio de inscripción a materias saturado con solicitudes falsas el día de apertura: servidores replicados detrás de un balanceador, limitar solicitudes por origen y un plan para restablecer el servicio rápido.</p>`,
+      quiz: [
+        { q: '¿Por qué agregar seguridad puede empeorar la seguridad?', o: ['Porque los usuarios, ante exigencias imposibles de recordar, anotan las contraseñas', 'Porque las medidas de seguridad siempre tienen vulnerabilidades', 'Porque el cifrado se puede romper', 'No puede: más seguridad siempre es mejor'], a: 0, e: 'Sommerville, lineamiento 4.' },
+        { q: 'Cifrar datos confidenciales afecta principalmente…', o: ['El rendimiento', 'La mantenibilidad', 'La portabilidad', 'La escalabilidad'], a: 0, e: 'Hay que esperar a que se descifren.' },
+        { q: '“Defensa en profundidad” corresponde al lineamiento…', o: ['Evitar un solo punto de falla', 'Validar todas las entradas', 'Diseñar para implementar', 'Registrar las acciones del usuario'], a: 0, e: 'No depender de un único mecanismo.' },
+        { q: 'Si el servidor falla y los datos de pacientes quedan en el cliente, conviene cifrarlos. ¿Qué lineamiento es?', o: ['Seguridad en caso de falla', 'Compartimentar los activos', 'Redundancia y diversidad', 'Política explícita'], a: 0, e: 'La falla no debe dejar al sistema menos seguro.' },
+        { q: '¿De qué depende el equilibrio entre seguridad y usabilidad?', o: ['Del tipo de sistema y del entorno donde se usa', 'Solo del presupuesto', 'De la cantidad de usuarios', 'Del lenguaje de programación'], a: 0, e: 'Sistema militar frente a compraventa de acciones.' },
+      ],
+      sources: [
+        { title: 'Ingeniería de Software, 9ª ed.', ref: 'Sommerville, cap. 14.2 (págs. 375-386)', points: ['Compromisos entre seguridad, rendimiento y usabilidad; ejemplo militar y de compraventa de acciones.', 'Los 10 lineamientos de diseño para la seguridad (figura 14.6).', 'Alta disponibilidad frente a la negación de servicio.'] },
+      ],
+    },
   );
 })();

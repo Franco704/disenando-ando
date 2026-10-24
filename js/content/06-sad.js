@@ -305,5 +305,77 @@
         { title: 'UML y Patrones, 2ª ed.', ref: 'Larman, cap. 38, págs. 565-569', points: ['Diagramas de despliegue y de componentes.'] },
       ],
     },
+
+    {
+      id: 'despliegue-y-componentes',
+      module: 'm6',
+      title: 'Para la práctica: diagramas de despliegue y de componentes',
+      keywords: 'diagrama de despliegue nodo dispositivo entorno de ejecución artefacto ruta de comunicación protocolo terminales servidor base de datos cajero sucursales diagrama de componentes módulos interfaces dependencias práctica parcial vista de despliegue vista física',
+      tldr: 'El <mark>diagrama de despliegue</mark> muestra en qué <strong>nodos</strong> físicos (dispositivos) y entornos de ejecución corren los <strong>artefactos</strong> de software, y por qué <strong>rutas de comunicación</strong> se conectan. Se pidió en 5 parciales (“incluir las terminales necesarias”, “el banco tiene sucursales en todo el país”). El <mark>diagrama de componentes</mark> muestra los módulos lógicos y sus interfaces. Esta lección es la receta para dibujarlos.',
+      goals: ['Reconocer nodos dispositivo y entorno de ejecución, artefactos y rutas de comunicación.', 'Construir un diagrama de despliegue a partir de una consigna de parcial.', 'Justificar las decisiones de despliegue con los requisitos no funcionales.', 'Dibujar un diagrama de componentes con interfaces proporcionadas y requeridas.'],
+      body: `
+        <h2>Qué muestra un diagrama de despliegue</h2>
+        ${def('Diagrama de despliegue', 'Muestra la asignación de artefactos software concretos (como ficheros ejecutables) a nodos de procesamiento (normalmente con servicios de procesamiento). Muestra el despliegue de los objetos software en el entorno físico y la comunicación entre los componentes físicos.', 'Larman, 2ª ed., cap. 38.1')}
+        ${table(['Elemento', 'Qué es', 'Notación'], [
+          ['<strong>Nodo dispositivo</strong>', 'Recurso de cómputo físico con memoria y procesamiento: una PC, un servidor, un celular, un cajero automático.', 'Cubo (caja 3D) con «device»'],
+          ['<strong>Nodo entorno de ejecución</strong>', 'Recurso de software que corre dentro de un dispositivo y ejecuta otros programas: sistema operativo, máquina virtual, motor de base de datos, servidor web, navegador.', 'Cubo anidado con «execution environment»'],
+          ['<strong>Artefacto</strong>', 'Elemento físico concreto que se despliega: un ejecutable, una biblioteca, un archivo de base de datos.', 'Rectángulo con «artifact» dentro del nodo'],
+          ['<strong>Ruta de comunicación</strong>', 'Conexión entre nodos. Se etiqueta con el <strong>protocolo</strong> (HTTPS, TCP/IP, JDBC, SMTP) y puede llevar multiplicidad.', 'Línea sólida'],
+        ])}
+        <p>Booch agrega la diferencia clave: los <strong>componentes</strong> son lo que participa en la ejecución; los <strong>nodos</strong> son lo que ejecuta a los componentes. Es la <strong>vista física</strong> de Sommerville y la <strong>vista de despliegue</strong> de Larman, una de las cuatro que recomienda documentar en el SAD.</p>
+        ${fig(U.svg(640, 270, `
+          ${U.box(20, 40, 150, ':CajeroAutomático', { stereo: 'device', attrs: ['«artifact» AppCajero', 'lector de tarjetas'], cls: 'k-a' })}
+          ${U.box(20, 190, 150, ':PC de Sucursal', { stereo: 'device', attrs: ['«artifact» AppSucursal'] })}
+          ${U.box(250, 96, 170, ':ServidorCentral', { stereo: 'device', attrs: ['«execution environment»', 'ServidorDeAplicaciones', '«artifact» SistemaBanco'], cls: 'k-ok' })}
+          ${U.box(480, 40, 140, ':ServidorBD', { stereo: 'device', attrs: ['«artifact» BD Cuentas', 'y Transacciones'] })}
+          ${U.box(480, 190, 140, ':Autorización', { stereo: 'device', attrs: ['sistema externo'] })}
+          ${U.ln([[170, 80], [250, 130]])}<text x="212" y="96" class="u-sm u-c">TCP/IP cifrado</text><text x="180" y="74" class="u-sm">*</text><text x="238" y="140" class="u-sm">1</text>
+          ${U.ln([[170, 222], [250, 172]])}<text x="212" y="214" class="u-sm u-c">HTTPS</text><text x="180" y="240" class="u-sm">*</text>
+          ${U.ln([[420, 130], [480, 80]])}<text x="452" y="96" class="u-sm u-c">JDBC</text>
+          ${U.ln([[420, 172], [480, 222]])}<text x="452" y="214" class="u-sm u-c">HTTPS</text>`, 'Diagrama de despliegue del banco: muchos cajeros y PCs de sucursal se conectan al servidor central, que usa el servidor de base de datos y un sistema externo de autorización'),
+          'Despliegue para el cajero automático (1er parcial 3K1 2024: “el Banco tiene sucursales desplegadas en todo el país”). Los cajeros y las PCs de cada sucursal (multiplicidad *) se conectan al servidor central por la red; los datos están en un servidor de base de datos separado.')}
+        <h2>La receta para el parcial</h2>
+        ${h.flow('<strong>Terminales</strong>: subrayá en la consigna quién usa el sistema y desde dónde (cajeros, PCs de empleados, celulares de pacientes, navegador web). Cada tipo es un nodo dispositivo; si hay muchos, poné multiplicidad *.', '<strong>Servidores</strong>: servidor de aplicaciones y servidor de base de datos como mínimo. Si hay correo, SMS o videollamada, un nodo para cada servicio.', '<strong>Sistemas externos</strong>: lo que el sistema no controla (autorización de tarjetas, pasarela de pago, proveedor de videollamadas) va como nodo aparte.', '<strong>Entornos y artefactos</strong>: adentro de cada nodo, qué corre (navegador, servidor web, motor de BD) y qué se despliega (la app, la base de datos).', '<strong>Rutas</strong>: una línea por cada comunicación, con el protocolo.', '<strong>Justificación</strong>: una o dos líneas que relacionen el diagrama con los requisitos no funcionales.')}
+        ${note('Lo que más se corrige: <strong>olvidarse las terminales</strong> (la consigna lo dice explícito), dibujar clases en lugar de nodos, no etiquetar las rutas con el protocolo y poner la base de datos “adentro” del cajero. Si la consigna dice “disponible 24/7 con alta disponibilidad y respaldo” (MedSys, 2025), mostrá un servidor de respaldo o replicado: así se ve que leíste el requisito no funcional.', 'warn')}
+        <h3>Decisiones que el diagrama debe reflejar</h3>
+        ${table(['Si la consigna pide…', 'En el despliegue'], [
+          ['Alta disponibilidad, 24/7', 'Servidores replicados o de respaldo; base de datos con réplica.'],
+          ['Protección de datos crítica', 'Base de datos en un nodo separado, detrás del servidor de aplicaciones; nunca accesible desde las terminales.'],
+          ['Sucursales en todo el país', 'Multiplicidad en las terminales; comunicación por red pública cifrada (HTTPS, VPN).'],
+          ['Integración con otras aplicaciones', 'El servidor expone un servicio (por ejemplo una API) y las otras aplicaciones son nodos externos (báscula, 2023: “el servidor puede recibir solicitudes de otras aplicaciones”).'],
+          ['Notificaciones por correo o SMS', 'Un nodo de servidor de correo o un proveedor externo de SMS.'],
+        ])}
+        <h2>Diagrama de componentes en la práctica</h2>
+        <p>En el recuperatorio 3K4 2025 se pidió: “Diagrama de Componentes: representar los distintos módulos del sistema, sus relaciones y dependencias”. Ya viste la notación en <a href="#/componentes-y-puertos">componentes y puertos</a>; para la práctica:</p>
+        <ol>
+          <li>Un componente por <strong>módulo funcional</strong> grande que surja de los requisitos (en la clínica: Usuarios, Turnos, Agenda, Notificaciones, Estadísticas) y uno por cada servicio técnico (Persistencia).</li>
+          <li>A cada uno, la <strong>interfaz que proporciona</strong> (chupetín, ●) con un nombre como <code>ITurnos</code>.</li>
+          <li>Las <strong>dependencias</strong>: quien usa el servicio de otro lo conecta con una interfaz requerida (enchufe, ◖) o con una flecha de dependencia punteada a la interfaz.</li>
+          <li>Que no haya ciclos innecesarios: los módulos de dominio dependen de Persistencia, no al revés.</li>
+        </ol>
+        ${fig(U.svg(620, 200, `
+          ${U.blk(20, 20, 150, 50, 'IU Web')}${U.compIcon(170, 20)}
+          ${U.blk(235, 20, 150, 50, 'Turnos')}${U.compIcon(385, 20)}
+          ${U.blk(450, 20, 150, 50, 'Notificaciones')}${U.compIcon(600, 20)}
+          ${U.blk(235, 130, 150, 50, 'Persistencia')}${U.compIcon(385, 130)}
+          ${U.blk(20, 130, 150, 50, 'Usuarios')}${U.compIcon(170, 130)}
+          ${U.ln([[170, 45], [215, 45]])}${U.sock(219, 45, 'r', 9)}${U.ln([[235, 45], [229, 45]])}${U.lol(227, 45, 7)}<text x="224" y="32" class="u-sm u-c t-if">ITurnos</text>
+          ${U.ln([[385, 45], [430, 45]])}${U.sock(434, 45, 'r', 9)}${U.ln([[450, 45], [444, 45]])}${U.lol(442, 45, 7)}<text x="440" y="32" class="u-sm u-c t-if">INotificar</text>
+          ${U.ln([[310, 70], [310, 110]])}${U.sock(310, 114, 'd', 9)}${U.ln([[310, 130], [310, 124]])}${U.lol(310, 122, 7)}<text x="318" y="108" class="u-sm t-if">IRepositorio</text>
+          ${U.ln([[95, 70], [95, 110]])}${U.sock(95, 114, 'd', 9)}${U.ln([[95, 130], [95, 124]])}${U.lol(95, 122, 7)}<text x="103" y="108" class="u-sm t-if">IUsuarios</text>
+          ${U.ln([[170, 155], [235, 155]], { dash: true, end: 'op' })}<text x="202" y="148" class="u-sm u-c">«use»</text>`, 'Diagrama de componentes de la clínica: la IU usa Turnos y Usuarios; Turnos usa Notificaciones y Persistencia; Usuarios depende de Persistencia'),
+          'Componentes de la clínica “Salud Integral”: cada módulo proporciona una interfaz (●) y la requiere quien la usa (◖). Persistencia no depende de nadie.')}`,
+      quiz: [
+        { q: '¿Qué muestra un diagrama de despliegue?', o: ['La asignación de artefactos de software a nodos físicos y sus comunicaciones', 'La secuencia de mensajes entre objetos', 'Las clases conceptuales del dominio', 'Los módulos lógicos y sus interfaces'], a: 0, e: 'Es la vista física o de despliegue.' },
+        { q: 'Un navegador web o un motor de base de datos, en un diagrama de despliegue, es un…', o: ['Nodo entorno de ejecución', 'Nodo dispositivo', 'Artefacto', 'Componente'], a: 0, e: 'Es software que corre dentro de un dispositivo y ejecuta otros programas.' },
+        { q: '¿Con qué se etiqueta una ruta de comunicación?', o: ['Con el protocolo, como HTTPS o JDBC', 'Con el nombre del método llamado', 'Con la multiplicidad de clases', 'Con el número de secuencia del mensaje'], a: 0, e: 'Los métodos y números de secuencia son de los diagramas de interacción.' },
+        { q: 'La consigna dice “el sistema debe estar disponible 24/7 con respaldo de datos”. ¿Qué conviene mostrar?', o: ['Servidores replicados o de respaldo y una réplica de la base de datos', 'Más terminales de usuario', 'Un diagrama de clases más detallado', 'Nada: es un requisito funcional'], a: 0, e: 'El despliegue refleja los requisitos no funcionales de disponibilidad.' },
+        { q: 'Según Booch, ¿qué diferencia hay entre nodos y componentes?', o: ['Los componentes participan en la ejecución; los nodos los ejecutan', 'Son sinónimos en UML 2', 'Los nodos son lógicos y los componentes físicos', 'Los componentes solo existen en diseño'], a: 0, e: 'Los nodos son los recursos computacionales donde se despliegan los componentes.' },
+      ],
+      sources: [
+        { title: 'UML y Patrones, 2ª ed.', ref: 'Larman, cap. 38 (diagramas de despliegue y de componentes)', points: ['Nodos dispositivo y entorno de ejecución, artefactos y rutas de comunicación.'] },
+        { title: 'El Lenguaje Unificado de Modelado, 2ª ed.', ref: 'Booch, Rumbaugh y Jacobson, caps. 27 y 31', points: ['Nodos, conexiones y diferencia entre nodos y componentes.', 'Modelado de sistemas cliente-servidor y distribuidos con diagramas de despliegue.'] },
+      ],
+    },
   );
 })();

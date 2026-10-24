@@ -2,7 +2,7 @@
    Cada lección: { id, module, title, keywords, tldr, goals?, body, labs?, exercises?, quiz?, sources? }
    - body puede incluir lab(i) para ubicar el laboratorio i dentro de la teoría.
    - labs: [{ type, title, ...config }] (los tipos se registran en js/labs/*.js)
-   - exercises: { title, official? ('3.10' = TP 3, ejercicio 10), level (1-3), prompt, hints?, solution: { explain } }
+   - exercises: { title, official? ('3.10' = TP 3, ejercicio 10), exam? (['2p-2023-3k1#3'] = parcial y consigna; P1 = punto 1 de la práctica), level (1-3), prompt, hints?, solution: { explain } }
    - quiz: [{ q, o: [opciones], a: índice correcto, e: explicación }]
    - sources: [{ title, ref?, url?, points: [] }] (ref = cita de libro, url = fuente web) */
 (() => {
@@ -91,5 +91,6 @@
     { id: 'm19', unit: 'p2', tema: 'VI', clases: '23', title: 'Pruebas de usuario, depuración y seguridad', stop: 'Seguridad', blurb: 'alfa, beta, aceptación, depuración, plan de pruebas y diseño seguro' },
   ];
 
-  window.GUIDE = { UNITS, MODULES, LESSONS: [], LABS: {}, INTEGRAL: { questions: [], cases: [] }, FICHAS: [], h: { esc, table, note, lab, flow, def, fig, uml } };
+  // EXAMS: parciales reales de la cátedra (parciales.js)
+  window.GUIDE = { UNITS, MODULES, LESSONS: [], LABS: {}, INTEGRAL: { questions: [], cases: [] }, EXAMS: [], FICHAS: [], h: { esc, table, note, lab, flow, def, fig, uml } };
 })();

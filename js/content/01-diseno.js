@@ -334,5 +334,81 @@
         { title: 'Ingeniería de Software, 9ª ed.', ref: 'Sommerville, cap. 2, págs. 43-46, y cap. 1, pág. 17', points: ['Creación de prototipos, figura 2.9 y problemas de la evaluación.', 'Fundamentos aplicables a todo tipo de sistema.'] },
       ],
     },
+
+    {
+      id: 'requisitos-y-prototipos',
+      module: 'm1',
+      title: 'A fondo: requisitos, gestión de requisitos, prototipos y desarrollo evolutivo',
+      keywords: 'requisitos requerimientos gestión de requisitos gestión del cambio rastreabilidad duraderos volátiles ingeniería de requerimientos factibilidad obtención análisis especificación validación prototipo desechable evolutivo exploratorio desarrollo evolutivo cuándo conviene recuperación integral 2018',
+      tldr: 'Un <mark>requisito</mark> describe un servicio que el sistema debe dar o una restricción con la que debe operar; la <mark>gestión de requisitos</mark> es controlar sus cambios durante toda la vida del sistema. Un <strong>prototipo</strong> sirve para descubrir requisitos y probar diseños antes de construir: el <strong>desechable</strong> se tira, el <strong>evolutivo</strong> se convierte en el sistema. Estas cuatro preguntas cayeron en el recuperatorio de 2018 y en el integral de febrero de 2026.',
+      goals: ['Definir requisito y diferenciar requisitos del usuario y del sistema, funcionales y no funcionales.', 'Explicar qué es la gestión de requisitos y sus pasos para un cambio.', 'Enumerar las 4 actividades de la ingeniería de requerimientos.', 'Explicar qué es un prototipo y para qué sirve en el análisis y en el diseño.', 'Distinguir prototipo desechable, desarrollo exploratorio y desarrollo evolutivo, y saber cuándo conviene cada uno.'],
+      body: `
+        <h2>Requisitos</h2>
+        ${def('Requerimientos', 'Los requerimientos para un sistema son descripciones de lo que el sistema debe hacer: el servicio que ofrece y las restricciones en su operación. Tales requerimientos reflejan las necesidades de los clientes por un sistema que atienda cierto propósito.', 'Sommerville, 9ª ed., cap. 4')}
+        ${table(['Clasificación', 'Qué es', 'Ejemplo'], [
+          ['Requerimiento del <strong>usuario</strong>', 'Enunciado en lenguaje natural y diagramas, para el cliente: qué servicios se esperan y con qué restricciones.', '“El sistema generará reportes mensuales de los costos de los medicamentos.”'],
+          ['Requerimiento del <strong>sistema</strong>', 'Descripción detallada de funciones, servicios y restricciones: define con exactitud qué se implementa. Puede ser parte del contrato.', '“El último día hábil de cada mes se generará un resumen de los medicamentos prescritos, su costo y la clínica.”'],
+          ['<strong>Funcional</strong>', 'Qué servicios da el sistema, cómo reacciona a entradas y qué hace en situaciones particulares.', 'Buscar citas en todas las clínicas.'],
+          ['<strong>No funcional</strong>', 'Restricción sobre los servicios: tiempo, proceso, estándares. Suele aplicarse al sistema como un todo (en FURPS+, la U, R, P, S y el +).', 'Disponible 24/7 con respaldo de datos (consigna de MedSys, 2025).'],
+        ])}
+        <h2>La ingeniería de requerimientos: 4 actividades</h2>
+        <p>Es la etapa más crítica del proceso: los errores que se cometen acá se arrastran al diseño y a la implementación. Sus 4 actividades (pregunta del 1er parcial 2023):</p>
+        ${h.flow('<strong>Estudio de factibilidad</strong>: ¿el sistema es rentable y se puede desarrollar con la tecnología y el presupuesto disponibles? Termina en un informe de factibilidad.', '<strong>Obtención y análisis</strong>: se descubren los requerimientos observando los sistemas existentes, hablando con usuarios, haciendo prototipos.', '<strong>Especificación</strong>: se traduce lo obtenido en un documento con los requerimientos del usuario y del sistema.', '<strong>Validación</strong>: se verifica que sean realistas, coherentes y completos; los errores encontrados se corrigen en el documento.')}
+        <h2>Gestión de requisitos</h2>
+        ${def('Gestión de requerimientos', 'Es el proceso de comprender y controlar los cambios en los requerimientos del sistema. Es necesario seguir la pista de requerimientos individuales y mantener los vínculos entre los requerimientos dependientes, de manera que pueda valorarse el efecto del cambio.', 'Sommerville, 9ª ed., 4.7')}
+        <p>Los requisitos <strong>siempre cambian</strong>: el entorno del negocio cambia, quienes pagan no son quienes usan, aparecen prioridades en conflicto. Por eso se distinguen requisitos <strong>duraderos</strong> (ligados al dominio, como “una clínica tiene médicos y turnos”) y <strong>volátiles</strong> (cambian durante el desarrollo o después, como una política de facturación).</p>
+        ${table(['La planeación define…', 'Para qué'], [
+          ['Identificación de requisitos', 'Cada requisito tiene un identificador único para poder referenciarlo.'],
+          ['Un proceso de gestión del cambio', 'Las actividades para valorar el efecto y el costo de cada cambio.'],
+          ['Políticas de rastreabilidad', 'Qué relaciones se registran: entre requisitos, y entre requisitos y diseño.'],
+          ['Herramientas de apoyo', 'Desde hojas de cálculo hasta sistemas especializados.'],
+        ])}
+        <p>Ante cada cambio se siguen tres etapas: <strong>análisis del problema y especificación del cambio</strong>, <strong>análisis del cambio y su costo</strong> (con la información de rastreabilidad) e <strong>implementación del cambio</strong> en el documento y, después, en el sistema.</p>
+        ${note('<strong>Respuesta modelo (integral 10/02/2026)</strong>: “Un requisito es la descripción de un servicio que el sistema debe ofrecer o de una restricción con la que debe operar. La gestión de requisitos es el proceso de comprender y controlar sus cambios: se identifica cada requisito, se registra su rastreabilidad y cada cambio se analiza, se costea y recién después se implementa.” Si sumás la diferencia entre funcionales y no funcionales, mejor.', 'exam')}
+
+        <h2>Prototipos</h2>
+        ${def('Prototipo', 'Un prototipo es una versión inicial de un sistema de software que se usa para demostrar conceptos, tratar opciones de diseño y encontrar más sobre el problema y sus posibles soluciones.', 'Sommerville, 9ª ed., 2.3.1')}
+        <p>Para qué sirve en el <strong>análisis y diseño de sistemas de información</strong>:</p>
+        <ul>
+          <li><strong>En la ingeniería de requerimientos</strong>: ayuda a obtener y validar requisitos. El usuario ve qué puede hacer el sistema, descubre lo que le falta y detecta errores u omisiones.</li>
+          <li><strong>En el diseño</strong>: permite explorar soluciones de software y, sobre todo, diseñar la <strong>interfaz de usuario</strong>. Travis lo lleva al extremo: prototipos en papel, iterando boceto por boceto, para postergar la codificación.</li>
+          <li><strong>En las pruebas</strong>: se puede correr el prototipo y el sistema con las mismas pruebas (pruebas consecutivas o back-to-back).</li>
+        </ul>
+        <p>Las 4 etapas del modelo de proceso para prototipos (establecer objetivos, definir la funcionalidad, desarrollar, evaluar) están en <a href="#/prototipado-y-fundamentos">la lección de prototipado</a>.</p>
+
+        <h2>Desechable, exploratorio y evolutivo</h2>
+        <p>Sommerville (8ª ed.) presenta el <strong>desarrollo evolutivo</strong> como un modelo de proceso: se desarrolla una implementación inicial, se expone a los comentarios del usuario y se refina en muchas versiones hasta que el sistema es adecuado. Hay dos tipos:</p>
+        ${table(['', 'Desarrollo exploratorio (evolutivo)', 'Prototipo desechable'], [
+          ['Objetivo', 'Trabajar con el cliente para explorar sus requisitos y <strong>entregar un sistema final</strong>.', '<strong>Comprender los requisitos</strong> del cliente para escribir una mejor especificación.'],
+          ['Por dónde empieza', 'Por las partes que <strong>se comprenden bien</strong>; se agregan atributos propuestos por el cliente.', 'Por las partes que <strong>se comprenden peor</strong>: es donde hay que experimentar.'],
+          ['Qué pasa con el código', 'Se convierte en el sistema.', '<strong>Se descarta</strong>. El sistema se desarrolla después con otro proceso.'],
+        ])}
+        <h3>¿Por qué hay que tirar el prototipo desechable?</h3>
+        <ul>
+          <li>Puede ser imposible ajustarlo a los <strong>requisitos no funcionales</strong> (rendimiento, seguridad, robustez) que se relajaron para hacerlo rápido.</li>
+          <li>El cambio rápido no deja <strong>documentación</strong>: lo único que hay es el código.</li>
+          <li>Los cambios durante el prototipado <strong>degradan la estructura</strong>: mantenerlo sería caro.</li>
+          <li>Se relajaron los <strong>estándares de calidad</strong> de la organización.</li>
+        </ul>
+        <h3>Problemas y cuándo conviene el desarrollo evolutivo</h3>
+        ${table(['Problemas', 'Cuándo se recomienda'], [
+          ['<strong>El proceso no es visible</strong>: los gerentes necesitan entregas regulares para medir el avance y no vale la pena documentar cada versión.', 'Sistemas <strong>pequeños o medianos</strong> (Sommerville habla de hasta 500.000 líneas de código).'],
+          ['<strong>Los sistemas quedan mal estructurados</strong>: los cambios continuos corrompen la estructura y cada cambio cuesta más.', 'Partes de sistemas grandes con requisitos inciertos, típicamente la <strong>interfaz de usuario</strong>.'],
+          ['Requiere herramientas y personas con habilidades especiales.', 'Sistemas de <strong>vida corta</strong>.'],
+        ])}
+        ${note('Para sistemas grandes y de vida larga Sommerville aconseja un proceso <strong>mixto</strong>: un prototipo desechable para aclarar lo incierto y un proceso más planificado (o incremental) para construir el sistema. Fijate que los problemas del evolutivo son los mismos “2 problemas del enfoque incremental” del parcial: el desarrollo incremental de la 9ª edición es el heredero de esta idea.', 'tip')}`,
+      quiz: [
+        { q: '¿Qué es la gestión de requisitos?', o: ['El proceso de comprender y controlar los cambios en los requisitos', 'La redacción del documento de requisitos al inicio del proyecto', 'La priorización de la pila de producto que hace el Dueño de Producto', 'La validación de los requisitos con el cliente antes del diseño'], a: 0, e: 'Sommerville 4.7: identificar, rastrear y controlar cada cambio.' },
+        { q: '¿Cuál es el orden de las actividades de la ingeniería de requerimientos?', o: ['Factibilidad, obtención y análisis, especificación, validación', 'Obtención, factibilidad, validación, especificación', 'Especificación, factibilidad, validación, obtención', 'Análisis, diseño, implementación, validación'], a: 0, e: 'Primero se decide si vale la pena; al final se valida el documento.' },
+        { q: 'Un prototipo desechable empieza por…', o: ['Las partes del sistema que se comprenden peor', 'Las partes que se comprenden mejor', 'La arquitectura del sistema completo', 'Los requisitos no funcionales más críticos'], a: 0, e: 'Se experimenta justamente donde hay incertidumbre. El exploratorio empieza por lo que se entiende bien.' },
+        { q: '¿Cuál NO es una razón para descartar un prototipo desechable?', o: ['Que el cliente ya lo probó y está conforme', 'Que no se ajusta a los requisitos no funcionales', 'Que no tiene documentación', 'Que su estructura se degradó con los cambios'], a: 0, e: 'Que el cliente esté conforme es justamente la trampa: el prototipo no está hecho para producción.' },
+        { q: 'El desarrollo evolutivo se recomienda para…', o: ['Sistemas pequeños o medianos, o partes inciertas como la interfaz de usuario', 'Sistemas críticos grandes con muchos equipos', 'Sistemas con requisitos estables y regulados', 'Cualquier sistema, porque siempre es más barato'], a: 0, e: 'En sistemas grandes, la falta de visibilidad y la estructura degradada se vuelven graves.' },
+        { q: 'Un requisito de disponibilidad 24/7 es…', o: ['No funcional', 'Funcional', 'Del dominio, y por eso funcional', 'Un caso de uso'], a: 0, e: 'Es una restricción sobre cómo se dan los servicios (confiabilidad, la R de FURPS+).' },
+      ],
+      sources: [
+        { title: 'Ingeniería de Software, 9ª ed.', ref: 'Sommerville, caps. 2.2, 2.3 y 4 (4.1 y 4.7)', points: ['Definición de requerimientos; del usuario y del sistema; funcionales y no funcionales.', 'Las 4 actividades de la ingeniería de requerimientos.', 'Gestión de requerimientos: duraderos y volátiles, planeación y gestión del cambio.', 'Prototipos en la ingeniería de requerimientos, en el diseño y en las pruebas; por qué descartar los desechables.'] },
+        { title: 'Ingeniería del Software, 8ª ed.', ref: 'Sommerville, cap. 4.1.2 (desarrollo evolutivo)', points: ['Desarrollo exploratorio y prototipos desechables.', 'Problemas: proceso poco visible y sistemas mal estructurados; cuándo conviene.'] },
+      ],
+    },
   );
 })();

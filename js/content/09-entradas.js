@@ -219,5 +219,199 @@
       ],
       sources: [{ title: 'Análisis y Diseño de Sistemas, 11ª ed.', ref: 'Kendall y Kendall, págs. 376-383', points: ['Diseño de formularios web y de pantalla; diseño de la interfaz gráfica de usuario.'] }],
     },
+
+    {
+      id: 'modelo-de-dominio',
+      module: 'm9',
+      title: 'Para la práctica: el modelo de dominio',
+      keywords: 'modelo de dominio modelo conceptual clases conceptuales atributos asociaciones multiplicidad categorías frases nominales cartógrafo clase de descripción especificación error común atributo clave ajena generalización práctica parcial banco puntos canje Larman',
+      tldr: 'El <mark>modelo de dominio</mark> es la representación visual de las <strong>clases conceptuales</strong> del mundo real, con sus <strong>atributos</strong>, <strong>asociaciones</strong> y <strong>multiplicidades</strong>. No tiene métodos ni flechas de navegación: no es software. Es el punto más pedido de la práctica del 1er parcial (en 9 de los 11 primeros parciales con práctica que tenemos, por 1,5 a 3,5 puntos).',
+      goals: ['Definir modelo de dominio y diferenciarlo del diagrama de clases de diseño.', 'Encontrar clases conceptuales con la lista de categorías y las frases nominales.', 'Decidir cuándo algo es atributo y cuándo es clase.', 'Agregar asociaciones con nombre y multiplicidad.', 'Evitar los errores que más se corrigen en el parcial.'],
+      body: `
+        ${def('Modelo del dominio', 'Un modelo del dominio es una representación visual de las clases conceptuales u objetos del mundo real en un dominio de interés. Se representa con un conjunto de diagramas de clases en los que no se define ninguna operación.', 'Larman, 2ª ed., cap. 10.1')}
+        <p>Puede mostrar: <strong>objetos del dominio</strong> o clases conceptuales, <strong>asociaciones</strong> entre ellas y <strong>atributos</strong>. Es un “diccionario visual” del negocio: sirve para entender el problema y es la fuente de inspiración de las clases de software (bajo salto en la representación).</p>
+        ${table(['Modelo de dominio (análisis)', 'Diagrama de clases de diseño (DCD)'], [
+          ['Conceptos del mundo real', 'Clases de software'],
+          ['Atributos sin tipo, o con tipos simples', 'Atributos con tipos'],
+          ['<strong>Sin métodos</strong>', 'Con métodos (salen de los diagramas de interacción)'],
+          ['Asociaciones <strong>sin flechas</strong>, con nombre y multiplicidad', 'Asociaciones con navegabilidad y dependencias'],
+          ['Se hace en el 1er parcial', 'Se hace en el 2do parcial'],
+        ])}
+        <h2>Paso 1: encontrar las clases conceptuales</h2>
+        <p>Larman propone dos técnicas que se combinan:</p>
+        <h3>La lista de categorías</h3>
+        ${table(['Categoría', 'Ejemplos de los parciales'], [
+          ['Objetos tangibles o físicos', 'Vehículo, Herramienta, CajeroAutomático, Báscula'],
+          ['Especificaciones o descripciones de cosas', 'Producto del catálogo, Modelo, TipoDeVehículo'],
+          ['Lugares', 'Sucursal, Estadio, Garaje, Establecimiento'],
+          ['Transacciones', 'Venta, Canje, Préstamo, Reserva, Pago, Transacción'],
+          ['Líneas de la transacción', 'DetalleDeVenta, LíneaDeCanje'],
+          ['Roles de la gente', 'Cliente, Paciente, Médico, Administrativo, Árbitro'],
+          ['Contenedores de otras cosas', 'Catálogo, Agenda, Padrón, Mesa'],
+          ['Otros sistemas externos', 'SistemaDeAutorización, ServicioDeVideollamada'],
+          ['Hechos', 'Partido, Consulta, Lectura (pesaje o alarma)'],
+          ['Reglas y políticas', 'ReglaDePuntos, Penalización'],
+          ['Registros de finanzas, trabajo o contratos', 'Comprobante, Log de lecturas'],
+        ])}
+        <h3>Las frases nominales</h3>
+        <p>Subrayá los sustantivos de la consigna (los parciales vienen con varios ya subrayados). Cada sustantivo es un <strong>candidato</strong>: algunos son clases, otros atributos y otros sobran. La técnica es mecánica y el lenguaje es ambiguo: hay que pensar cada uno.</p>
+        <h3>Las guías del cartógrafo</h3>
+        <ul>
+          <li>Usar los <strong>nombres del dominio</strong> (si la consigna dice “canje”, la clase es Canje, no “Intercambio”).</li>
+          <li><strong>Excluir lo irrelevante</strong> y no agregar lo que no está. Varias consignas lo dicen explícito: “descartar cualquier otro conocimiento del contexto, limitarse a las especificaciones expuestas” (Mundial 2022).</li>
+          <li>Es mejor <strong>especificar de más</strong> con clases pequeñas que de menos.</li>
+        </ul>
+        ${note('<strong>El error más común</strong> (Larman 10.3): representar como atributo algo que debería ser una clase. Regla: <em>si no pensamos en algo como un número o un texto en el mundo real, probablemente es una clase conceptual</em>. Destino de un vuelo: no es un texto, es un Aeropuerto. Sucursal de un canje: no es un texto, es una clase Sucursal con su ubicación.', 'warn')}
+        <h3>Clases de descripción</h3>
+        <p>Si se borra el último ejemplar de algo, ¿se pierde la información de qué es? Si el precio y la descripción viven en cada Articulo, al venderse todos se pierde el precio. Por eso se agrega una <strong>clase de descripción</strong> (EspecificaciónDelProducto) cuando: hace falta describir algo independientemente de que exista un ejemplar, se reduce información redundante o borrar los ejemplares perdería información. En los parciales: <strong>Producto del catálogo</strong> (código, descripción, puntos) frente a los productos canjeados; <strong>Herramienta</strong> (modelo) frente a cada ejemplar prestado.</p>
+
+        <h2>Paso 2: asociaciones y multiplicidad</h2>
+        <p>Una <strong>asociación</strong> es una relación entre clases que indica una conexión significativa. Incluí las que hay que <strong>recordar</strong> durante un tiempo (“necesito saber qué productos tuvo este canje”) y las de la lista de asociaciones comunes: A es parte de B, A está contenido en B, A es una descripción de B, A es una línea de una transacción B, A se registra en B, A es miembro de B, A usa o gestiona B.</p>
+        ${table(['Notación', 'Significado'], [
+          ['<code>1</code>', 'Exactamente uno'],
+          ['<code>0..1</code>', 'Cero o uno'],
+          ['<code>*</code> o <code>0..*</code>', 'Cero o más'],
+          ['<code>1..*</code>', 'Uno o más'],
+          ['<code>26</code>', 'Un número exacto (26 jugadores por equipo)'],
+        ])}
+        <ul>
+          <li>Nombrá la asociación con un <strong>verbo</strong> (TipoNombre-FraseVerbal-TipoNombre: Cliente-realiza-Transacción) y, si hace falta, una flechita de lectura.</li>
+          <li>La multiplicidad dice cuántas instancias de una clase pueden asociarse con <strong>una</strong> instancia de la otra en un momento dado. Leela en las dos direcciones.</li>
+          <li>Puede haber <strong>varias asociaciones</strong> entre dos clases (Partido-local-Equipo y Partido-visitante-Equipo).</li>
+          <li>Una asociación de una clase consigo misma es válida: “cada cliente puede ser avalado por otro cliente” (3K4 2024) es Cliente-avala-Cliente, 0..1 a *.</li>
+        </ul>
+
+        <h2>Paso 3: atributos</h2>
+        <p>Un atributo es un valor de datos lógico de un objeto. Incluí los que los requisitos piden <strong>recordar</strong>. Deben ser de <strong>tipos simples</strong> (número, texto, fecha, booleano) o tipos de datos (Dirección, Moneda). <strong>Nada de claves ajenas</strong>: no pongas <code>dniCliente</code> en Canje; eso es una asociación Canje-Cliente.</p>
+        ${fig(U.svg(770, 380, `
+          ${U.box(20, 20, 140, 'Tarjeta', { attrs: ['numero', 'fechaVencimiento'] })}
+          ${U.box(210, 20, 160, 'Cliente', { attrs: ['dni', 'nombreCompleto', 'domicilio', 'telefono', 'email'], cls: 'k-a' })}
+          ${U.box(430, 20, 140, 'Transaccion', { attrs: ['fecha', 'tipo', 'puntos'] })}
+          ${U.box(620, 20, 140, 'ReglaDePuntos', { attrs: ['descripcion', 'puntos'] })}
+          ${U.box(20, 200, 140, 'LugarDeCanje', { attrs: ['nombre', 'ubicacion'] })}
+          ${U.box(210, 200, 160, 'Canje', { attrs: ['fechaHora', 'totalPuntos'], cls: 'k-ok' })}
+          ${U.box(430, 200, 140, 'LineaDeCanje', { attrs: ['cantidad'] })}
+          ${U.box(620, 200, 140, 'Producto', { attrs: ['codigo', 'descripcion', 'puntosNecesarios', 'disponible'] })}
+          ${U.box(620, 336, 140, 'Catalogo')}
+          ${U.ln([[160, 50], [210, 50]])}<text x="185" y="44" class="u-sm u-c">identifica</text><text x="164" y="64" class="u-sm">1</text><text x="200" y="64" class="u-sm">1</text>
+          ${U.ln([[370, 60], [430, 60]])}<text x="400" y="54" class="u-sm u-c">realiza</text><text x="374" y="74" class="u-sm">1</text><text x="420" y="74" class="u-sm">*</text>
+          ${U.ln([[570, 50], [620, 50]])}<text x="595" y="44" class="u-sm u-c">valorada por</text><text x="574" y="64" class="u-sm">*</text><text x="610" y="64" class="u-sm">1</text>
+          ${U.ln([[290, 134], [290, 200]])}<text x="296" y="170" class="u-sm">solicita</text><text x="278" y="150" class="u-sm">1</text><text x="278" y="196" class="u-sm">*</text>
+          ${U.ln([[210, 232], [160, 232]])}<text x="185" y="226" class="u-sm u-c">se hace en</text><text x="198" y="246" class="u-sm">*</text><text x="164" y="246" class="u-sm">1</text>
+          ${U.ln([[370, 226], [430, 226]])}<text x="400" y="220" class="u-sm u-c">contiene</text><text x="374" y="240" class="u-sm">1</text><text x="408" y="240" class="u-sm">1..*</text>
+          ${U.ln([[570, 226], [620, 226]])}<text x="595" y="220" class="u-sm u-c">de</text><text x="574" y="240" class="u-sm">*</text><text x="610" y="240" class="u-sm">1</text>
+          ${U.ln([[690, 298], [690, 336]])}<text x="696" y="322" class="u-sm">figura en</text><text x="678" y="312" class="u-sm">*</text><text x="678" y="332" class="u-sm">1</text>`, 'Modelo de dominio del canje de puntos: Cliente con Tarjeta, Transacciones valoradas por reglas de puntos, Canjes en un lugar con líneas de productos del catálogo'),
+          'Modelo de dominio del banco que canjea puntos (rec. 1er parcial 2023 y 2025). Sin métodos ni flechas de navegación. El Producto es una clase de descripción: existe en el catálogo aunque nadie lo haya canjeado.')}
+        <p>La cátedra mostró en el 2do parcial 2022 su propia versión de este dominio: Catálogo como generalización de Producto, Servicio y Visita, Sucursal asociada al Catálogo y Transacción asociada a ReglasDeNegocio. Hay más de un modelo correcto: lo que se evalúa es que cubra la consigna con clases, atributos, asociaciones y multiplicidades coherentes.</p>
+        <h2>Generalización</h2>
+        <p>Usala cuando los subtipos tienen <strong>atributos o asociaciones propias</strong> o se comportan distinto (regla del 100 %: todo lo de la superclase vale para la subclase; regla “es-un”). Ejemplos de los parciales: Movimiento en Acumulación y Canje; Lectura en Pesaje y Alarma; Consulta presencial y virtual. Si solo cambia un valor, alcanza con un atributo <code>tipo</code>.</p>
+        ${note('<strong>Grilla de corrección que conviene autoaplicarse</strong>: ¿están todas las clases que nombra la consigna? ¿Cada asociación tiene nombre y multiplicidad en los dos extremos? ¿Hay atributos que en realidad son clases (sucursal, garaje, agencia)? ¿Hay claves ajenas, métodos, tipos de dato de programación o flechas? ¿Aparece una clase “Sistema” o “BaseDeDatos”? Esas dos sobran: el modelo describe el dominio, no el software.', 'exam')}`,
+      quiz: [
+        { q: '¿Qué NO se muestra en un modelo de dominio?', o: ['Las operaciones o métodos', 'Las asociaciones', 'Los atributos', 'Las multiplicidades'], a: 0, e: 'Larman: diagramas de clases en los que no se define ninguna operación.' },
+        { q: 'En un sistema de vuelos, el destino de un vuelo debería modelarse como…', o: ['Una clase Aeropuerto asociada al vuelo', 'Un atributo destino de tipo texto', 'Un método getDestino()', 'Una clave ajena idAeropuerto'], a: 0, e: 'Si no lo pensamos como número o texto, es una clase conceptual.' },
+        { q: '“Cada cliente puede ser avalado por otro cliente de la empresa.” ¿Cómo se modela?', o: ['Una asociación reflexiva Cliente-avala-Cliente', 'Un atributo avalista en Cliente', 'Una subclase ClienteAvalado', 'No se modela'], a: 0, e: 'Una asociación de una clase consigo misma, con multiplicidad 0..1 del lado del avalista.' },
+        { q: '¿Por qué se agrega una clase de descripción como Producto del catálogo?', o: ['Para no perder la descripción y los puntos cuando no hay ejemplares canjeados', 'Para tener una clase por cada tabla de la base de datos', 'Porque el DCD lo exige', 'Para poder poner métodos'], a: 0, e: 'Describe algo independientemente de que exista un ejemplar.' },
+        { q: 'En el modelo de dominio, Canje tiene un atributo dniCliente. ¿Qué está mal?', o: ['Es una clave ajena: debe ser una asociación Canje-Cliente', 'Nada', 'Falta el tipo de dato', 'Debería ser un método'], a: 0, e: 'Larman: ningún atributo como clave ajena.' },
+        { q: '“Participaron 32 equipos y cada uno con 26 jugadores.” La multiplicidad de Equipo a Jugador es…', o: ['26', '*', '1', '0..1'], a: 0, e: 'Se puede usar un número exacto si la consigna lo fija.' },
+      ],
+      sources: [
+        { title: 'UML y Patrones, 2ª ed.', ref: 'Larman, caps. 10, 11 y 12', points: ['Definición y contenido del modelo de dominio.', 'Lista de categorías de clases conceptuales y frases nominales; guías del cartógrafo; error común atributo vs. clase; clases de descripción.', 'Asociaciones: lista de asociaciones comunes, nombres, multiplicidad, múltiples asociaciones.', 'Atributos: tipos válidos, ningún atributo como clave ajena.'] },
+        { title: 'UML y Patrones, 2ª ed.', ref: 'Larman, cap. 26', points: ['Generalización: regla del 100 % y regla es-un.'] },
+      ],
+    },
+
+    {
+      id: 'casos-de-uso-dss-y-contratos',
+      module: 'm9',
+      title: 'Para la práctica: narración de casos de uso, DSS y contratos',
+      keywords: 'caso de uso narración formato completo actor principal precondiciones garantías de éxito escenario principal flujo básico flujos alternativos extensiones diagrama de casos de uso include extend DSS diagrama de secuencia del sistema eventos operaciones del sistema caja negra contrato operación referencias cruzadas precondiciones postcondiciones creación de instancias formación de asociaciones modificación de atributos práctica parcial',
+      tldr: 'La práctica del 1er parcial pide casi siempre la misma cadena: <strong>narración del caso de uso</strong> → <mark>diagrama de secuencia del sistema (DSS)</mark> → <mark>contrato</mark> de una operación. El DSS trata al sistema como una <strong>caja negra</strong> y muestra los eventos que le mandan los actores. El contrato describe, para un evento, los <strong>cambios de estado</strong> que deja: instancias creadas, asociaciones formadas y atributos modificados.',
+      goals: ['Narrar un caso de uso en formato completo con flujo básico y alternativos.', 'Dibujar un diagrama de casos de uso.', 'Dibujar un DSS a partir del escenario principal.', 'Escribir un contrato con sus 4 secciones y las postcondiciones bien redactadas.', 'Encadenar los artefactos con el modelo de dominio.'],
+      body: `
+        <h2>1. La narración del caso de uso</h2>
+        ${def('Caso de uso', 'Un caso de uso es una colección de escenarios con éxito y fallo relacionados, que describe a los actores utilizando un sistema para satisfacer un objetivo.', 'Larman, 2ª ed., cap. 6')}
+        <p>En el 1er parcial se pide en formato <strong>esencial</strong> (sin detalles de interfaz: “el cliente se identifica”) y en el 2do, el <strong>caso de uso real</strong> (“pasa la tarjeta por el lector”, “presiona Confirmar”). El formato completo de Larman:</p>
+        ${table(['Sección', 'Qué va'], [
+          ['Caso de uso', 'Nombre que empieza con un verbo: “Canjear Puntos”.'],
+          ['Actor principal', 'Quien recurre al sistema para cumplir su objetivo.'],
+          ['Personal involucrado e intereses', 'Quién más se interesa y qué quiere (el banco quiere registrar cada movimiento).'],
+          ['Precondiciones', 'Lo que tiene que ser cierto antes de empezar: “el cliente está registrado y tiene tarjeta”.'],
+          ['Garantías de éxito (postcondiciones)', 'Lo que es cierto al terminar bien: “se registró el canje y se descontaron los puntos”.'],
+          ['<strong>Escenario principal de éxito (flujo básico)</strong>', 'Los pasos del camino feliz, numerados, alternando actor y sistema.'],
+          ['<strong>Extensiones (flujos alternativos)</strong>', 'Lo que puede pasar distinto, numerado según el paso: “3a. El producto no está disponible: el sistema lo informa y vuelve al paso 3.”'],
+          ['Requisitos especiales, frecuencia', 'Requisitos no funcionales relacionados y cada cuánto ocurre.'],
+        ])}
+        <h3>Ejemplo: Canjear Puntos (banco, 2023 y 2025)</h3>
+        ${table(['Actor (Cliente)', 'Sistema'], [
+          ['1. El cliente se presenta en un lugar de canje y se identifica con su tarjeta.', '2. Valida la tarjeta (vigente) y muestra los datos del cliente y sus puntos disponibles.'],
+          ['3. Elige un producto del catálogo y la cantidad.', '4. Verifica que esté disponible y que los puntos alcancen; muestra la descripción y el subtotal de puntos.'],
+          ['<em>El cliente repite 3 y 4 hasta terminar.</em>', ''],
+          ['5. Confirma el canje.', '6. Registra el canje con fecha, hora, lugar y productos, descuenta los puntos, registra el movimiento y emite el comprobante.'],
+        ])}
+        <p><strong>Flujos alternativos</strong>: 2a. Tarjeta vencida o inexistente: el sistema lo informa y termina. 4a. Producto no disponible: lo informa y vuelve al paso 3. 4b. Puntos insuficientes: informa el faltante y permite quitar productos. 5a. El cliente cancela: no se registra nada.</p>
+        <h3>El diagrama de casos de uso</h3>
+        <p>Actores como monigotes fuera de un rectángulo (el <strong>límite del sistema</strong>) y casos de uso como elipses adentro, unidos por líneas. <code>«include»</code> marca un comportamiento que otro caso siempre incluye (Retirar Dinero incluye Identificar Cliente) y <code>«extend»</code>, uno opcional que se agrega en un punto de extensión. Es exactamente el diagrama del cajero que dio la cátedra en 2024.</p>
+
+        <h2>2. El diagrama de secuencia del sistema (DSS)</h2>
+        ${def('DSS', 'Un diagrama de secuencia del sistema es un dibujo que muestra, para un escenario específico de un caso de uso, los eventos que generan los actores externos, el orden y los eventos entre los sistemas. Todos los sistemas se tratan como cajas negras.', 'Larman, 2ª ed., cap. 9.2')}
+        <ul>
+          <li>Un DSS <strong>por escenario</strong>; normalmente el principal de éxito.</li>
+          <li>Solo dos (o pocas) líneas de vida: el <strong>actor</strong> y <strong>:Sistema</strong>. Adentro del sistema no se ve nada: eso es el diagrama de colaboración del 2do parcial.</li>
+          <li>Cada flecha del actor al sistema es un <strong>evento del sistema</strong>, que dispara una <strong>operación del sistema</strong> con parámetros.</li>
+          <li>Los nombres expresan la <strong>intención</strong>, no el medio físico: <code>introducirArticulo(id)</code>, no <code>escanear(id)</code>. Empiezan con verbo.</li>
+          <li>Las respuestas van con flecha punteada y son opcionales. Las repeticiones, en un marco <code>loop</code> o con <code>*[condición]</code>.</li>
+        </ul>
+        ${fig(U.svg(520, 300, `
+          <circle cx="60" cy="24" r="9" class="u-box"/><path d="M60 33V50M48 40H72M60 50L50 64M60 50L70 64" class="u-ln"/><text x="60" y="78" class="u-c u-sm">:Cliente</text>
+          ${U.obj(320, 26, 120, ':Sistema')}
+          ${U.ln([[60, 84], [60, 292]], { dash: true })}${U.ln([[380, 52], [380, 292]], { dash: true })}
+          ${U.ln([[60, 104], [378, 104]], { end: 'ar' })}<text x="220" y="98" class="u-c u-sm">identificarCliente(nroTarjeta)</text>
+          ${U.ln([[380, 128], [62, 128]], { dash: true, end: 'op' })}<text x="220" y="122" class="u-c u-sm">datos y puntos disponibles</text>
+          <rect x="34" y="144" width="380" height="74" rx="2" class="u-frame" fill="none" stroke="currentColor" stroke-opacity=".45"/><text x="40" y="158" class="u-sm u-b">loop [más productos]</text>
+          ${U.ln([[60, 178], [378, 178]], { end: 'ar' })}<text x="220" y="172" class="u-c u-sm">ingresarProducto(codigo, cantidad)</text>
+          ${U.ln([[380, 202], [62, 202]], { dash: true, end: 'op' })}<text x="220" y="196" class="u-c u-sm">descripción y subtotal de puntos</text>
+          ${U.ln([[60, 246], [378, 246]], { end: 'ar' })}<text x="220" y="240" class="u-c u-sm">confirmarCanje(lugar)</text>
+          ${U.ln([[380, 272], [62, 272]], { dash: true, end: 'op' })}<text x="220" y="266" class="u-c u-sm">comprobante del canje</text>`, 'DSS de Canjear Puntos: el cliente se identifica, ingresa productos en un loop y confirma el canje'),
+          'DSS de “Canjear Puntos”. Tres operaciones del sistema: <code>identificarCliente</code>, <code>ingresarProducto</code> (repetida) y <code>confirmarCanje</code>. Cada una tendrá su contrato y, en el 2do parcial, su diagrama de colaboración.')}
+
+        <h2>3. El contrato de una operación</h2>
+        ${def('Contrato', 'Los contratos describen el comportamiento detallado de las operaciones del sistema en función de los cambios de estado de los objetos del Modelo del Dominio, después de la ejecución de una operación del sistema.', 'Larman, 2ª ed., cap. 13')}
+        ${table(['Sección', 'Contenido'], [
+          ['Operación', 'Nombre y parámetros: la firma del evento del DSS.'],
+          ['Referencias cruzadas', 'Casos de uso en los que aparece.'],
+          ['Precondiciones', 'Suposiciones sobre el estado del sistema o de los objetos antes de la operación.'],
+          ['<strong>Postcondiciones</strong>', 'El estado de los objetos del modelo de dominio <strong>después</strong> de la operación.'],
+        ])}
+        <p>Las postcondiciones son de tres tipos y se redactan en <strong>pasado</strong> (describen el estado que quedó, no las acciones):</p>
+        <ol>
+          <li><strong>Creación o eliminación de instancias</strong>: “Se creó una instancia c de Canje.”</li>
+          <li><strong>Formación o ruptura de asociaciones</strong>: “c se asoció con el Cliente.”</li>
+          <li><strong>Modificación de atributos</strong>: “cliente.puntos pasó a ser cliente.puntos − c.totalPuntos.”</li>
+        </ol>
+        <h3>Ejemplo: contrato de confirmarCanje</h3>
+        ${table(['Sección', 'Contenido'], [
+          ['Operación', '<code>confirmarCanje(lugar: LugarDeCanje)</code>'],
+          ['Referencias cruzadas', 'Caso de uso: Canjear Puntos'],
+          ['Precondiciones', 'El cliente está registrado e identificado con una tarjeta vigente; hay un canje en curso con al menos una línea; los puntos del cliente alcanzan.'],
+          ['Postcondiciones', '<ul><li>Se creó una instancia c de Canje (creación).</li><li>c.fechaHora pasó a ser la fecha y hora actuales; c.totalPuntos, la suma de las líneas (modificación).</li><li>c se asoció con el Cliente, con el LugarDeCanje y con sus LineaDeCanje (formación de asociaciones).</li><li>cliente.puntos disminuyó en c.totalPuntos (modificación).</li><li>Se creó un Movimiento m de tipo canje con fecha, detalle y cantidad de puntos, asociado al Cliente (creación y asociación).</li></ul>'],
+        ])}
+        ${note('Errores que restan puntos: escribir postcondiciones como pasos (“el sistema busca el producto…”): eso es el caso de uso; nombrar clases que no están en el modelo de dominio (escribir el contrato suele obligar a <strong>agregar</strong> lo que faltaba al modelo, y está bien hacerlo); olvidar las asociaciones, que son las que más se olvidan; y contratos sin precondiciones. Las postcondiciones no tienen que ser perfectas: son una buena estimación que el diseño va a refinar.', 'warn')}
+        <h2>Cómo se encadenan</h2>
+        ${h.flow('<strong>Caso de uso</strong>: la historia del actor y el sistema.', '<strong>DSS</strong>: de esa historia salen los eventos del sistema, en orden.', '<strong>Contratos</strong>: para cada evento, qué cambia en los objetos del <strong>modelo de dominio</strong>.', '<strong>Diagrama de colaboración</strong> (2do parcial): un diagrama por evento, que cumple las postcondiciones del contrato aplicando GRASP.')}
+        <p>Si en el examen te piden los cuatro, hacelos <strong>coherentes</strong>: los nombres de los eventos del DSS son los nombres de las operaciones de los contratos, y las clases de las postcondiciones son las del modelo de dominio.</p>`,
+      quiz: [
+        { q: 'En un DSS, el sistema se representa como…', o: ['Una caja negra', 'Un conjunto de objetos que colaboran', 'Una base de datos', 'Un diagrama de clases'], a: 0, e: 'Lo de adentro se diseña recién con los diagramas de colaboración.' },
+        { q: '¿Cuál es el mejor nombre para un evento del sistema?', o: ['introducirArticulo(id, cantidad)', 'escanearCodigoDeBarras()', 'presionarBotonAceptar()', 'guardarEnBaseDeDatos()'], a: 0, e: 'Expresa la intención, no el medio físico ni la implementación.' },
+        { q: '¿Cuáles son las secciones de un contrato?', o: ['Operación, referencias cruzadas, precondiciones y postcondiciones', 'Actor, escenario principal y extensiones', 'Nombre, atributos y métodos', 'Estímulo, respuesta y medida'], a: 0, e: 'Las otras son de casos de uso, clases y escenarios de calidad.' },
+        { q: '“c se asoció con el Cliente” es una postcondición de…', o: ['Formación de asociaciones', 'Creación de instancias', 'Modificación de atributos', 'Precondición'], a: 0, e: 'Es uno de los tres tipos de postcondiciones.' },
+        { q: '¿En qué tiempo verbal se escriben las postcondiciones?', o: ['En pasado: describen el estado resultante', 'En futuro: describen lo que hará el sistema', 'En presente: describen las acciones', 'En imperativo'], a: 0, e: '“Se creó…”, “pasó a ser…”.' },
+        { q: '“3a. El producto no está disponible” pertenece a…', o: ['Las extensiones o flujos alternativos del caso de uso', 'Las postcondiciones del contrato', 'El DSS', 'El modelo de dominio'], a: 0, e: 'Se numera según el paso del flujo básico donde ocurre.' },
+        { q: '¿Cuántos DSS se hacen por caso de uso?', o: ['Uno por escenario; normalmente el principal de éxito', 'Uno por clase', 'Uno por actor del sistema', 'Uno por contrato'], a: 0, e: 'Si un flujo alternativo es complejo, puede tener su propio DSS.' },
+      ],
+      sources: [
+        { title: 'UML y Patrones, 2ª ed.', ref: 'Larman, caps. 6 y 9', points: ['Casos de uso en formato completo: secciones, escenario principal, extensiones.', 'DSS: eventos del sistema, caja negra, nombres de eventos y operaciones.'] },
+        { title: 'UML y Patrones, 2ª ed.', ref: 'Larman, cap. 13', points: ['Contratos: secciones, tres tipos de postcondiciones, redacción en pasado y actualización del modelo de dominio.'] },
+      ],
+    },
   );
 })();

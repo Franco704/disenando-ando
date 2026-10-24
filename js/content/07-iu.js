@@ -225,5 +225,62 @@
         { title: 'Análisis y Diseño de Sistemas', ref: 'Kendall y Kendall', points: ['Combinaciones de colores más legibles y uso del color en pantallas.'] },
       ],
     },
+
+    {
+      id: 'reglas-doradas',
+      module: 'm7',
+      title: 'A fondo: las tres reglas doradas de Mandel',
+      keywords: 'reglas doradas reglas de oro Mandel Pressman dejar el control al usuario reducir la carga de memoria interfaz consistente modos de interacción deshacer interrumpible macros manipulación directa atajos metáfora revelar información progresiva valores por defecto familia de aplicaciones usabilidad Constantine',
+      tldr: 'Pressman resume el diseño de interfaces en las <mark>3 reglas doradas</mark> de Theo Mandel: <strong>dejar el control al usuario</strong>, <strong>reducir la carga de memoria del usuario</strong> y <strong>hacer que la interfaz sea consistente</strong>. Cada una se baja a principios concretos. Complementan los 6 principios de Sommerville y fueron pregunta de un 1er parcial de 2023.',
+      goals: ['Enunciar las 3 reglas doradas.', 'Dar los principios de diseño que concretan cada una.', 'Relacionarlas con los principios de Sommerville y con la usabilidad.', 'Detectar violaciones de las reglas en una pantalla.'],
+      body: `
+        <p>En la clase 10 viste los factores humanos y los <strong>6 principios de Sommerville</strong>. Pressman (cap. 11) toma otro camino: tres reglas que, según él, son la base de cualquier conjunto de principios de interfaz.</p>
+        ${def('Las reglas doradas', '1. Dejar el control al usuario. 2. Reducir la carga de memoria del usuario. 3. Hacer que la interfaz sea consistente.', 'Theo Mandel, citado por Pressman, 7ª ed., 11.1')}
+        <h2>1. Dejar el control al usuario</h2>
+        <p>Una usuaria pidió “un sistema que lea mi mente”: quería controlar la computadora, no que la computadora la controlara a ella. Las restricciones que impone el diseñador suelen simplificar la <em>implementación</em>, no el uso. Principios:</p>
+        <ul>
+          <li><strong>Definir modos de interacción</strong> que no obliguen a acciones innecesarias: si entro al corrector ortográfico, tengo que poder salir con poco esfuerzo.</li>
+          <li><strong>Dar una interacción flexible</strong>: teclado, ratón, pantalla táctil o voz, según la preferencia.</li>
+          <li>Que la interacción sea <strong>interrumpible y reversible</strong>: suspender sin perder lo hecho y <strong>deshacer</strong> cualquier acción.</li>
+          <li><strong>Personalizar</strong> la interacción a medida que crece la habilidad (macros, atajos para expertos).</li>
+          <li><strong>Ocultar los tecnicismos internos</strong> al usuario ocasional: nunca escribir comandos del sistema operativo desde una aplicación.</li>
+          <li>Diseñar la <strong>interacción directa</strong> con los objetos de la pantalla (estirar un objeto para cambiar su tamaño).</li>
+        </ul>
+        <h2>2. Reducir la carga de memoria del usuario</h2>
+        <p>Cuanto más tiene que recordar, más errores comete (es el factor humano de la <strong>memoria a corto plazo limitada</strong>). El sistema debe recordar por él:</p>
+        <ul>
+          <li><strong>Reducir la demanda de memoria de corto plazo</strong>: claves visuales para <em>reconocer</em> en lugar de <em>recordar</em>.</li>
+          <li>Que los <strong>valores por defecto</strong> sean significativos, con opción de “reiniciar”.</li>
+          <li>Definir <strong>atajos intuitivos</strong> (Ctrl+B para Buscar).</li>
+          <li>Basar la distribución visual en una <strong>metáfora del mundo real</strong> (chequera y talonario para pagos).</li>
+          <li><strong>Revelar la información de manera progresiva</strong>: primero lo general y, si el usuario muestra interés, el detalle.</li>
+        </ul>
+        <h2>3. Hacer consistente la interfaz</h2>
+        <p>Toda la información se organiza con las mismas reglas en todas las pantallas, los mecanismos de entrada son pocos y se usan siempre igual, y la navegación entre tareas también. Principios:</p>
+        <ul>
+          <li>Que el usuario pueda ubicar la tarea en curso en un <strong>contexto significativo</strong> (títulos de ventana, íconos, código de colores): saber de dónde viene y a dónde puede ir.</li>
+          <li>Mantener la consistencia en toda la <strong>familia de aplicaciones</strong>.</li>
+          <li>Si un modelo interactivo ya creó <strong>expectativas</strong> (Ctrl+S guarda), no cambiarlo sin una razón ineludible.</li>
+        </ul>
+        <h2>Las reglas frente a los principios de Sommerville</h2>
+        ${table(['Regla dorada (Mandel)', 'Principios de Sommerville relacionados'], [
+          ['Dejar el control al usuario', 'Recuperabilidad (deshacer, confirmar acciones destructivas), diversidad de usuarios'],
+          ['Reducir la carga de memoria', 'Familiaridad del usuario, guía del usuario'],
+          ['Interfaz consistente', 'Uniformidad, mínima sorpresa'],
+        ])}
+        ${note('Pregunta de 1er parcial 2023: “Enuncie las 3 reglas doradas que guían el diseño de interfaces de usuario”. Nombralas exactas y explicá cada una con un principio y un ejemplo. No las confundas con los <strong>6 principios</strong> de Sommerville ni con los <strong>4 lineamientos</strong> de pantallas de Kendall: los tres se preguntan y cada uno tiene su número.', 'exam')}
+        <h2>¿Cómo saber si se logró la usabilidad?</h2>
+        <p>Pressman cita a Constantine: los usuarios quieren <strong>buenas herramientas</strong>, fáciles de aprender, que no los hagan más lentos ni los confundan. Algunas de sus preguntas de control: ¿se puede usar sin ayuda continua?, ¿el usuario sabe siempre dónde está?, ¿la interfaz es consistente?, ¿prevé errores y ayuda a corregirlos?, ¿es sencilla? Si todas dan “sí”, probablemente se logró. La única forma de confirmarlo es <strong>probar con usuarios</strong>, que es lo que Travis enseña en la unidad IV.</p>`,
+      quiz: [
+        { q: '¿Cuáles son las 3 reglas doradas de Mandel?', o: ['Dejar el control al usuario, reducir la carga de memoria y hacer consistente la interfaz', 'Familiaridad, uniformidad y mínima sorpresa', 'Presentación consistente, pantalla simplificada y movimiento fácil', 'Foco en el usuario, medición empírica y diseño iterativo'], a: 0, e: 'Las otras son de Sommerville, de Kendall y de Travis.' },
+        { q: 'Ofrecer “deshacer” en cualquier acción concreta la regla de…', o: ['Dejar el control al usuario', 'Reducir la carga de memoria', 'Consistencia', 'Ninguna: es un principio de colores'], a: 0, e: 'La interacción debe ser interrumpible y reversible.' },
+        { q: 'Mostrar primero las opciones generales y el detalle solo si el usuario lo pide es…', o: ['Revelar la información de manera progresiva', 'Ocultar los tecnicismos internos', 'Definir modos de interacción', 'Mantener la consistencia de la familia'], a: 0, e: 'Es un principio para reducir la carga de memoria.' },
+        { q: 'Una nueva versión cambia Ctrl+S de “guardar” a “escalar”. ¿Qué regla viola?', o: ['Hacer consistente la interfaz', 'Dejar el control al usuario', 'Reducir la carga de memoria', 'Ninguna, si se documenta'], a: 0, e: 'No cambiar expectativas creadas sin una razón ineludible.' },
+        { q: 'Usar la metáfora de una chequera en un sistema de pagos ayuda a…', o: ['Reducir la carga de memoria del usuario', 'Dejar el control al usuario', 'Personalizar la interacción', 'Validar la entrada'], a: 0, e: 'El usuario se apoya en claves visuales que ya conoce.' },
+      ],
+      sources: [
+        { title: 'Ingeniería del Software: un enfoque práctico, 7ª ed.', ref: 'Pressman, cap. 11.1, págs. 266-269', points: ['Las tres reglas doradas de Mandel y sus principios.', 'Recuadro de usabilidad (Constantine y Donahue).'] },
+      ],
+    },
   );
 })();

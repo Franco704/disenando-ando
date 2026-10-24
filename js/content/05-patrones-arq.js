@@ -201,5 +201,82 @@
       ],
       sources: [{ title: 'Ingeniería de Software, 9ª ed.', ref: 'Sommerville, cap. 6, págs. 164-172', points: ['Arquitecturas de aplicación y sus usos.', 'Sistemas de procesamiento de transacciones y de lenguaje.'] }],
     },
+
+    {
+      id: 'sistemas-distribuidos',
+      module: 'm5',
+      title: 'A fondo: sistemas distribuidos, middleware y ataques',
+      keywords: 'sistema distribuido ventajas compartición de recursos apertura concurrencia escalabilidad tolerancia a fallas transparencia calidad de servicio QoS ataques intercepción interrupción modificación fabricación negación de servicio interacción procedimental basada en mensajes RPC middleware soporte de interacción servicios comunes SaaS software como servicio maestro esclavo multinivel componentes distribuidos peer to peer',
+      tldr: 'Un <mark>sistema distribuido</mark> es una colección de computadoras independientes que el usuario ve como un solo sistema. Tiene <strong>5 ventajas</strong> (compartición de recursos, apertura, concurrencia, escalabilidad y tolerancia a fallas) y queda expuesto a <strong>4 tipos de ataque</strong> (intercepción, interrupción, modificación y fabricación). El <mark>middleware</mark> une sus partes con <strong>2 tipos de soporte</strong>: de interacción y de servicios comunes. Las tres listas salieron en parciales.',
+      goals: ['Definir sistema distribuido y enumerar sus 5 ventajas.', 'Explicar las cuestiones de diseño: transparencia, apertura, escalabilidad, seguridad, calidad de servicio y fallas.', 'Describir los 4 tipos de ataque y relacionarlos con la negación de servicio.', 'Distinguir interacción procedimental y basada en mensajes.', 'Explicar qué es el middleware y sus 2 tipos de soporte.', 'Reconocer los patrones de arquitectura distribuida y el software como servicio.'],
+      body: `
+        ${def('Sistema distribuido', 'Un sistema distribuido es una colección de computadoras independientes que aparecen al usuario como un solo sistema coherente.', 'Tanenbaum y Van Steen, citado por Sommerville, 9ª ed., cap. 18')}
+        <p>Hoy casi todo sistema grande es distribuido: el cliente-servidor que ya viste es el caso más simple. Lo nuevo de esta lección son las <strong>listas que pide el parcial</strong> y las decisiones de diseño que implica repartir un sistema.</p>
+        <h2>Las 5 ventajas</h2>
+        ${table(['Ventaja', 'Qué significa'], [
+          ['<strong>Compartición de recursos</strong>', 'Se comparten recursos de hardware y software (discos, impresoras, archivos, compiladores) asociados a computadoras de la red.'],
+          ['<strong>Apertura</strong>', 'Se diseñan con protocolos estándar, de modo que se puede combinar hardware y software de distintos proveedores.'],
+          ['<strong>Concurrencia</strong>', 'Varios procesos operan al mismo tiempo en computadoras separadas de la red y pueden comunicarse entre sí.'],
+          ['<strong>Escalabilidad</strong>', 'La capacidad se aumenta agregando nuevos recursos para responder a nuevas demandas.'],
+          ['<strong>Tolerancia a fallas</strong>', 'Gracias a la disponibilidad de varias computadoras y a la replicación, el sistema tolera fallas de hardware y software sin perder toda su funcionalidad.'],
+        ])}
+        ${note('Regla mnemotécnica de los apuntes: <strong>CACET</strong> (Compartición, Apertura, Concurrencia, Escalabilidad, Tolerancia). Salió en el recuperatorio de 2018: “Señale y explique brevemente las ventajas de las arquitecturas de sistemas distribuidos”.', 'exam')}
+        <h2>El precio: cuestiones de diseño</h2>
+        <p>Un sistema distribuido es más complejo que uno centralizado: su comportamiento emergente es difícil de comprender y de probar, porque depende de la red. Sommerville lista estas cuestiones:</p>
+        ${table(['Cuestión', 'Pregunta de diseño'], [
+          ['Transparencia', '¿Hasta qué punto el sistema se ve como uno solo? El usuario no debería saber que está distribuido.'],
+          ['Apertura', '¿Se diseña con protocolos estándar que permitan la interoperabilidad?'],
+          ['Escalabilidad', '¿Cómo crece en tamaño (más usuarios), en distribución (más lejos) y en manejabilidad?'],
+          ['Seguridad', '¿Cómo se definen y aplican políticas en sistemas administrados por distintas organizaciones?'],
+          ['<strong>Calidad de servicio (QoS)</strong>', 'La capacidad de entregar sus servicios de forma confiable, con un tiempo de respuesta y un rendimiento aceptables para los usuarios.'],
+          ['Gestión de fallas', '¿Cómo se detectan, contienen y reparan las fallas?'],
+        ])}
+        <h2>Los 4 tipos de ataque</h2>
+        <p>Al repartirse por la red, el sistema ofrece más puntos de ataque. Un atacante puede:</p>
+        ${table(['Ataque', 'Qué hace el atacante', 'Qué se pierde'], [
+          ['<strong>Intercepción</strong>', 'Intercepta las comunicaciones entre partes del sistema.', 'Confidencialidad'],
+          ['<strong>Interrupción</strong>', 'Ataca los servicios para que no puedan entregarse como se espera. Es la <strong>negación de servicio</strong>: se bombardea un nodo con solicitudes ilegítimas hasta que no puede atender las legítimas.', 'Disponibilidad'],
+          ['<strong>Modificación</strong>', 'Altera los datos o servicios del sistema.', 'Integridad'],
+          ['<strong>Fabricación</strong>', 'Genera información que no debería existir, por ejemplo una transacción falsa o credenciales para ganar privilegios.', 'Autenticidad'],
+        ])}
+        ${note('Respuesta del 1er parcial 3K1 2023 (“Explique los 4 tipos de ataques que pueden realizarse a un Sistema Distribuido”): nombrá los cuatro, decí qué hace el atacante en cada uno y, si te sobra tiempo, qué propiedad se pierde. Mnemotecnia: <strong>MIFI</strong> (Modificación, Intercepción, Fabricación, Interrupción).', 'exam')}
+        <h2>Dos modelos de interacción</h2>
+        ${table(['', 'Interacción procedimental', 'Interacción basada en mensajes'], [
+          ['Cómo funciona', 'Una computadora llama a un servicio conocido que ofrece otra y espera la respuesta.', 'La computadora emisora define en un mensaje la información requerida y lo envía; no espera.'],
+          ['Implementación', 'Llamadas a procedimientos remotos (<strong>RPC</strong>): el componente llama a otro como si fuera local.', 'Colas de mensajes; el receptor procesa cuando puede.'],
+          ['Ejemplo (Sommerville)', 'Un comensal pide la comida al mesero y espera.', 'El mesero deja el pedido escrito en la cocina y sigue atendiendo.'],
+        ])}
+        <h2>Middleware</h2>
+        ${def('Middleware', 'Software que gestiona las diversas partes de un sistema distribuido y asegura que puedan comunicarse e intercambiar datos. Se ubica entre el sistema operativo y la aplicación.', 'Sommerville, 9ª ed., 18.1.2')}
+        <p>Los componentes pueden estar escritos en distintos lenguajes y correr en distintos procesadores: el middleware es el traductor. Brinda <strong>2 tipos de soporte</strong> (1er parcial 3K3 2023):</p>
+        <ol>
+          <li><strong>Soporte de interacción</strong>: coordina las interacciones entre componentes del sistema. Ofrece transparencia de ubicación (no hace falta saber dónde está el componente) y puede convertir parámetros entre lenguajes.</li>
+          <li><strong>Provisión de servicios comunes</strong>: implementaciones reutilizables de servicios que necesitan varios componentes, como seguridad, notificación de eventos o gestión de transacciones.</li>
+        </ol>
+        <h2>Patrones de arquitectura distribuida</h2>
+        ${table(['Patrón', 'Idea'], [
+          ['Maestro-esclavo', 'Un proceso maestro reparte el trabajo entre esclavos; típico de sistemas de tiempo real.'],
+          ['Cliente-servidor de dos niveles', 'Cliente delgado (la lógica en el servidor) o grueso (la lógica en el cliente).'],
+          ['Cliente-servidor multinivel', 'Presentación, lógica y datos en niveles distintos: escala mejor. Es la arquitectura de un banco por Internet.'],
+          ['Componentes distribuidos', 'Componentes en distintas máquinas que se comunican por middleware; flexible, pero complejo.'],
+          ['Peer to peer (P2P)', 'Sin servidor central: cada nodo es cliente y servidor.'],
+        ])}
+        <h2>Software como servicio (SaaS)</h2>
+        <p>Es alojar el software en forma remota y darle acceso por Internet. Sus elementos clave son tres: el software se <strong>despliega en un servidor</strong> y se accede con un navegador; lo <strong>posee y administra el proveedor</strong>, no la organización que lo usa; y los usuarios <strong>pagan por uso</strong> o por suscripción (o es gratuito con publicidad).</p>
+        <h2>¿Y la seguridad? Elegir la arquitectura</h2>
+        <p>Las decisiones de distribución dependen de los requisitos no funcionales. Si la <strong>protección de datos</strong> es crítica, conviene una arquitectura en capas o cliente-servidor con los activos más críticos protegidos en las capas internas o en el servidor, con validación en cada una. Si la <strong>disponibilidad</strong> es crítica, se agregan componentes redundantes. Ante el riesgo de <strong>negación de servicio</strong>, Sommerville aconseja mecanismos de alta disponibilidad y <strong>distribuir los activos</strong> para que un ataque no tumbe todo (ver <a href="#/seguridad-en-el-diseno">seguridad en el diseño</a>).</p>`,
+      quiz: [
+        { q: '¿Cuál NO es una de las 5 ventajas de los sistemas distribuidos según Sommerville?', o: ['Menor complejidad que un sistema centralizado', 'Apertura', 'Concurrencia', 'Tolerancia a fallas'], a: 0, e: 'Al contrario: son más complejos y difíciles de probar.' },
+        { q: 'Un atacante altera los montos de las transacciones que viajan por la red. Es un ataque de…', o: ['Modificación', 'Intercepción', 'Fabricación', 'Interrupción'], a: 0, e: 'Cambia datos existentes: se pierde integridad.' },
+        { q: 'La negación de servicio es un ataque de…', o: ['Interrupción', 'Fabricación', 'Intercepción', 'Modificación'], a: 0, e: 'Busca que los servicios no puedan entregarse.' },
+        { q: '¿Cuáles son los 2 tipos de soporte del middleware?', o: ['Soporte de interacción y provisión de servicios comunes', 'Soporte de hardware y soporte de software', 'Soporte procedimental y soporte basado en mensajes', 'Soporte de presentación y soporte de datos'], a: 0, e: 'Coordina las interacciones y ofrece servicios reutilizables.' },
+        { q: 'Una llamada a procedimiento remoto (RPC) es un ejemplo de interacción…', o: ['Procedimental', 'Basada en mensajes', 'Peer to peer', 'Por repositorio'], a: 0, e: 'El que llama espera la respuesta como si fuera local.' },
+        { q: 'La calidad de servicio (QoS) de un sistema distribuido refleja…', o: ['Su capacidad de entregar servicios confiables con tiempos de respuesta y rendimiento aceptables', 'La cantidad de servidores que tiene', 'La calidad del código fuente de los servidores', 'La satisfacción con el diseño visual'], a: 0, e: 'Es una de las cuestiones de diseño que lista Sommerville.' },
+        { q: '¿Qué caracteriza al software como servicio?', o: ['Se accede por navegador, lo administra el proveedor y se paga por uso', 'Se instala en cada computadora del cliente y se paga una vez', 'El cliente administra los servidores y el código', 'Solo funciona sin conexión'], a: 0, e: 'Los tres elementos clave del SaaS.' },
+      ],
+      sources: [
+        { title: 'Ingeniería de Software, 9ª ed.', ref: 'Sommerville, cap. 18 (18.1 a 18.4)', points: ['Definición y 5 ventajas de los sistemas distribuidos.', 'Cuestiones de diseño: transparencia, apertura, escalabilidad, seguridad, QoS y gestión de fallas.', 'Ataques: intercepción, interrupción, modificación y fabricación.', 'Interacción procedimental y basada en mensajes; middleware; patrones arquitectónicos distribuidos; software como servicio.'] },
+      ],
+    },
   );
 })();

@@ -266,5 +266,49 @@ void totalConDosLineas() {
       ],
       sources: [{ title: 'Ingeniería de Software, 9ª ed.', ref: 'Sommerville, cap. 8, págs. 213-216', points: ['Elección de casos de prueba de unidad: particiones (figuras 8.6 y 8.7) y lineamientos de Whittaker.'] }],
     },
+
+    {
+      id: 'confianza-metas-y-entradas',
+      module: 'm17',
+      title: 'A fondo: el nivel de confianza, las dos metas de la prueba y qué entradas buscar',
+      keywords: 'nivel de confianza propósito del software expectativas del usuario entorno de mercado dos metas prueba de validación prueba de defectos entradas Ie Oe caja negra verificación validación construir el producto correcto Boehm inspecciones',
+      tldr: 'El objetivo final de la V&V es tener <strong>confianza</strong> en que el sistema es adecuado, y el nivel requerido depende de <mark>3 factores</mark>: el <strong>propósito</strong> del software, las <strong>expectativas</strong> del usuario y el <strong>entorno de mercado</strong>. La prueba tiene <mark>2 metas</mark>: demostrar que el software cumple sus requisitos (prueba de <strong>validación</strong>, con entradas que reflejan el uso esperado) y encontrar comportamiento incorrecto (prueba de <strong>defectos</strong>, con entradas elegidas para hacerlo fallar).',
+      goals: ['Explicar los 3 factores del nivel de confianza.', 'Enunciar las 2 metas de la prueba.', 'Decir qué entradas se buscan en cada tipo de prueba.', 'Responder la diferencia entre verificación y validación con las preguntas de Boehm.'],
+      body: `
+        <h2>Los 3 factores del nivel de confianza</h2>
+        <p>Sommerville: “El objetivo final de los procesos de verificación y validación es establecer confianza de que el sistema de software es adecuado”: lo bastante eficaz para su uso esperado. ¿Cuánta confianza hace falta? Depende de:</p>
+        ${table(['Factor', 'Qué dice', 'Ejemplo'], [
+          ['<strong>Propósito del software</strong>', 'Cuanto más crítico es el software, más importante es su confiabilidad.', 'El control de un sistema crítico de seguridad requiere mucha más confianza que un prototipo para mostrar ideas.'],
+          ['<strong>Expectativas del usuario</strong>', 'Por la experiencia con software poco confiable, muchos usuarios esperan poco y toleran fallas, sobre todo al principio. A medida que el software madura, esperan más.', 'Se tolera un error en la primera versión de una app nueva, no en el home banking.'],
+          ['<strong>Entorno de mercado</strong>', 'Hay que tener en cuenta los productos competidores, el precio que los clientes quieren pagar y el calendario de entrega.', 'Si hay pocos competidores, se puede liberar antes de probar todo para ser el primero; si el precio es bajo, los usuarios toleran más fallas.'],
+        ])}
+        ${note('2do parcial 3K1 2022: “Dentro del proceso de V&V el nivel de confianza requerido depende de tres factores. Explique brevemente cada uno de ellos.” Nombralos exactos (propósito, expectativas, entorno de mercado) y dá un ejemplo de cada uno.', 'exam')}
+        <h2>Las 2 metas del proceso de prueba</h2>
+        ${table(['Meta', 'Lleva a…', 'Entradas que se buscan', 'Éxito de la prueba'], [
+          ['1. <strong>Demostrar</strong> al desarrollador y al cliente que el software <strong>cumple sus requisitos</strong>. Para software a medida: al menos una prueba por requisito; para genérico: pruebas de todas las características.', '<strong>Prueba de validación</strong>', 'Entradas <strong>correctas</strong>, que reflejan el <strong>uso esperado</strong> del sistema, y que deberían producir las salidas correctas.', 'Que el sistema funcione como se espera.'],
+          ['2. <strong>Descubrir</strong> situaciones en que el comportamiento del software es <strong>incorrecto</strong>, indeseable o no conforme a la especificación.', '<strong>Prueba de defectos</strong>', 'Entradas <strong>diseñadas para exponer defectos</strong>: oscuras, límite, inválidas; no necesitan reflejar el uso normal.', 'Que el sistema falle: una prueba que encuentra un defecto es exitosa.'],
+        ])}
+        <p>Sommerville lo grafica con un modelo de entrada-salida: el sistema recibe entradas y produce salidas; dentro del conjunto de entradas hay un subconjunto <strong>I<sub>e</sub></strong> que provoca salidas anómalas <strong>O<sub>e</sub></strong>. La prueba de defectos busca entradas en I<sub>e</sub>; la de validación usa entradas que <em>no</em> están en I<sub>e</sub> para mostrar que el sistema funciona.</p>
+        ${fig(U.svg(520, 170, `
+          ${U.blk(20, 30, 130, 110, 'Entradas', { bold: true })}<ellipse cx="85" cy="110" rx="42" ry="20" class="u-blk k-bad" style="fill:var(--err-soft);stroke:var(--err)"/><text x="85" y="114" class="u-c u-sm">Iₑ</text>
+          ${U.blk(195, 55, 130, 60, 'Sistema')}
+          ${U.blk(370, 30, 130, 110, 'Salidas', { bold: true })}<ellipse cx="435" cy="110" rx="42" ry="20" style="fill:var(--err-soft);stroke:var(--err)"/><text x="435" y="114" class="u-c u-sm">Oₑ</text>
+          ${U.ln([[150, 85], [195, 85]], { end: 'ar' })}${U.ln([[325, 85], [370, 85]], { end: 'ar' })}`, 'Modelo de entrada-salida de la prueba: las entradas Ie producen salidas anómalas Oe'),
+          'Iₑ: entradas que causan comportamiento anómalo. Oₑ: salidas que revelan defectos. La prueba de defectos apunta a Iₑ.')}
+        ${note('Las dos metas no son tipos de pruebas separados en el tiempo: el mismo plan mezcla ambas. Pero la pregunta del parcial pide distinguirlas por su objetivo y por las <strong>entradas</strong>: correctas y representativas para validar, elegidas para romper en defectos (2do parcial 3K4 2023 y recuperatorio 3K4 2024).', 'exam')}
+        <h2>Verificación y validación en una línea</h2>
+        <p>Boehm: <strong>verificación</strong>, “¿construimos el producto correctamente?” (conforme a su especificación); <strong>validación</strong>, “¿construimos el producto correcto?” (lo que el cliente realmente necesita). La validación es más general porque las especificaciones no siempre reflejan los deseos reales de los usuarios. Analogía de los apuntes: verificar es comprobar que la casa respeta los planos; validar, que sirve a la familia que la va a habitar.</p>
+        ${note('Trampa del anexo de opción múltiple del 2do parcial 2025: la respuesta correcta asocia la <strong>validación</strong> con “¿se construyó el producto correcto?” y la <strong>prueba de defectos</strong> con identificar fallos específicos del comportamiento. Las opciones que dicen que la validación la hace solo el cliente o que busca errores en el código fuente son falsas.', 'warn')}`,
+      quiz: [
+        { q: '¿De qué 3 factores depende el nivel de confianza requerido?', o: ['Propósito del software, expectativas del usuario y entorno de mercado', 'Costo, plazo y alcance', 'Verificación, validación y depuración', 'Unidad, componentes y sistema'], a: 0, e: 'Sommerville cap. 8.' },
+        { q: 'Si hay pocos competidores, una empresa puede liberar antes de probar todo. ¿Qué factor es?', o: ['Entorno de mercado', 'Propósito del software', 'Expectativas del usuario', 'Ninguno: es mala práctica siempre'], a: 0, e: 'Competencia, precio y calendario forman el entorno de mercado.' },
+        { q: 'En la prueba de validación se usan entradas…', o: ['Correctas, que reflejan el uso esperado', 'Diseñadas para provocar fallas', 'Aleatorias', 'Solo valores límite'], a: 0, e: 'Busca demostrar que el sistema cumple sus requisitos.' },
+        { q: 'Una prueba de defectos exitosa es la que…', o: ['Hace fallar al sistema', 'Pasa sin errores', 'Cubre todos los requisitos', 'La aprueba el cliente'], a: 0, e: 'Su meta es exponer defectos.' },
+        { q: '“¿Construimos el producto correcto?” corresponde a…', o: ['Validación', 'Verificación', 'Depuración', 'Inspección'], a: 0, e: 'Verificación: ¿construimos el producto correctamente?' },
+      ],
+      sources: [
+        { title: 'Ingeniería de Software, 9ª ed.', ref: 'Sommerville, cap. 8 (introducción y figura 8.1)', points: ['Las dos metas de la prueba: validación y defectos.', 'Modelo de entrada-salida con Ie y Oe.', 'Verificación y validación (Boehm) y los 3 factores del nivel de confianza.'] },
+      ],
+    },
   );
 })();
