@@ -674,3 +674,9 @@ pre.code, .lab-out, .table-wrap, .fig { scrollbar-width: thin; scrollbar-color: 
 .lesson-video summary { cursor: pointer; font-weight: 700; color: var(--accent); }
 .lesson-video video { margin: 12px 0 8px; }
 @media (max-height: 700px) { .vid-player { position: static; } }
+
+/* Resúmenes de compañeros */
+.byline { font-size: 1.02rem; margin: 0 0 4px; }
+.resumen-page .body img { display: block; margin: 14px auto; background: #fff; padding: 8px; border-radius: 8px; border: 1px solid var(--line, #ddd); }
+.resumen-page .body h3 { margin-top: 2em; }
+.rail li.sub { padding-left: 12px; font-size: .92em; }

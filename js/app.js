@@ -114,6 +114,7 @@
     else if (id.startsWith('simulacro')) renderExam(UNITS.find((u) => u.id === id.slice(10)));
     else if (id === 'integral') renderIntegral();
     else if (id === 'parciales') renderParciales();
+    else if (id === 'resumenes') renderResumenes();
     else if (id === 'videos' || id.startsWith('videos/')) renderVideos(LESSONS.findIndex((l) => l.id === id.slice(7)));
     else if (id === 'diagramas') renderDiagrams();
     else if (id === 'fichas') renderFichas();
@@ -201,6 +202,7 @@
           <div class="hero-actions">
             <a class="btn primary" href="#/${resume.id}">${done.size ? 'Seguir con' : 'Empezar con'} “${resume.title}”</a>
             <a class="btn" href="#/parciales">Parciales resueltos</a>
+            <a class="btn" href="#/resumenes">Resúmenes</a>
             <a class="btn" href="#/videos">Videos de resumen</a>
             <a class="btn" href="#/diagramas">Diagramas</a>
             <a class="btn" href="#/fichas">Fichas</a>
@@ -312,6 +314,7 @@
           <a href="#/videos/${l.id}">Ver todos los videos de corrido desde acá →</a></details>
         ${l.goals ? `<div class="goals"><p>Al terminar vas a poder:</p><ul>${l.goals.map((g) => `<li>${g}</li>`).join('')}</ul></div>` : ''}
         <div class="body">${l.body}${rest}</div>
+        ${(window.GUIDE.RESUMENES || []).filter((r) => r.unit === mod.unit).map((r) => `<p class="q-link"><a href="#/resumenes">Leelo también en el ${r.title.toLowerCase()} de ${r.author} →</a></p>`).join('')}
         ${quiz.length ? `<section class="check-sec" id="comprobar"><h2>Comprobá lo que entendiste</h2><p class="sec-lede">Elegí una respuesta: la corrección es inmediata. Lo que falles queda guardado para repasar.</p><div class="quiz-mount"></div></section>` : ''}
         ${exercises ? `<section class="practice" id="ejercicios"><h2>Ejercicios</h2><p class="sec-lede">Resolvelos en papel, con el diagrama, antes de abrir la solución. Equivocarse acá es gratis.</p>${exercises}</section>` : ''}
         ${sources ? `<section class="sources" id="bibliografia"><h2>Bibliografía</h2><p class="sec-lede">Qué dice cada fuente sobre este tema.</p>${sources}</section>` : ''}
@@ -538,6 +541,23 @@
             <div class="cards">${F.filter((f) => f.m === m.id).map((f) => `<div class="card"><b>${f.n}</b><div class="f">${f.f}</div>${f.d ? `<p class="muted-s">${f.d}</p>` : ''}</div>`).join('')}</div>`).join('')}
         </section>`).join('')}
       </article>`;
+  }
+
+  // ---------- Resúmenes de compañeros (GUIDE.RESUMENES), cada uno con su autor/a ----------
+  function renderResumenes() {
+    document.title = 'Resúmenes, Diseñando Ando';
+    const R = window.GUIDE.RESUMENES || [];
+    main.innerHTML = `
+      <article class="lesson resumen-page">
+        <p class="crumb">Para el parcial</p>
+        <h1>Resúmenes de compañeros</h1>
+        <p class="tldr">Resúmenes escritos por estudiantes de la materia, tal como los armaron sus autores. Sirven para repasar de corrido; para cada tema en detalle, con ejercicios, andá a su lección.</p>
+        ${R.map((r) => `<section data-u="${r.unit}"><p class="byline">${r.title} · por <strong>${r.author}</strong> · <a href="${r.file}" download>Descargar el original (.docx)</a></p><p class="muted-s">${r.sub}</p><div class="body">${r.html}</div></section>`).join('')}
+      </article>`;
+    const hs = [...main.querySelectorAll('.body > h2, .body > h3')];
+    hs.forEach((h, i) => { h.id = `r-${i}`; });
+    rail.innerHTML = `<p>En este resumen</p><ol>${hs.map((h) => `<li${h.tagName === 'H3' ? ' class="sub"' : ''}><a href="#${h.id}">${h.textContent}</a></li>`).join('')}</ol>`;
+    rail.querySelectorAll('a').forEach((a) => a.addEventListener('click', (e) => { e.preventDefault(); document.getElementById(a.getAttribute('href').slice(1)).scrollIntoView(); }));
   }
 
   // ---------- Parciales reales: cada pregunta con su resolución y lo que más se repite ----------
