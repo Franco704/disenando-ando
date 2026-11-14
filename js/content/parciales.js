@@ -4,7 +4,7 @@
    Un caso práctico se resuelve en un solo ejercicio que lleva las etiquetas de todos sus puntos. */
 (() => {
   const { LESSONS, EXAMS, h } = window.GUIDE;
-  const { table, note } = h;
+  const { table, note, fig } = h;
   const lesson = (id) => { const l = LESSONS.find((x) => x.id === id); if (!l) throw new Error(`Lección inexistente: ${id}`); return l; };
   const add = (id, ...exs) => { const l = lesson(id); l.exercises = [...(l.exercises || []), ...exs]; };
   const ol = (...li) => `<ol>${li.map((x) => `<li>${x}</li>`).join('')}</ol>`;
@@ -707,5 +707,45 @@ public class ControladorCrearOp {
     solution: { explain: `${table(['Clase', 'Atributos', 'Asociaciones'], [['Cliente', 'codigo, dni, nombre, direccion, telefono', '1–* Reserva; avala: 0..1 (avalista) a * (avalados), asociación reflexiva'], ['Reserva', 'fechaInicio, fechaFin, precioTotal, entregado', '*–1 Agencia; 1–1..* AlquilerDeCoche'], ['AlquilerDeCoche (clase asociación entre Reserva y Coche)', 'precioAlquiler, litrosGasolina', '*–1 Coche'], ['Coche', 'matricula, modelo, color, marca', '*–1 Garaje'], ['Garaje', 'nombre / ubicación', '—'], ['Agencia', 'nombre, direccion', '—']])}
       <p>La clave es que el <strong>precio de alquiler</strong> y los <strong>litros de gasolina</strong> no son de la reserva ni del coche: son de <strong>cada coche en cada reserva</strong>. Por eso van en una clase asociación (o línea de reserva). “Si los coches han sido entregados” puede ser un booleano de la Reserva o de cada línea, si se entregan por separado.</p>
       <p>Si la consigna pedía, como en los demás 2dos parciales, caso de uso real, colaboración y DCD de “Reservar Alquiler”, seguí la misma estructura del caso AutoGo: un controlador de fachada (Empresa) busca al cliente y los coches, la Empresa crea la Reserva (Creador), la Reserva crea sus líneas y calcula su total (Creador y Experto).</p>` },
+  });
+
+  // ======== Preguntas de la recopilación por clase (DISEÑO-COMPLETO, autor anónimo) que la guía no tenía ========
+  const RECOP = 'Pregunta de parcial · recopilación por clase';
+  add('modelos-de-proceso', {
+    tag: RECOP, level: 1, title: 'El Proceso Unificado (UP): qué es, sus fases y sus disciplinas',
+    prompt: '<p>Explique qué es el Proceso Unificado, cuáles son sus 4 fases y qué disciplinas interesan al diseño. <small>(Clase 4)</small></p>',
+    solution: { explain: `<p>El <strong>Proceso Unificado (UP)</strong> es un proceso <strong>iterativo e incremental</strong> para proyectos que usan análisis y diseño orientado a objetos (A/DOO). El trabajo se organiza en iteraciones cortas, de 2 a 6 semanas (lo recomendable es 4). Cada iteración incluye su propio análisis, diseño, implementación y pruebas, y termina en un <strong>sistema ejecutable pero incompleto</strong>: un subconjunto del sistema final con calidad de producción, no un prototipo desechable.</p>
+      ${table(['Fase', 'Qué se logra'], [['1. Inicio', 'Visión aproximada y estudio de viabilidad para decidir si se sigue. No se detallan todos los requisitos.'], ['2. Elaboración', 'Visión refinada. Se implementa iterativamente el núcleo de la arquitectura y se resuelven los riesgos más altos. Es la fase más crítica: si la arquitectura está mal, falla todo el sistema.'], ['3. Construcción', 'Se implementan los requisitos restantes, los menos riesgosos, hasta tener el sistema casi terminado.'], ['4. Transición', 'Pruebas beta y despliegue.']])}
+      <p><strong>Disciplinas</strong>: son las áreas de trabajo que atraviesan todas las fases, con distinto peso en cada una. Las que interesan al diseño son:</p>
+      <ul><li><strong>Modelado del negocio</strong>: el modelo de dominio con los objetos del negocio.</li><li><strong>Requisitos</strong>: casos de uso y requisitos no funcionales (FURPS+).</li><li><strong>Diseño</strong>: la arquitectura, los objetos, la base de datos y la red.</li></ul>
+      <p>Después del diseño viene la <strong>implementación</strong>. El resto de las disciplinas son pruebas, despliegue, gestión de configuración y cambios, gestión del proyecto y entorno.</p>
+      ${note('Una iteración del UP no es una fase: en cada fase hay varias iteraciones, y en cada iteración se hace un poco de todas las disciplinas. Por eso, aunque nombre fases, el UP no es una cascada.', 'tip')}` },
+  });
+  add('pruebas-de-componentes', {
+    tag: RECOP, level: 1, title: 'Los 4 tipos de interfaz entre componentes y las 3 clases de errores de interfaz',
+    prompt: '<p>Enuncie los tipos de interfaz que puede haber entre componentes y las 3 clases de errores de interfaz que buscan las pruebas de componentes. <small>(Clase 22)</small></p>',
+    solution: { explain: `${table(['Tipo de interfaz', 'Cómo pasan los datos'], [['1. De parámetro', 'Los datos o referencias a funciones pasan de un componente a otro como parámetros.'], ['2. De memoria compartida', 'Un bloque de memoria se comparte: un subsistema coloca los datos ahí y otros los recuperan.'], ['3. De procedimiento', 'Un componente encapsula un conjunto de procedimientos que otros llaman.'], ['4. De paso de mensajes', 'Un componente pide un servicio a otro enviándole un mensaje, y la respuesta vuelve en otro mensaje.']])}
+      ${table(['Error de interfaz', 'Qué pasa'], [['Uso incorrecto', 'Sobre todo en interfaces de parámetro: tipo equivocado, orden o cantidad incorrecta de parámetros.'], ['Mala interpretación', 'El que llama entiende mal la especificación y el componente llamado no se comporta como esperaba.'], ['Errores de temporización', 'En sistemas de tiempo real con memoria compartida o paso de mensajes: el productor y el consumidor de datos van a distinta velocidad y se leen datos desactualizados.']])}` },
+  });
+  add('practica-segundo-parcial', {
+    tag: 'Ejercitación AutoGo', level: 2, title: 'Caso AutoGo: diseño de la interfaz de “Realizar reserva”',
+    prompt: '<p>La ejercitación del caso AutoGo pide, en lugar del caso de uso real, el <strong>diseño de la interfaz</strong> de “Realizar reserva”. Casos de uso: Registrar reserva (Empleado), Consultar disponibilidad de vehículos (Empleado) y Calcular costo del alquiler (Sistema). Modelo de dominio parcial: Cliente (nombre, DNI, teléfono), Vehículo (patente, modelo, tarifaDiaria, estado), Reserva (fechaInicio, fechaFin, costoTotal, estado), Empleado (nombre, legajo, puesto). Dibuje la pantalla. El diagrama de colaboración y el de clases son los mismos del parcial 2025 3K2.</p>',
+    solution: { explain: `${fig(`<svg class="uml" viewBox="0 0 520 300" width="520" role="img" aria-label="Pantalla de reserva de vehículo con campos numerados">
+          <rect x="10" y="10" width="500" height="280" rx="6" class="u-box"/><rect x="10" y="10" width="500" height="28" rx="6" class="u-hd"/><text x="260" y="29" class="u-c u-b u-sans">Reserva de vehículo · AutoGo</text>
+          <text x="26" y="62" class="u-sm">DNI del cliente</text><rect x="136" y="48" width="134" height="22" rx="3" class="u-box"/><rect x="280" y="48" width="70" height="22" rx="11" class="u-hd"/><text x="315" y="63" class="u-c u-sm">Buscar</text><text x="364" y="63" class="u-sm u-b">①</text>
+          <text x="26" y="94" class="u-sm">Cliente: Ana Pérez · Tel. 381 555-1234</text><text x="470" y="94" class="u-sm u-b">②</text>
+          <text x="26" y="126" class="u-sm">Desde</text><rect x="66" y="112" width="96" height="22" rx="3" class="u-box"/><text x="74" y="127" class="u-sm">10/12/2026</text><text x="176" y="126" class="u-sm">Hasta</text><rect x="214" y="112" width="96" height="22" rx="3" class="u-box"/><text x="222" y="127" class="u-sm">14/12/2026</text><rect x="320" y="112" width="120" height="22" rx="11" class="u-hd"/><text x="380" y="127" class="u-c u-sm">Ver disponibles</text><text x="452" y="127" class="u-sm u-b">③</text>
+          <rect x="26" y="146" width="468" height="78" class="u-box"/><line x1="26" y1="164" x2="494" y2="164" class="u-sep"/>
+          <text x="34" y="159" class="u-sm u-b">Elegir</text><text x="90" y="159" class="u-sm u-b">Patente</text><text x="180" y="159" class="u-sm u-b">Modelo</text><text x="360" y="159" class="u-sm u-b">Tarifa diaria</text>
+          <text x="44" y="182" class="u-sm">◉</text><text x="90" y="182" class="u-sm">AB123CD</text><text x="180" y="182" class="u-sm">Toyota Etios</text><text x="360" y="182" class="u-sm">$ 45.000</text>
+          <text x="44" y="202" class="u-sm">○</text><text x="90" y="202" class="u-sm">AE456FG</text><text x="180" y="202" class="u-sm">VW Gol Trend</text><text x="360" y="202" class="u-sm">$ 40.000</text><text x="470" y="182" class="u-sm u-b">④</text>
+          <text x="26" y="246" class="u-sm u-b">4 días · Costo total: $ 180.000</text><text x="230" y="246" class="u-sm u-b">⑤</text>
+          <rect x="300" y="256" width="90" height="24" rx="12" class="u-hd"/><text x="345" y="272" class="u-c u-sm">Cancelar</text><rect x="400" y="256" width="94" height="24" rx="12" class="u-hd"/><text x="447" y="272" class="u-c u-sm u-b">Confirmar</text><text x="500" y="250" class="u-sm u-b">⑥</text>
+        </svg>`, 'Prototipo de “Realizar reserva”. Los números marcan la secuencia: buscar al cliente, verlo, elegir el período, elegir un vehículo libre, ver el costo calculado y confirmar.')}
+      <ul><li>El orden de la pantalla sigue el flujo del caso de uso real: cliente, fechas, vehículo y confirmación. Cada bloque corresponde a un evento del sistema (①&nbsp;<em>buscarCliente</em>, ③&nbsp;<em>consultarDisponibles</em>, ④&nbsp;<em>seleccionarVehiculo</em>, ⑥&nbsp;<em>confirmarReserva</em>).</li>
+      <li>Nombre y teléfono son de solo lectura: los trae el sistema al buscar el DNI. Si el cliente no existe, se avisa con un mensaje claro y un enlace para registrarlo.</li>
+      <li>Para las fechas se usan selectores de fecha y no texto libre, así se evitan errores de entrada. La grilla solo muestra vehículos libres en ese período.</li>
+      <li>“Calcular costo del alquiler” no tiene botón: el actor es el Sistema, que calcula días × tarifa diaria cuando se elige un vehículo.</li>
+      <li><em>Confirmar</em> queda deshabilitado hasta que estén el cliente, las fechas y el vehículo. Las reglas doradas y los lineamientos de pantallas de Kendall y Kendall están en la Unidad III.</li></ul>` },
   });
 })();

@@ -584,7 +584,7 @@
     const byMod = MODULES.map((m) => ({ m, k: withExam.filter(({ l }) => l.module === m.id).reduce((a, { ex }) => a + ex.exam.length, 0) })).filter((x) => x.k).sort((a, b) => b.k - a.k);
     const item = (e, [num, text]) => {
       const hit = withExam.find(({ ex }) => ex.exam.includes(`${e.id}#${num}`));
-      return `<details class="exam-q"><summary>${num.replace(/^P/, 'Práctica ')}. ${text}${hit ? ` <small>· Unidad ${modOf(hit.l.module).tema}</small>` : ''}</summary>
+      return `<details class="exam-q"><summary>${num.replace(/^P/, 'Práctica ')}. ${text}${hit ? ` <small>· Unidad ${modOf(hit.l.module).tema} · Clase${modOf(hit.l.module).clases.length > 2 ? 's' : ''} ${modOf(hit.l.module).clases}</small>` : ''}</summary>
         ${hit ? `${renderExercises({ exercises: [hit.ex] })}<p class="q-link"><a href="#/${hit.l.id}">Ver la teoría: “${hit.l.title}”</a></p>` : '<p class="muted-s">Sin resolución cargada.</p>'}</details>`;
     };
     const body = (e) => {
@@ -598,7 +598,7 @@
         <h1>Parciales resueltos</h1>
         <p class="tldr">Los ${EXAMS.length} parciales y recuperatorios de la cátedra que tenemos (2018 a 2026), pregunta por pregunta y resueltos como se espera en el examen: 5 preguntas teóricas y una parte práctica con artefactos UML. La cátedra repite mucho: empezá por las que <mark>se repiten</mark>.</p>
         <h2>Lo que más se repite</h2>
-        <ol class="freq">${top.map(({ ex, l }) => `<li><span class="n">×${times(ex)}</span><span><a href="#/${l.id}">${ex.title}</a><small>Unidad ${modOf(l.module).tema} · ${[...new Set(ex.exam.map((k) => examById[k.split('#')[0]]?.short))].join(', ')}</small></span></li>`).join('')}</ol>
+        <ol class="freq">${top.map(({ ex, l }) => `<li><span class="n">×${times(ex)}</span><span><a href="#/${l.id}">${ex.title}</a><small>Unidad ${modOf(l.module).tema} · Clase${modOf(l.module).clases.length > 2 ? 's' : ''} ${modOf(l.module).clases} · ${[...new Set(ex.exam.map((k) => examById[k.split('#')[0]]?.short))].join(', ')}</small></span></li>`).join('')}</ol>
         <h2>Qué temas pesan más</h2>
         <ol class="freq">${byMod.map(({ m, k }) => `<li><span class="n">${k}</span><span><a href="#/${lessonsOf(m.id)[0].id}">Unidad ${m.tema}: ${m.title}</a><small>${k === 1 ? 'pregunta' : 'preguntas'} de ${n} en total</small></span></li>`).join('')}</ol>
         ${groups.map((u) => { const ex = EXAMS.filter((e) => e.unit === u.id); return ex.length ? `<section data-u="${u.id}"><h2><span class="unit-tag">${u.title}</span>${u.name}</h2>
