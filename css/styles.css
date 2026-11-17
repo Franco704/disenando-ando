@@ -680,3 +680,7 @@ pre.code, .lab-out, .table-wrap, .fig { scrollbar-width: thin; scrollbar-color: 
 .resumen-page .body img { display: block; margin: 14px auto; background: #fff; padding: 8px; border-radius: 8px; border: 1px solid var(--line, #ddd); }
 .resumen-page .body h3 { margin-top: 2em; }
 .rail li.sub { padding-left: 12px; font-size: .92em; }
+
+/* Otras guías agrupadas por año de la carrera */
+.also-y { font-size: .95rem; font-weight: 700; margin: 18px 0 8px; opacity: .75; }
+.also-h + .also-y { margin-top: 4px; }
