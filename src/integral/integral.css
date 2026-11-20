@@ -1,0 +1,9 @@
+/* Integral: reloj de 90 minutos siempre visible mientras corre. */
+.int-head { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 0 0 18px; }
+.timer {
+  position: sticky; top: calc(var(--top) + env(safe-area-inset-top, 0px) + 8px); z-index: 5; display: inline-flex; align-items: center;
+  min-height: 44px; padding: 8px 14px; background: var(--surface); border: 1.5px solid var(--ink-2); box-shadow: var(--shadow);
+  font: 700 1.05rem var(--mono); font-variant-numeric: tabular-nums; width: fit-content;
+}
+.timer.low { color: var(--err); border-color: var(--err); }
+.int-part { margin-top: 2.4em; }

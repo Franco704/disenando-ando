@@ -1,0 +1,12 @@
+/* Resúmenes de compañeros: selector de autor/a y el resumen elegido, con su crédito y el original para descargar. */
+.selector { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin: 4px 0 24px; }
+.selector a { display: grid; gap: 2px; min-height: 56px; padding: 10px 12px; border: 1px solid var(--line); border-top: 3px solid var(--u); background: var(--surface); color: var(--ink); text-decoration: none; }
+.selector a b { font-size: var(--t-b); }
+.selector a[aria-current] { background: var(--u-soft); border-color: var(--u); }
+.resumen-ficha { padding: 16px; margin: 0 0 24px; border: 1.5px solid var(--ink-2); background: var(--surface); }
+.resumen-ficha h2 { margin: 0 0 4px !important; font-size: var(--t-l) !important; }
+.resumen-ficha p { font-size: var(--t-s); color: var(--ink-2); margin: 0 0 12px; }
+.resumen-ficha p:last-child { margin-bottom: 0; }
+.resumen-page .body img { display: block; margin: 14px auto; background: #fff; padding: 8px; border: 1px solid var(--line); height: auto; }
+.resumen-page .body h3 { margin-top: 2em; }
+.resumen-page .body hr { border: 0; border-top: 1px dashed var(--line); margin: 2em 0; }

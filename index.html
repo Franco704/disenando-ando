@@ -2,23 +2,40 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Diseñando Ando</title>
   <meta name="description" content="Guía de estudio de Diseño de Sistemas de Información (UTN-FRT): metodologías, arquitectura e interfaces (primer parcial), UX, procesos, patrones GRASP y GoF y pruebas (segundo parcial), con los parciales de la cátedra resueltos y un integral de dificultad máxima." />
+  <meta name="theme-color" content="#f3f5f8" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#111a2c" media="(prefers-color-scheme: dark)" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;0,7..72,700;0,7..72,800;1,7..72,400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css" />
-  <link rel="stylesheet" href="css/anim.css" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Crect x=%221.5%22 y=%221.5%22 width=%2213%22 height=%2213%22 rx=%222%22 fill=%22none%22 stroke=%22%232554c7%22 stroke-width=%221.8%22/%3E%3Cpath d=%22M1.5 6H14.5M1.5 10.5H14.5%22 stroke=%22%232554c7%22 stroke-width=%221.6%22/%3E%3C/svg%3E" />
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400..800;1,400..800&family=Atkinson+Hyperlegible+Mono:wght@400..700&display=swap" rel="stylesheet" />
+  <!-- Estilos: el sistema de diseño (núcleo) y después cada funcionalidad -->
+  <link rel="stylesheet" href="src/nucleo/diseno/tokens.css" />
+  <link rel="stylesheet" href="src/nucleo/diseno/base.css" />
+  <link rel="stylesheet" href="src/nucleo/diseno/contenido.css" />
+  <link rel="stylesheet" href="src/navegacion/navegacion.css" />
+  <link rel="stylesheet" href="src/portada/portada.css" />
+  <link rel="stylesheet" href="src/temario/leccion.css" />
+  <link rel="stylesheet" href="src/diagramas/diagramas.css" />
+  <link rel="stylesheet" href="src/laboratorios/laboratorios.css" />
+  <link rel="stylesheet" href="src/ejercicios/ejercicios.css" />
+  <link rel="stylesheet" href="src/cuestionarios/cuestionarios.css" />
+  <link rel="stylesheet" href="src/parciales/parciales.css" />
+  <link rel="stylesheet" href="src/integral/integral.css" />
+  <link rel="stylesheet" href="src/fichas/fichas.css" />
+  <link rel="stylesheet" href="src/resumenes/resumenes.css" />
+  <link rel="stylesheet" href="src/videos/videos.css" />
+  <link rel="stylesheet" href="src/animaciones/entrada.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Crect x=%221.5%22 y=%221.5%22 width=%2213%22 height=%2213%22 rx=%221%22 fill=%22none%22 stroke=%22%232350c4%22 stroke-width=%221.8%22/%3E%3Cpath d=%22M1.5 6H14.5%22 stroke=%22%232350c4%22 stroke-width=%221.6%22/%3E%3C/svg%3E" />
   <script>
     // Aplicar el tema guardado antes de pintar, para evitar parpadeo
-    try { const t = localStorage.getItem('dsi-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+    try { const t = localStorage.getItem('dsi-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
   </script>
 </head>
 <body>
   <a class="skip" href="#main">Saltar al contenido</a>
-  <!-- Puntas de flecha compartidas por todos los diagramas UML (h.uml en _helpers.js) -->
+  <!-- Puntas de flecha compartidas por todos los diagramas UML (diagramas/uml.js) -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
     <marker id="m-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="mk-f"/></marker>
     <marker id="m-op" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" class="mk-o"/></marker>
@@ -28,36 +45,40 @@
     <marker id="m-msg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="mk-msg"/></marker>
   </defs></svg>
 
-  <header class="topbar">
-    <button class="icon-btn menu-btn" id="menuBtn" aria-label="Abrir índice" aria-expanded="false" aria-controls="sidebar">
-      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
-    </button>
-    <a class="brand" href="#/"><span class="brand-dot" aria-hidden="true"></span>Diseñando Ando</a>
-    <nav class="top-links" aria-label="Práctica">
-      <a href="#/parciales">Parciales</a>
-      <a href="#/resumenes">Resúmenes</a>
-      <a href="#/videos">Videos</a>
-      <a href="#/diagramas">Diagramas</a>
-      <a href="#/fichas">Fichas</a>
-      <a href="#/repaso" id="reviewLink">Repasar <span class="badge" id="reviewCount" hidden></span></a>
-      <a href="#/simulacro">Simulacro</a>
-      <a href="#/integral">Integral</a>
+  <header class="barra">
+    <a class="marca" href="#/"><span class="marca-glifo" aria-hidden="true"></span>Diseñando Ando</a>
+    <nav class="barra-links" aria-label="Secciones">
+      <a href="#/parciales" data-sec="parciales">Parciales</a>
+      <a href="#/resumenes" data-sec="resumenes">Resúmenes</a>
+      <a href="#/videos" data-sec="videos">Videos</a>
+      <a href="#/diagramas" data-sec="diagramas">Diagramas</a>
+      <a href="#/fichas" data-sec="fichas">Fichas</a>
+      <a href="#/repaso" data-sec="repaso">Repasar <span class="badge" data-pendientes hidden></span></a>
+      <a href="#/simulacro" data-sec="simulacro">Simulacro</a>
+      <a href="#/integral" data-sec="integral">Integral</a>
     </nav>
-    <div class="progress" aria-label="Progreso del curso">
-      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-      <span class="progress-text" id="progressText">0 de 0</span>
+    <div class="progress" aria-label="Lecciones completadas">
+      <div class="progress-track"><div class="progress-fill" data-progreso-barra></div></div>
+      <span class="progress-text" data-progreso-texto>0 de 0</span>
     </div>
-    <button class="icon-btn" id="themeBtn" aria-label="Cambiar entre tema claro y oscuro">
+    <button class="icon-btn search-btn" id="searchBtn" type="button" aria-label="Buscar un tema">
+      <svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="2" fill="none"/><path d="M15.5 15.5L20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <button class="icon-btn" type="button" data-act="tema" aria-label="Cambiar entre tema claro y oscuro">
       <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z" fill="currentColor"/></svg>
     </button>
+    <div class="lectura" aria-hidden="true"><span id="readBar"></span></div>
   </header>
 
   <div class="layout">
-    <nav class="sidebar" id="sidebar" aria-label="Índice del curso">
-      <label class="search">
-        <span class="sr-only">Buscar tema</span>
-        <input type="search" id="search" placeholder="Buscar tema (ej: Experto, FURPS, sprint)" autocomplete="off" />
-      </label>
+    <nav class="sidebar" id="sidebar" aria-label="Temario">
+      <div class="sidebar-top">
+        <label class="search">
+          <span class="sr-only">Buscar un tema</span>
+          <input type="search" id="search" placeholder="Buscar un tema: Experto, FURPS, sprint…" autocomplete="off" enterkeyhint="search" />
+        </label>
+        <p class="sidebar-avance"><span class="cj-barra" aria-hidden="true"><span data-progreso-barra></span></span><span><span data-progreso-texto>0 de 0</span> lecciones completadas</span></p>
+      </div>
       <div id="toc"></div>
     </nav>
     <div class="scrim" id="scrim" hidden></div>
@@ -66,32 +87,74 @@
     <aside class="rail" id="rail" aria-label="En esta página"></aside>
   </div>
 
-  <script src="js/content/_helpers.js"></script>
-  <script src="js/labs/core.js"></script>
-  <script src="js/content/01-diseno.js"></script>
-  <script src="js/content/02-procesos.js"></script>
-  <script src="js/content/03-scrum.js"></script>
-  <script src="js/content/04-arquitectura.js"></script>
-  <script src="js/content/05-patrones-arq.js"></script>
-  <script src="js/content/06-sad.js"></script>
-  <script src="js/content/07-iu.js"></script>
-  <script src="js/content/08-salidas.js"></script>
-  <script src="js/content/09-entradas.js"></script>
-  <script src="js/content/10-ux.js"></script>
-  <script src="js/content/11-procesos.js"></script>
-  <script src="js/content/12-interaccion.js"></script>
-  <script src="js/content/13-grasp1.js"></script>
-  <script src="js/content/14-grasp2.js"></script>
-  <script src="js/content/15-gof.js"></script>
-  <script src="js/content/16-dcd.js"></script>
-  <script src="js/content/17-vv.js"></script>
-  <script src="js/content/18-pruebas.js"></script>
-  <script src="js/content/19-seguridad.js"></script>
-  <script src="js/content/parciales.js"></script>
-  <script src="js/content/integral.js"></script>
-  <script src="js/content/fichas.js"></script>
-  <script src="js/content/resumenes.js"></script>
-  <script src="js/anim.js"></script>
-  <script src="js/app.js"></script>
+  <!-- Celular y tableta: secciones principales al alcance del pulgar -->
+  <nav class="tabbar" aria-label="Secciones principales">
+    <a href="#/" data-sec=""><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="1"/><path d="M3.5 9H20.5M13 14.5H20.5M13 14.5V19.5"/></svg>Inicio</a>
+    <button type="button" data-abrir="temario" data-sec="temario" aria-controls="sidebar" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.5H19M5 10.5H19M5 15.5H14M5 19.5H11"/></svg>Temario</button>
+    <a href="#/parciales" data-sec="parciales"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5H14L18 7.5V20.5H7Z"/><path d="M14 3.5V7.5H18M9.5 12.5L11.5 14.5L15.5 10.5"/></svg>Parciales</a>
+    <a href="#/repaso" data-sec="repaso"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12A7.5 7.5 0 1 0 7 6.4"/><path d="M4 3.5V8H8.5"/></svg>Repasar<span class="badge" data-pendientes hidden></span></a>
+    <button type="button" id="masBtn" aria-controls="masSheet" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/></svg>Más</button>
+  </nav>
+  <div class="hoja" id="masSheet" role="dialog" aria-modal="true" aria-label="Más secciones" hidden>
+    <p class="hoja-t">Para estudiar</p>
+    <ul>
+      <li><a href="#/resumenes" data-sec="resumenes"><b>Resúmenes</b><span>de compañeros</span></a></li>
+      <li><a href="#/videos" data-sec="videos"><b>Videos</b><span>uno por lección</span></a></li>
+      <li><a href="#/diagramas" data-sec="diagramas"><b>Diagramas</b><span>todos juntos</span></a></li>
+      <li><a href="#/fichas" data-sec="fichas"><b>Fichas</b><span>de memoria</span></a></li>
+    </ul>
+    <p class="hoja-t">Para rendir</p>
+    <ul>
+      <li><a href="#/simulacro/p1" data-sec="simulacro"><b>Simulacro</b><span>1er parcial</span></a></li>
+      <li><a href="#/simulacro/p2"><b>Simulacro</b><span>2do parcial</span></a></li>
+      <li><a href="#/integral" data-sec="integral"><b>Integral</b><span>90 minutos</span></a></li>
+    </ul>
+  </div>
+
+  <!-- Núcleo y contenido -->
+  <script src="src/nucleo/guia.js"></script>
+  <script src="src/temario/unidades.js"></script>
+  <script src="src/temario/redaccion.js"></script>
+  <script src="src/diagramas/uml.js"></script>
+  <script src="src/laboratorios/tipos.js"></script>
+  <script src="src/temario/lecciones/01-diseno.js"></script>
+  <script src="src/temario/lecciones/02-procesos.js"></script>
+  <script src="src/temario/lecciones/03-scrum.js"></script>
+  <script src="src/temario/lecciones/04-arquitectura.js"></script>
+  <script src="src/temario/lecciones/05-patrones-arq.js"></script>
+  <script src="src/temario/lecciones/06-sad.js"></script>
+  <script src="src/temario/lecciones/07-iu.js"></script>
+  <script src="src/temario/lecciones/08-salidas.js"></script>
+  <script src="src/temario/lecciones/09-entradas.js"></script>
+  <script src="src/temario/lecciones/10-ux.js"></script>
+  <script src="src/temario/lecciones/11-procesos.js"></script>
+  <script src="src/temario/lecciones/12-interaccion.js"></script>
+  <script src="src/temario/lecciones/13-grasp1.js"></script>
+  <script src="src/temario/lecciones/14-grasp2.js"></script>
+  <script src="src/temario/lecciones/15-gof.js"></script>
+  <script src="src/temario/lecciones/16-dcd.js"></script>
+  <script src="src/temario/lecciones/17-vv.js"></script>
+  <script src="src/temario/lecciones/18-pruebas.js"></script>
+  <script src="src/temario/lecciones/19-seguridad.js"></script>
+  <script src="src/parciales/datos.js"></script>
+  <script src="src/integral/datos.js"></script>
+  <script src="src/fichas/datos.js"></script>
+  <script src="src/resumenes/datos.js"></script>
+  <script src="src/nucleo/contexto.js"></script>
+  <!-- Funcionalidades: cada una registra su vista en DA.vistas -->
+  <script src="src/animaciones/entrada.js"></script>
+  <script src="src/ejercicios/ejercicios.js"></script>
+  <script src="src/laboratorios/laboratorio.js"></script>
+  <script src="src/cuestionarios/cuestionarios.js"></script>
+  <script src="src/temario/leccion.js"></script>
+  <script src="src/parciales/parciales.js"></script>
+  <script src="src/integral/integral.js"></script>
+  <script src="src/fichas/fichas.js"></script>
+  <script src="src/resumenes/resumenes.js"></script>
+  <script src="src/videos/videos.js"></script>
+  <script src="src/diagramas/galeria.js"></script>
+  <script src="src/portada/portada.js"></script>
+  <script src="src/navegacion/navegacion.js"></script>
+  <script src="src/nucleo/rutas.js"></script>
 </body>
 </html>

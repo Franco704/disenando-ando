@@ -1,0 +1,8 @@
+/* Fichas: cada una como una clase UML, el nombre en su compartimento y el contenido debajo. */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 10px; margin: 0 0 1.5em; }
+.card { background: var(--surface); border: 1.5px solid var(--ink-2); font-size: var(--t-s); line-height: 1.5; }
+.card b { display: block; padding: 8px 12px; background: var(--u-soft, var(--surface-2)); border-bottom: 1.5px solid var(--ink-2); font-size: var(--t-s); color: var(--ink); text-align: center; }
+.card .f { padding: 10px 12px; font-size: var(--t-s); }
+.card .f code { font-size: .86em; }
+.card .muted-s { padding: 0 12px 10px; margin: 0; }
+.formulas-page h3 a { color: var(--ink); }

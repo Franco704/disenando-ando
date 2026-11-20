@@ -1,0 +1,118 @@
+/* Portada: la lámina con su cajetín es la única pieza llamativa; el resto, listas sobrias. */
+.home { max-width: 68rem; margin: 0 auto; }
+.home h2 { font-size: var(--t-xl); font-weight: 800; letter-spacing: -.015em; line-height: 1.2; margin: 0 0 6px; }
+.home h2 .estereotipo { display: block; margin-bottom: 4px; }
+.home > section { margin-top: 56px; }
+
+/* ---------- Encabezado ---------- */
+.hero-materia { font: 500 var(--t-xs) var(--mono); color: var(--muted); margin: 0 0 12px; }
+.hero h1 { font-weight: 800; font-size: clamp(2.3rem, 1.6rem + 3.4vw, 3.9rem); line-height: 1.02; letter-spacing: -.035em; margin: 0 0 16px; max-width: 13ch; }
+.lede { font-size: var(--t-m); line-height: 1.55; color: var(--ink-2); max-width: 46ch; margin: 0 0 26px; }
+.hero .acciones { flex-direction: column; align-items: stretch; }
+.btn.grande { min-height: 58px; padding: 12px 20px; font-size: var(--t-b); justify-content: flex-start; text-align: left; }
+.btn.grande span { font-weight: 500; }
+.btn.primary.grande { flex-direction: column; align-items: flex-start; gap: 0; }
+.btn.primary.grande span { font-size: var(--t-xs); opacity: .9; }
+.btn.primary.grande b { font-size: var(--t-m); line-height: 1.25; }
+.weak { font-size: var(--t-s); color: var(--ink-2); margin: 16px 0 0; padding: 12px 14px; background: var(--warn-soft); border-left: 3px solid var(--warn); max-width: 46ch; }
+
+/* ---------- La lámina: margen de hoja (doble marco), dibujo sobre cuadrícula y cajetín ---------- */
+.lamina { margin: 36px 6px 6px; border: 1.5px solid var(--ink-2); outline: 1px solid var(--line); outline-offset: 5px; background: var(--surface); }
+.lamina-dibujo { padding: 14px 10px 6px; background: radial-gradient(var(--grid) 1px, transparent 1.2px) 0 0 / 14px 14px, var(--surface); }
+.lamina-dibujo .uml { width: 100%; }
+.cajetin { margin: 0; border-top: 1.5px solid var(--ink-2); font-size: var(--t-xs); }
+.cajetin > div { display: grid; grid-template-columns: 6.6em minmax(0, 1fr); }
+.cajetin > div + div { border-top: 1px solid var(--line); }
+.cajetin dt { padding: 6px 8px; font: 500 .72rem/1.4 var(--mono); color: var(--muted); border-right: 1px solid var(--line); }
+.cajetin dd { margin: 0; padding: 6px 10px; line-height: 1.4; color: var(--ink-2); }
+.cajetin .cj-titulo dd { font-weight: 800; font-size: var(--t-b); color: var(--ink); letter-spacing: -.01em; }
+.cj-avance dd { display: flex; align-items: center; gap: 4px 10px; flex-wrap: wrap; font-weight: 600; color: var(--ink); }
+.cj-avance .cj-barra { width: 90px; }
+
+/* ---------- Recorrido ---------- */
+.route-row { margin-top: 18px; }
+.route-row > .estereotipo { display: block; margin-bottom: 2px; }
+.route.sin-paquete::after { display: none; }
+.route-scroll { overflow-x: auto; margin: 0 calc(var(--gutter) * -1); padding: 6px var(--gutter) 10px; scrollbar-width: none; scroll-snap-type: x proximity; }
+.route-scroll::-webkit-scrollbar { display: none; }
+.route {
+  --cols: 19; --stop: 0;
+  position: relative; list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(var(--cols), 74px); width: max-content;
+}
+.route::before { content: ''; position: absolute; left: 37px; right: 37px; top: 21px; height: 2px; background: var(--line); }
+/* el paquete: avanza una vez hasta el tema actual */
+.route::after {
+  content: ''; position: absolute; top: 16px; left: 37px; width: 12px; height: 12px; margin-left: -6px;
+  background: var(--u); outline: 4px solid var(--u-soft); transition: left 1.8s cubic-bezier(.45, .05, .25, 1) .25s;
+}
+.route.go::after { left: calc((var(--stop) + .5) * 100% / var(--cols)); }
+.route li { position: relative; display: flex; justify-content: center; margin: 0; scroll-snap-align: center; }
+.stop a { display: flex; flex-direction: column; align-items: center; gap: 8px; min-height: 64px; padding: 8px 2px; text-decoration: none; color: var(--ink-2); }
+.stop-dot { position: relative; width: 26px; height: 26px; border-radius: 50%; background: conic-gradient(var(--u) calc(var(--p) * 360deg), var(--line) 0); }
+.stop-dot::after { content: ''; position: absolute; inset: 4px; border-radius: 50%; background: var(--bg); }
+.stop.done .stop-dot::after { inset: 6px; background: var(--u); }
+.stop-name { font-size: var(--t-xs); font-weight: 600; text-align: center; line-height: 1.2; }
+.stop.current .stop-name { color: var(--ink); font-weight: 800; }
+.stop a:hover .stop-name { color: var(--u); }
+
+/* ---------- Para rendir ---------- */
+.rendir-list, .material { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 10px; }
+.rendir-list a { display: grid; gap: 3px; padding: 14px 16px; min-height: 64px; text-decoration: none; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--u); }
+.rendir-list a:hover { background: var(--u-soft); }
+.rendir-list b { font-size: var(--t-m); line-height: 1.25; }
+.rendir-list a > span:last-child { font-size: var(--t-s); color: var(--muted); line-height: 1.45; }
+.material { grid-template-columns: 1fr 1fr; margin-top: 10px; }
+.material a { display: grid; gap: 2px; height: 100%; padding: 12px 14px; text-decoration: none; color: var(--ink); border: 1px dashed var(--line); }
+.material a:hover { border-style: solid; border-color: var(--ink-2); }
+.material b { font-size: var(--t-b); }
+.material span { font-size: var(--t-xs); color: var(--muted); line-height: 1.4; }
+
+/* ---------- Temario por parcial ---------- */
+.mod-list { list-style: none; margin: 16px 0 0; padding: 0; border-top: 1.5px solid var(--ink-2); }
+.mod-list li { border-bottom: 1px solid var(--line); }
+.mod-list a { display: grid; grid-template-columns: minmax(0, 1fr); gap: 3px; padding: 14px 4px; text-decoration: none; color: var(--ink); }
+.mod-list a:hover { background: var(--surface); }
+.mod-n { font: 500 var(--t-xs) var(--mono); color: var(--u); }
+.mod-n span::before { content: ', '; }
+.mod-title { font-weight: 700; font-size: var(--t-m); line-height: 1.3; }
+.mod-blurb { color: var(--muted); font-size: var(--t-s); line-height: 1.45; }
+.mod-meta { display: flex; align-items: center; gap: 10px; margin-top: 4px; font-size: var(--t-xs); color: var(--muted); }
+.mod-meter { flex: none; width: 72px; height: 5px; background: var(--surface-2); overflow: hidden; }
+.mod-meter span { display: block; height: 100%; background: var(--u); }
+
+/* ---------- Cómo estudiar y otras guías ---------- */
+.home-how ol { padding-left: 1.3em; max-width: 62ch; }
+.home-how li { margin: 8px 0; }
+.kbd-line { color: var(--muted); font-size: var(--t-s); }
+.home-links h3 { font: 500 var(--t-xs) var(--mono); color: var(--muted); margin: 22px 0 8px; }
+.also { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; }
+.also li { display: flex; flex-direction: column; border: 1px solid var(--line); background: var(--surface); }
+.also-main { display: grid; gap: 4px; padding: 14px 16px 10px; text-decoration: none; color: var(--ink); flex: 1; }
+.also-main span { font-size: var(--t-s); color: var(--muted); line-height: 1.45; }
+.also-main:hover b { text-decoration: underline; }
+.also-repo { padding: 10px 16px; font: 500 var(--t-xs) var(--mono); color: var(--accent-ink); text-decoration: none; border-top: 1px dashed var(--line); }
+.also-repo:hover { text-decoration: underline; }
+
+@media (min-width: 720px) {
+  .hero .acciones { flex-direction: row; align-items: center; }
+  .rendir-list { grid-template-columns: 1fr 1fr; }
+  .material { grid-template-columns: repeat(4, 1fr); }
+  .mod-list a { grid-template-columns: 7.5em minmax(0, 1fr) 13em; grid-template-areas: "n t m" "n b m"; gap: 2px 20px; padding: 16px 8px; align-items: start; }
+  .mod-n { grid-area: n; padding-top: 3px; }
+  .mod-n span { display: block; }
+  .mod-n span::before { content: none; }
+  .mod-title { grid-area: t; }
+  .mod-blurb { grid-area: b; }
+  .mod-meta { grid-area: m; flex-direction: column; align-items: flex-start; gap: 6px; margin-top: 6px; }
+  .mod-meter { width: 100%; }
+}
+@media (min-width: 1100px) {
+  .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 56px; align-items: center; }
+  .lamina { margin-top: 6px; }
+  .route-scroll { margin: 0; padding: 6px 0 10px; overflow: visible; }
+  .route { grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); width: 100%; }
+  .route::before { left: calc(100% / var(--cols) / 2); right: calc(100% / var(--cols) / 2); }
+  .route::after { left: calc(100% / var(--cols) / 2); }
+  .rendir-list { grid-template-columns: repeat(4, 1fr); }
+}

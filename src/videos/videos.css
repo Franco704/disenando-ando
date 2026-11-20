@@ -1,0 +1,17 @@
+/* Videos de resumen: reproductor arriba (fijo en pantallas altas) y la lista por parcial. */
+.vid-player { position: sticky; top: calc(var(--top) + env(safe-area-inset-top, 0px)); z-index: 3; background: var(--bg); padding: 8px 0 4px; margin: 0 calc(var(--gutter) * -1); padding-inline: var(--gutter); }
+.vid-player video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #000; }
+.vid-now { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; font-weight: 700; margin: 8px 0 4px !important; font-size: var(--t-s); }
+.vid-auto { display: inline-flex; gap: 8px; align-items: center; min-height: 40px; font-size: var(--t-xs); color: var(--muted); }
+.vid-list { list-style: none; padding: 0 !important; margin: 0 !important; display: grid; gap: 6px; }
+.vid-list li { display: flex; align-items: stretch; gap: 6px; margin: 0; max-width: none; }
+.vid-list button {
+  flex: 1; min-width: 0; min-height: 48px; display: flex; align-items: center; gap: 10px; text-align: left; font: inherit; font-size: var(--t-s); color: var(--ink);
+  background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--u); padding: 8px 12px; cursor: pointer;
+}
+.vid-list button:hover { border-color: var(--u); }
+.vid-list button[aria-current] { background: var(--u-soft); font-weight: 700; border-color: var(--u); }
+.vid-list .n { font: 500 var(--t-xs) var(--mono); color: var(--muted); min-width: 2ch; }
+.vid-list a { display: inline-flex; align-items: center; padding: 0 10px; font-size: var(--t-xs); border: 1px solid var(--line); text-decoration: none; }
+@media (max-height: 640px) and (orientation: landscape) { .vid-player { position: static; } }
+@media (min-width: 720px) { .vid-player { margin: 0; padding-inline: 0; } }

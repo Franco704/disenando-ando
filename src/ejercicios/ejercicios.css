@@ -1,0 +1,18 @@
+/* Ejercicios resueltos: consigna, pistas y solución. Borde izquierdo: acento = TP oficial, ámbar = pregunta de parcial real. */
+.exercise { margin: 0 0 18px; padding: 16px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--line); }
+.exercise.official { border-left-color: var(--accent); }
+.exercise.parcial { border-left-color: var(--warn); }
+.ex-head { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font: 500 var(--t-xs) var(--mono); }
+.ex-tag { color: var(--accent-ink); }
+.exercise.parcial .ex-tag { color: var(--warn); }
+.ex-level { color: var(--muted); padding: 1px 8px; border: 1px solid var(--line); }
+.ex-exams { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 8px 0 0 !important; }
+.ex-exams-l { font-size: var(--t-xs); color: var(--muted); }
+.exercise h3 { margin: 8px 0 10px !important; }
+.ex-prompt > :last-child { margin-bottom: 0; }
+details.hint, details.solution { margin-top: 12px; }
+details.hint > summary, details.solution > summary { cursor: pointer; display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; font-size: var(--t-s); color: var(--accent-ink); }
+details.hint ul { margin: 4px 0 0; font-size: var(--t-s); }
+.sol-body { margin-top: 6px; padding-top: 14px; border-top: 1px dashed var(--line); }
+.sol-file { margin-top: 12px; }
+@media (min-width: 720px) { .exercise { padding: 20px 22px; } }

@@ -1,0 +1,47 @@
+/* Diagramas UML y de bloques (diagramas/uml.js) y la galería (#/diagramas). Texto de los diagramas en Atkinson Hyperlegible Mono. */
+.uml { display: block; margin: 0 auto; height: auto; max-width: 100%; overflow: visible; }
+.uml text { font: 500 11.5px var(--mono); fill: var(--ink); }
+.uml .u-box { fill: var(--surface); stroke: var(--ink-2); stroke-width: 1.4; }
+.uml .u-hd { fill: var(--surface-2); stroke: var(--ink-2); stroke-width: 1.4; }
+.uml .u-sep { stroke: var(--ink-2); stroke-width: 1.2; }
+.uml .u-tt { font: 700 12.5px var(--sans); text-anchor: middle; }
+.uml .u-st { font: 500 10.5px var(--mono); fill: var(--muted); text-anchor: middle; }
+.uml .u-un { text-decoration: underline; }
+.uml .u-c { text-anchor: middle; }
+.uml .u-e { text-anchor: end; }
+.uml .u-sm { font-size: 10.5px; fill: var(--muted); }
+.uml .u-b { font-weight: 700; }
+.uml .u-sans { font-family: var(--sans); font-size: 12.5px; }
+.uml .u-ln { fill: none; stroke: var(--ink-2); stroke-width: 1.5; }
+.uml .u-dash { stroke-dasharray: 6 4; }
+.uml .u-msg { fill: none; stroke: var(--c-msg); stroke-width: 2; }
+.uml .u-msgt { fill: var(--c-msg); font-weight: 600; }
+.uml .u-flow { stroke-dasharray: 7 5; animation: dash 1.2s linear infinite; }
+.uml .u-blk { fill: var(--surface-2); stroke: var(--line); stroke-width: 1.5; }
+.uml .u-lyr { fill: var(--surface); stroke: var(--line); stroke-width: 1.5; }
+.uml .u-dot { fill: var(--ink-2); }
+/* variantes de color de cajas y bloques */
+.uml .k-a .u-box, .uml .k-a .u-hd, .uml .k-a.u-blk { fill: var(--accent-soft); stroke: var(--accent); }
+.uml .k-if .u-box, .uml .k-if .u-hd, .uml .k-if.u-blk { fill: color-mix(in srgb, var(--c-if) 14%, var(--surface)); stroke: var(--c-if); }
+.uml .k-ok .u-box, .uml .k-ok .u-hd, .uml .k-ok.u-blk { fill: var(--ok-soft); stroke: var(--ok); }
+.uml .k-warn .u-box, .uml .k-warn .u-hd, .uml .k-warn.u-blk { fill: var(--warn-soft); stroke: var(--warn); }
+.uml .k-err .u-box, .uml .k-err .u-hd, .uml .k-err.u-blk, .uml .k-bad .u-box, .uml .k-bad .u-hd, .uml .k-bad.u-blk { fill: var(--err-soft); stroke: var(--err); }
+.uml .k-x .u-box, .uml .k-x .u-hd, .uml .k-x.u-blk { fill: color-mix(in srgb, var(--c-x) 12%, var(--surface)); stroke: var(--c-x); }
+.uml .k-ghost .u-box, .uml .k-ghost .u-hd, .uml .k-ghost.u-blk { fill: transparent; stroke: var(--muted); stroke-dasharray: 5 4; }
+.uml .s-a { stroke: var(--accent); } .uml .s-if { stroke: var(--c-if); } .uml .s-ok { stroke: var(--ok); } .uml .s-err { stroke: var(--err); } .uml .s-x { stroke: var(--c-x); }
+.uml text.t-a { fill: var(--accent-ink); } .uml text.t-if { fill: var(--c-if); } .uml text.t-ok { fill: var(--ok); } .uml text.t-err { fill: var(--err); } .uml text.t-m { fill: var(--muted); } .uml text.t-x { fill: var(--c-x); }
+.uml .f-if { fill: var(--surface); stroke: var(--c-if); stroke-width: 1.8; }
+.uml .f-a { fill: var(--accent); } .uml .f-ok { fill: var(--ok); } .uml .f-err { fill: var(--err); } .uml .f-msg { fill: var(--c-msg); }
+.uml .u-frame { fill: none; stroke: var(--ink-2); stroke-width: 1.2; }
+/* puntas de flecha (defs globales de index.html) */
+.mk-f { fill: var(--ink-2); }
+.mk-o { fill: none; stroke: var(--ink-2); stroke-width: 1.4; stroke-linejoin: round; }
+.mk-h { fill: var(--surface); stroke: var(--ink-2); stroke-width: 1.2; }
+.mk-msg { fill: var(--c-msg); }
+@keyframes dash { to { stroke-dashoffset: -24; } }
+.fig .uml + .uml { margin-top: 14px; }
+@media (prefers-reduced-motion: reduce) { .uml * { animation: none !important; } }
+
+/* Galería */
+.graph-item { margin: 0 0 8px; }
+.graph-from { font-size: var(--t-s); font-weight: 600; color: var(--muted); margin: 28px 0 -12px !important; }

@@ -1,5 +1,5 @@
 /* Animaciones: pantalla de entrada al cambiar de módulo y glifo animado en la cabecera de cada lección.
-   Adaptadas del "Laboratorio Frontend DSW" de Mateo Rusconi. Expone window.ANIM; app.js lo usa en route() y renderLesson(). */
+   Adaptadas del "Laboratorio Frontend DSW" de Mateo Rusconi. Expone window.ANIM; nucleo/rutas.js lo usa al cambiar de página y temario/leccion.js para el glifo. */
 (() => {
   const { LESSONS, MODULES, UNITS } = window.GUIDE;
   const RM = matchMedia('(prefers-reduced-motion: reduce)');
@@ -125,7 +125,7 @@
         <p class="inter-typed" style="--steps:${tag.length}" aria-hidden="true">${tag}</p>
         <h2>${mod.title}</h2>
         <p class="inter-pipe" aria-hidden="true">${stages.map((s, i) => `${i ? '<span class="ar">→</span>' : ''}<span class="s" ${d((0.35 + i * 0.16).toFixed(2))}>${s}</span>`).join('')}</p>
-        <p class="inter-trap"><span class="lbl">Trampa típica del parcial</span>${TRAPS[mod.id]}</p>
+        <p class="inter-trap"><span class="lbl">«trampa típica del parcial»</span>${TRAPS[mod.id]}</p>
         <p class="inter-hint">Tocá o presioná una tecla para entrar</p>
       </div>`;
       let closed = false;
