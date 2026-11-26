@@ -143,3 +143,7 @@ main:focus { outline: none; }
   body[data-view='resumenes'] .marco { grid-template-columns: var(--lateral) minmax(0, 1fr) 220px; }
   body[data-view='resumenes'] .riel { display: block; position: sticky; top: var(--barra); align-self: start; max-height: calc(100dvh - var(--barra)); overflow-y: auto; padding: var(--e-7) var(--e-4) var(--e-4) 0; }
 }
+
+/* Vuelta al hub con las guías de todas las materias */
+.hub { margin-top: auto; padding: 12px 14px; border: 1px solid var(--linea); border-radius: var(--r-2); color: var(--tinta); font-size: .92rem; font-weight: 600; text-decoration: none; }
+.hub:hover { border-color: var(--acento); }
