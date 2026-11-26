@@ -16,31 +16,32 @@ Guía de estudio de **Diseño de Sistemas de Información 2026 (UTN-FRT)**, cát
 
 Sitio en GitHub Pages: [franco704.github.io/disenando-ando](https://franco704.github.io/disenando-ando/)
 
-No necesita instalación: es HTML, CSS y JavaScript. Para usarlo sin internet, descargá el repositorio y abrí `index.html`. El progreso se guarda en el navegador de cada persona.
+No necesita instalación ni compilación: es HTML, CSS y JavaScript con módulos ES. Como los navegadores no cargan módulos desde `file://`, para usarlo sin internet descargá el repositorio, levantá un servidor estático en la carpeta (por ejemplo `python3 -m http.server`) y abrí `http://localhost:8000`. El progreso se guarda en el navegador de cada persona (claves `dsi-*`, las mismas de siempre).
+
+Pruebas: `npm test` (carga el temario con los parciales, el integral, las fichas y los resúmenes; valida lecciones, preguntas y laboratorios, y que cada consigna de parcial tenga su resolución).
 
 ## Cómo está organizado
 
-El código se ordena por lo que hace la guía, no por tipo de archivo: cada carpeta de `src/` es una funcionalidad con su JavaScript y su CSS.
+La estructura cuenta de qué trata la materia (arquitectura *screaming*):
 
 ```
-src/
-  nucleo/          espacios globales, contexto, progreso, rutas y el sistema de diseño (diseno/)
-  navegacion/      barra superior, barra inferior del celular, temario, "Más" e índice de la página
-  portada/         la lámina con su cajetín, el recorrido y lo necesario para rendir
-  temario/         unidades, ayudantes de redacción, la vista de lección y lecciones/ (el contenido)
-  diagramas/       ayudantes UML en SVG y la galería
-  laboratorios/    tipos de laboratorio interactivo
-  ejercicios/      ejercicios resueltos (lecciones, parciales e integral)
-  cuestionarios/   preguntas, cuestionario de módulo, repaso y simulacros
-  parciales/       datos de los parciales reales y su vista
-  integral/        datos y vista del integral con reloj
-  fichas/          datos y vista de las fichas
-  resumenes/       datos y vista de los resúmenes de compañeros
-  videos/          reproductor de los videos de resumen
-  animaciones/     pantalla de entrada a cada módulo y glifos de las lecciones
+index.html              armazón: barra, índice, dock inferior en móvil y las puntas de flecha de los diagramas UML
+src/main.js             raíz de composición: rutas por hash (#/<lección>, #/quiz/<módulo>, #/simulacro/<parcial>, #/integral, #/parciales, #/fichas, #/resumenes, #/videos, #/diagramas) y vistas
+src/temario/            lecciones por parcial (primer-parcial/ y segundo-parcial/, un archivo por tema), catálogo, ayudantes de redacción e índice
+src/diagramas/          los diagramas UML y de bloques en SVG (uml.js), que usan las lecciones, los parciales y la portada
+src/examenes/           parciales reales resueltos (suman ejercicios a las lecciones) e integral de dificultad máxima
+src/resumenes/          resúmenes de compañeros (datos.js se genera desde el original; no editar a mano)
+src/laboratorios/       laboratorios genéricos (clasificar, ordenar, calculadora y diagrama paso a paso) e índice que los monta
+src/estudio/            progreso, preguntas, fichas de memoria y otras guías
+src/vistas/             inicio, lección, cuestionarios (módulo, simulacro, repaso, integral) y recursos (parciales, fichas, resúmenes, videos, diagramas)
+src/animaciones/        pantalla de entrada a cada módulo y glifo de cada lección
+src/ui/ src/nucleo/     armazón e íconos; DOM, almacenamiento, formato y rutas
+styles/                 tokens, base, armazón, contenido, estudio, laboratorios, vistas y animaciones
 ```
 
-Sin build ni módulos ES, para que `index.html` también funcione abierto desde el disco: cada vista se registra en `DA.vistas` y `src/nucleo/rutas.js` (el último script) elige cuál dibujar. Los archivos de `videos/` y `resumenes/` quedan en la raíz con las mismas rutas.
+El diseño es *mobile-first*: en el celular todo se alcanza desde el dock inferior (Inicio, Índice, Parciales, Simulacro, Repasar) y el cajón, con el buscador, todas las herramientas y el índice completo; desde 1024 px el índice queda fijo y las herramientas pasan a la barra superior, y desde 1280 px aparece el riel con las secciones de la lección. La portada abre con el diagrama de colaboración del pago, dibujado con `src/diagramas/uml.js` y armado paso a paso con el patrón GRASP que justifica cada mensaje. Tipografía: Commissioner para el texto y Fragment Mono para los diagramas y los «estereotipos».
+
+Si el generador de resúmenes vuelve a escribir `src/resumenes/datos.js`, tiene que dejar `export const RESUMENES = [ … ]` en lugar de asignar a `window.GUIDE`.
 
 ## También probá
 

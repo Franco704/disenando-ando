@@ -1,9 +1,8 @@
-/* Diagramas UML y de bloques en SVG (GUIDE.h.uml).
+/* Diagramas UML y de bloques en SVG.
    Las puntas de flecha son marcadores globales definidos en index.html: ar (llena), op (abierta),
    tri (triángulo hueco: generalización y realización), dia / diao (rombo lleno / hueco), msg (mensaje).
    Todo elemento acepta s (número de paso) para el laboratorio 'steps'. */
-(() => {
-  const { esc } = window.GUIDE.h;
+import { esc } from '../nucleo/dom.js';
   const S = (s) => (s != null ? ` data-s="${s}"` : '');
   const svg = (w, h, inner, alt) => `<svg class="uml" viewBox="0 0 ${w} ${h}" width="${w}" role="img" aria-label="${esc(alt || 'Diagrama')}">${inner}</svg>`;
   // Caja UML: título (subrayado si es instancia), estereotipo opcional y compartimentos de atributos y operaciones
@@ -44,5 +43,4 @@
   // Ícono de componente UML (rectángulo con dos pestañas) en la esquina superior derecha de (x, y)
   const compIcon = (x, y) => `<g><rect x="${x - 16}" y="${y + 6}" width="12" height="14" class="u-box"/><rect x="${x - 20}" y="${y + 9}" width="8" height="3" class="u-box"/><rect x="${x - 20}" y="${y + 14}" width="8" height="3" class="u-box"/></g>`;
   const port = (x, y, o = {}) => `<rect x="${x - 6}" y="${y - 6}" width="12" height="12" class="u-box ${o.cls || 'k-if'}" style="fill:var(--surface);stroke:var(--c-if);stroke-width:1.8"${S(o.s)}/>`;
-  window.GUIDE.h.uml = { svg, box, obj, blk, ln, tx, msg, lol, sock, compIcon, port };
-})();
+  export const uml = { svg, box, obj, blk, ln, tx, msg, lol, sock, compIcon, port };

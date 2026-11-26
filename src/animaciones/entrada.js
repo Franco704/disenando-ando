@@ -1,7 +1,6 @@
 /* Animaciones: pantalla de entrada al cambiar de módulo y glifo animado en la cabecera de cada lección.
-   Adaptadas del "Laboratorio Frontend DSW" de Mateo Rusconi. Expone window.ANIM; nucleo/rutas.js lo usa al cambiar de página y temario/leccion.js para el glifo. */
-(() => {
-  const { LESSONS, MODULES, UNITS } = window.GUIDE;
+   Adaptadas del "Laboratorio Frontend DSW" de Mateo Rusconi. main.js usa entrada() al cambiar de ruta y vistas/leccion.js el glifo. */
+import { LECCIONES as LESSONS, MODULOS as MODULES, PARCIALES as UNITS } from '../temario/indice.js';
   const RM = matchMedia('(prefers-reduced-motion: reduce)');
 
   // Cadena que se enciende etapa por etapa en la pantalla de entrada
@@ -158,5 +157,4 @@
     return interstitial(i + 1, LESSONS[i].title, mod);
   }
 
-  window.ANIM = { intro, glyph };
-})();
+  export { intro as entrada, glyph as glifo };

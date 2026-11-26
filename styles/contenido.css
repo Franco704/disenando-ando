@@ -1,0 +1,222 @@
+/* Contenido de las lecciones: lección, código, tablas, notas UML, definiciones, figuras sobre la lámina, diagramas UML y ejercicios. */
+/* ---------- Lección ---------- */
+.lesson { max-width: 46rem; margin: 0 auto; }
+.crumb { font: 500 .88rem var(--f-ui); color: var(--tenue); margin: 0 0 10px; }
+.crumb a { color: inherit; }
+.lesson h1, .home h1 { font-family: var(--f-titulo); font-weight: 800; font-size: clamp(2rem, 1.4rem + 2.2vw, 2.75rem); line-height: 1.12; letter-spacing: -.02em; margin: 0 0 16px; text-wrap: balance; }
+.lesson h2 { font-family: var(--f-titulo); font-weight: 750; font-size: 1.6rem; line-height: 1.25; letter-spacing: -.012em; margin: 2.6em 0 .6em; text-wrap: balance; }
+.lesson h3 { font-family: var(--f-ui); font-weight: 700; font-size: 1.12rem; line-height: 1.35; margin: 1.9em 0 .5em; }
+.lesson h4 { font-family: var(--f-ui); font-weight: 600; font-size: 1rem; margin: 1.5em 0 .4em; }
+.lesson p, .lesson li { max-width: 68ch; }
+.lesson p { margin: 0 0 1em; }
+.lesson ul, .lesson ol { padding-left: 1.3em; margin: 0 0 1.1em; }
+.lesson li { margin: .3em 0; }
+.lesson li::marker { color: var(--tenue); }
+.tldr { font-size: 1.2rem; line-height: 1.6; color: var(--tinta-2); margin: 0 0 24px; }
+.tldr mark, .body mark { color: inherit; font-weight: 600; background: linear-gradient(transparent 58%, var(--acento-suave) 58%); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.goals { font-family: var(--f-ui); border-top: 1px solid var(--linea); border-bottom: 1px solid var(--linea); padding: 14px 0 6px; margin: 0 0 8px; }
+.goals p { font-weight: 700; font-size: .92rem; margin: 0 0 6px; }
+.goals ul { margin: 0 0 8px; padding-left: 1.2em; font-size: .97rem; line-height: 1.55; }
+.body > :first-child { margin-top: 1.6em; }
+:not(pre) > code { font: 500 .86em var(--f-mono); background: var(--codigo-fondo); color: var(--codigo-tinta); padding: .12em .36em; border-radius: 5px; overflow-wrap: anywhere; }
+strong { font-weight: 700; }
+
+/* Piezas que usa el contenido de las lecciones (generadas por temario/redaccion.js): código, tablas, notas,
+   definiciones, figuras, pasos, ecuaciones y tarjetas. Los nombres de clase son parte del contrato con el contenido. */
+
+/* Código */
+:not(pre) > code { font: 500 .88em var(--f-mono); background: var(--codigo-fondo); color: var(--codigo-tinta); padding: .1em .35em; border-radius: 2px; overflow-wrap: anywhere; }
+pre.code {
+  position: relative; margin: 0 0 1.4em; padding: 14px 16px; overflow-x: auto;
+  background: var(--codigo-fondo); color: var(--codigo-tinta); border: 1px solid var(--linea); border-radius: var(--r-1);
+  font: 400 .84rem/1.65 var(--f-mono); tab-size: 4; -webkit-text-size-adjust: none;
+}
+pre.code code { font: inherit; }
+.file-name { font: 600 var(--t-xs) var(--f-mono); color: var(--tenue); margin: 0 0 6px !important; }
+.tok-c { color: var(--tok-c); font-style: italic; } .tok-s { color: var(--tok-s); } .tok-k { color: var(--tok-k); font-weight: 600; }
+.tok-t { color: var(--tok-t); } .tok-n { color: var(--tok-n); } .tok-a { color: var(--tok-a); }
+
+/* Tablas: en celular se desplazan dentro de su marco, nunca la página */
+.table-wrap { overflow-x: auto; margin: 0 0 1.5em; border: 1px solid var(--linea); border-radius: var(--r-1); background: var(--superficie); -webkit-overflow-scrolling: touch; }
+table { border-collapse: collapse; width: 100%; font-size: var(--t-s); line-height: 1.5; }
+th, td { text-align: left; padding: 10px 12px; vertical-align: top; border-bottom: 1px solid var(--linea); }
+th { font-weight: 700; background: var(--superficie-2); color: var(--tinta); }
+tr:last-child td { border-bottom: 0; }
+td code { font-size: .82em; }
+@media (max-width: 719px) { table { min-width: 34rem; } th, td { padding: 9px 10px; } }
+
+/* Notas. "Para el parcial" tiene la forma de una nota UML: la esquina superior derecha doblada */
+.note { font-size: var(--t-s); line-height: 1.6; margin: 0 0 1.5em; padding: 14px 16px; border-radius: var(--r-1); background: var(--superficie); border: 1px solid var(--linea); border-left: 3px solid var(--tenue); }
+.note p:last-child, .note ul:last-child { margin-bottom: 0; }
+.note.tip { border-left-color: var(--ok); }
+.note.warn { background: var(--aviso-suave); border-color: transparent; border-left-color: var(--aviso); }
+.note.exam {
+  --fold: 18px; position: relative; padding-right: calc(16px + var(--fold)); border: 1.5px solid var(--acento); border-radius: 0;
+  background: color-mix(in srgb, var(--acento-suave) 70%, var(--superficie));
+  clip-path: polygon(0 0, calc(100% - var(--fold)) 0, 100% var(--fold), 100% 100%, 0 100%);
+}
+.note.exam::after { content: ''; position: absolute; top: -1.5px; right: -1.5px; width: var(--fold); height: var(--fold); background: linear-gradient(to bottom left, transparent calc(50% - 1px), var(--acento) calc(50% - 1px) calc(50% + .5px), var(--acento-suave) calc(50% + .5px)); border-left: 1.5px solid var(--acento); border-bottom: 1.5px solid var(--acento); }
+.note.exam::before { content: '«para el parcial»'; display: block; font: 500 var(--t-xs) var(--f-mono); color: var(--acento-tinta); margin-bottom: 4px; }
+
+/* Definición textual de la bibliografía */
+.def { margin: 1.6em 0; padding: 0 0 0 18px; border-left: 3px solid var(--acento); }
+.def figcaption { font-weight: 700; font-size: var(--t-s); color: var(--acento-tinta); margin-bottom: 4px; }
+.def blockquote { margin: 0; }
+.def blockquote p { font-size: var(--t-m); line-height: 1.55; font-style: italic; color: var(--tinta); margin: 0; }
+.def-src { font-size: var(--t-xs); color: var(--tenue); margin: 6px 0 0 !important; }
+
+/* Figuras: los diagramas se dibujan sobre una lámina con cuadrícula de puntos */
+.fig {
+  margin: 1.6em 0; padding: 16px 12px; border: 1px solid var(--linea); border-radius: var(--r-1); overflow-x: auto;
+  background: radial-gradient(var(--grid) 1px, transparent 1.2px) 0 0 / 14px 14px, var(--superficie);
+}
+.fig > figcaption { font-size: var(--t-s); line-height: 1.5; color: var(--tenue); margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--linea); }
+.fig svg { display: block; margin: 0 auto; height: auto; font-family: var(--f-ui); }
+.fig svg text { fill: var(--tinta); }
+.fig svg .muted { fill: var(--tenue); }
+.fig svg .box { fill: var(--superficie-2); stroke: var(--linea); }
+.fig svg .box-a { fill: var(--acento-suave); stroke: var(--acento); }
+.fig svg .stroke { stroke: var(--tenue); fill: none; }
+.fig svg .stroke-a { stroke: var(--acento); fill: none; }
+.fig svg .fill-a { fill: var(--acento); }
+.figs-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; align-items: center; }
+
+/* Pasos en secuencia */
+.flow { list-style: none; padding: 0 !important; margin: 0 0 1.5em !important; display: flex; flex-wrap: wrap; gap: 8px 0; font-size: var(--t-s); font-weight: 500; line-height: 1.35; counter-reset: f; }
+.flow li { counter-increment: f; display: flex; align-items: center; margin: 0; max-width: 100%; min-width: 0; }
+.flow li::before { content: counter(f); display: inline-grid; place-items: center; width: 22px; height: 22px; margin-right: 7px; border-radius: 2px; background: var(--acento); color: var(--sobre-acento); font: 700 .72rem var(--f-mono); flex: none; }
+.flow li:not(:last-child)::after { content: ''; width: 20px; height: 1.5px; background: var(--tenue); margin: 0 10px; }
+
+/* Ecuaciones y fracciones */
+.frac { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; font-size: .92em; line-height: 1.25; margin: 0 .15em; }
+.frac > span:first-child { border-bottom: 1.5px solid currentColor; padding: 0 .3em .05em; }
+.frac > span:last-child { padding: .05em .3em 0; }
+.eq { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; margin: 1.2em 0 1.4em; padding: 14px 16px; border-radius: var(--r-1); background: var(--superficie); border: 1px solid var(--linea); border-left: 4px solid var(--acento); font-size: var(--t-m); line-height: 1.6; overflow-x: auto; }
+.eq-l { font: 500 var(--t-xs) var(--f-mono); color: var(--acento-tinta); }
+.eq-m { white-space: nowrap; }
+.eq sub, .eq sup, .page sub, .page sup { font-size: .72em; }
+
+/* Barras de desplazamiento discretas */
+pre.code, .table-wrap, .fig { scrollbar-width: thin; scrollbar-color: var(--tenue) transparent; }
+/* Lección: encabezado, video, objetivos, secciones finales, marcar como completada y paso a la siguiente. */
+.lesson-head { margin-bottom: 8px; }
+.lesson-meta { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: -4px 0 18px; font: 500 var(--t-xs) var(--f-mono); color: var(--tenue); }
+.lesson-meta a { color: var(--acento-tinta); }
+.lesson-video { margin: 0 0 24px; }
+.lesson-video summary { cursor: pointer; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-weight: 700; font-size: var(--t-s); color: var(--acento-tinta); }
+.lesson-video video { display: block; width: 100%; aspect-ratio: 16 / 9; margin: 8px 0; background: #000; }
+.lesson-video a { font-size: var(--t-s); }
+.goals { border-top: 1.5px solid var(--tinta-2); border-bottom: 1px solid var(--linea); padding: 14px 0 4px; margin: 0 0 24px; }
+.goals p { font-weight: 700; font-size: var(--t-s); margin: 0 0 4px; }
+.goals ul { margin: 0 0 8px; padding-left: 1.2em; font-size: var(--t-s); line-height: 1.55; }
+.body > :first-child { margin-top: 0; }
+
+.otros-resumenes { margin: 40px 0 0; padding: 14px 16px; border: 1px dashed var(--linea); font-size: var(--t-s); }
+.otros-resumenes p { margin: 0 0 4px; color: var(--tenue); }
+.otros-resumenes ul { margin: 0; }
+.check-sec, .practice, .sources { margin-top: 8px; }
+
+/* Bibliografía */
+.source { border: 1px solid var(--linea); background: var(--superficie); margin-bottom: 8px; }
+.source > summary { cursor: pointer; list-style: none; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 12px; min-height: 48px; align-items: center; padding: 10px 14px; font-weight: 700; font-size: var(--t-s); }
+.source > summary::-webkit-details-marker { display: none; }
+.source .host { color: var(--tenue); font: 500 var(--t-xs) var(--f-mono); }
+.source-body { padding: 0 14px 12px; font-size: var(--t-s); line-height: 1.55; }
+.source-body ul { padding-left: 1.2em; }
+
+/* Cierre */
+.done-row { margin: 48px 0 16px; }
+.done-btn { width: 100%; min-height: 52px; }
+.pager { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.pager a { display: flex; flex-direction: column; gap: 2px; padding: 14px 16px; min-height: 64px; border: 1px solid var(--linea); background: var(--superficie); text-decoration: none; color: var(--tinta); }
+.pager a:hover { border-color: var(--acento); }
+.pager small { font: 500 var(--t-xs) var(--f-mono); color: var(--tenue); }
+.pager strong { font-size: var(--t-b); line-height: 1.35; }
+.pager .next { text-align: right; border-right: 3px solid var(--acento); }
+.pager .prev { border-left: 3px solid var(--linea); }
+.pager > span:empty { display: none; }
+
+@media (min-width: 720px) {
+  .done-btn { width: auto; }
+  .pager { grid-template-columns: 1fr 1fr; }
+  .pager > span:empty { display: block; }
+  .pager .next { grid-column: 2; }
+}
+/* Diagramas UML y de bloques (diagramas/uml.js) y la galería (#/diagramas). Texto de los diagramas en Atkinson Hyperlegible Mono. */
+.uml { display: block; margin: 0 auto; height: auto; max-width: 100%; overflow: visible; }
+.uml text { font: 500 11.5px var(--f-mono); fill: var(--tinta); }
+.uml .u-box { fill: var(--superficie); stroke: var(--tinta-2); stroke-width: 1.4; }
+.uml .u-hd { fill: var(--superficie-2); stroke: var(--tinta-2); stroke-width: 1.4; }
+.uml .u-sep { stroke: var(--tinta-2); stroke-width: 1.2; }
+.uml .u-tt { font: 700 12.5px var(--f-ui); text-anchor: middle; }
+.uml .u-st { font: 500 10.5px var(--f-mono); fill: var(--tenue); text-anchor: middle; }
+.uml .u-un { text-decoration: underline; }
+.uml .u-c { text-anchor: middle; }
+.uml .u-e { text-anchor: end; }
+.uml .u-sm { font-size: 10.5px; fill: var(--tenue); }
+.uml .u-b { font-weight: 700; }
+.uml .u-sans { font-family: var(--f-ui); font-size: 12.5px; }
+.uml .u-ln { fill: none; stroke: var(--tinta-2); stroke-width: 1.5; }
+.uml .u-dash { stroke-dasharray: 6 4; }
+.uml .u-msg { fill: none; stroke: var(--c-msg); stroke-width: 2; }
+.uml .u-msgt { fill: var(--c-msg); font-weight: 600; }
+.uml .u-flow { stroke-dasharray: 7 5; animation: dash 1.2s linear infinite; }
+.uml .u-blk { fill: var(--superficie-2); stroke: var(--linea); stroke-width: 1.5; }
+.uml .u-lyr { fill: var(--superficie); stroke: var(--linea); stroke-width: 1.5; }
+.uml .u-dot { fill: var(--tinta-2); }
+/* variantes de color de cajas y bloques */
+.uml .k-a .u-box, .uml .k-a .u-hd, .uml .k-a.u-blk { fill: var(--acento-suave); stroke: var(--acento); }
+.uml .k-if .u-box, .uml .k-if .u-hd, .uml .k-if.u-blk { fill: color-mix(in srgb, var(--c-if) 14%, var(--superficie)); stroke: var(--c-if); }
+.uml .k-ok .u-box, .uml .k-ok .u-hd, .uml .k-ok.u-blk { fill: var(--ok-suave); stroke: var(--ok); }
+.uml .k-warn .u-box, .uml .k-warn .u-hd, .uml .k-warn.u-blk { fill: var(--aviso-suave); stroke: var(--aviso); }
+.uml .k-err .u-box, .uml .k-err .u-hd, .uml .k-err.u-blk, .uml .k-bad .u-box, .uml .k-bad .u-hd, .uml .k-bad.u-blk { fill: var(--error-suave); stroke: var(--error); }
+.uml .k-x .u-box, .uml .k-x .u-hd, .uml .k-x.u-blk { fill: color-mix(in srgb, var(--c-x) 12%, var(--superficie)); stroke: var(--c-x); }
+.uml .k-ghost .u-box, .uml .k-ghost .u-hd, .uml .k-ghost.u-blk { fill: transparent; stroke: var(--tenue); stroke-dasharray: 5 4; }
+.uml .s-a { stroke: var(--acento); } .uml .s-if { stroke: var(--c-if); } .uml .s-ok { stroke: var(--ok); } .uml .s-err { stroke: var(--error); } .uml .s-x { stroke: var(--c-x); }
+.uml text.t-a { fill: var(--acento-tinta); } .uml text.t-if { fill: var(--c-if); } .uml text.t-ok { fill: var(--ok); } .uml text.t-err { fill: var(--error); } .uml text.t-m { fill: var(--tenue); } .uml text.t-x { fill: var(--c-x); }
+.uml .f-if { fill: var(--superficie); stroke: var(--c-if); stroke-width: 1.8; }
+.uml .f-a { fill: var(--acento); } .uml .f-ok { fill: var(--ok); } .uml .f-err { fill: var(--error); } .uml .f-msg { fill: var(--c-msg); }
+.uml .u-frame { fill: none; stroke: var(--tinta-2); stroke-width: 1.2; }
+/* puntas de flecha (defs globales de index.html) */
+.mk-f { fill: var(--tinta-2); }
+.mk-o { fill: none; stroke: var(--tinta-2); stroke-width: 1.4; stroke-linejoin: round; }
+.mk-h { fill: var(--superficie); stroke: var(--tinta-2); stroke-width: 1.2; }
+.mk-msg { fill: var(--c-msg); }
+@keyframes dash { to { stroke-dashoffset: -24; } }
+.fig .uml + .uml { margin-top: 14px; }
+@media (prefers-reduced-motion: reduce) { .uml * { animation: none !important; } }
+
+/* Galería */
+.graph-item { margin: 0 0 8px; }
+.graph-from { font-size: var(--t-s); font-weight: 600; color: var(--tenue); margin: 28px 0 -12px !important; }
+/* Ejercicios resueltos: consigna, pistas y solución. Borde izquierdo: acento = TP oficial, ámbar = pregunta de parcial real. */
+.exercise { margin: 0 0 18px; padding: 16px; background: var(--superficie); border: 1px solid var(--linea); border-left: 3px solid var(--linea); }
+.exercise.official { border-left-color: var(--acento); }
+.exercise.parcial { border-left-color: var(--aviso); }
+.ex-head { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font: 500 var(--t-xs) var(--f-mono); }
+.ex-tag { color: var(--acento-tinta); }
+.exercise.parcial .ex-tag { color: var(--aviso); }
+.ex-level { color: var(--tenue); padding: 1px 8px; border: 1px solid var(--linea); }
+.ex-exams { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 8px 0 0 !important; }
+.ex-exams-l { font-size: var(--t-xs); color: var(--tenue); }
+.exercise h3 { margin: 8px 0 10px !important; }
+.ex-prompt > :last-child { margin-bottom: 0; }
+details.hint, details.solution { margin-top: 12px; }
+details.hint > summary, details.solution > summary { cursor: pointer; display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; font-size: var(--t-s); color: var(--acento-tinta); }
+details.hint ul { margin: 4px 0 0; font-size: var(--t-s); }
+.sol-body { margin-top: 6px; padding-top: 14px; border-top: 1px dashed var(--linea); }
+.sol-file { margin-top: 12px; }
+@media (min-width: 720px) { .exercise { padding: 20px 22px; } }
+
+/* ---------- Cabecera de la lección: parcial, unidad, título y glifo ---------- */
+.lesson-head { display: grid; grid-template-columns: minmax(0, 1fr); }
+.lesson-head .crumb { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.chip-parcial { display: inline-block; padding: 2px 10px; border-radius: 99px; font: 600 .76rem/1.6 var(--f-ui); background: var(--acento); color: var(--sobre-acento); }
+.lesson-pos { margin: 0 0 var(--e-5); font: 500 .86rem var(--f-ui); color: var(--tenue); }
+.lesson-head .lesson-glyph { display: none; }
+@media (min-width: 720px) {
+  .lesson-head { grid-template-columns: minmax(0, 1fr) 150px; column-gap: var(--e-5); }
+  .lesson-head .crumb, .lesson-head h1, .lesson-pos { grid-column: 1; }
+  .lesson-head .lesson-glyph { display: block; grid-column: 2; grid-row: 1 / span 3; float: none; margin: 0; align-self: center; }
+}
+.lesson p, .lesson li, .lesson h1, .lesson h2, .lesson h3 { overflow-wrap: break-word; }

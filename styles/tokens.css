@@ -1,0 +1,81 @@
+/* Diseñando Ando: la lámina de dibujo técnico y la notación UML como lenguaje visual. Papel de plano, tinta azul noche y
+   cajas casi rectas, como las de un diagrama de clases. El color solo codifica información: azul de plano el primer parcial,
+   violeta el segundo, carmín el integral; en los diagramas, naranja los mensajes y verde azulado las interfaces.
+   Commissioner para todo el texto y Fragment Mono para los diagramas y los «estereotipos». */
+:root {
+  --fondo: #f3f5f9;
+  --superficie: #ffffff;
+  --superficie-2: #e6ebf3;
+  --tinta: #14203a;
+  --tinta-2: #34415d;
+  --tenue: #5a6680;
+  --linea: #d2d9e5;
+  --grid: #e1e6ef;
+  --mark: #ffe45c;
+  --ok: #157048; --ok-suave: #e0f2e8;
+  --aviso: #955500; --aviso-suave: #faefd7;
+  --error: #b9202f; --error-suave: #fbe6e8;
+  --codigo-fondo: #edf1f7; --codigo-tinta: #1a2338;
+  --tok-c: #687089; --tok-s: #0f7a52; --tok-k: #5b2ed6; --tok-t: #0b6aa8; --tok-n: #a4400c; --tok-a: #8a5a00;
+  --sobre-acento: #fff;
+
+  /* Parciales */
+  --p1: #1f4fb8; --p1-suave: #e0e8fa;
+  --p2: #6a32c0; --p2-suave: #eee5fb;
+  --pi: #b4203a; --pi-suave: #fbe3e8;
+  --acento: var(--p1); --acento-suave: var(--p1-suave); --acento-tinta: var(--p1);
+
+  /* Colores fijos de los diagramas */
+  --c-msg: #d6640c; --c-obj: #1f4fb8; --c-if: #0b8577; --c-x: #c2255c;
+
+  /* Nombres que el contenido usa en estilos en línea (uml.js y algunas lecciones): no se cambian */
+  --surface: var(--superficie); --err: var(--error); --err-soft: var(--error-suave);
+
+  --f-titulo: 'Commissioner', system-ui, sans-serif;
+  --f-texto: var(--f-titulo);
+  --f-ui: var(--f-titulo);
+  --f-mono: 'Fragment Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  /* Escala 1.25 sobre 17 px; los nombres cortos (t-xs … t-m) son los del contenido de Diseñando */
+  --t--2: .72rem; --t--1: .85rem; --t-0: 1.0625rem; --t-1: 1.33rem; --t-2: 1.66rem; --t-3: 2.07rem; --t-4: clamp(2.1rem, 1.6rem + 2.6vw, 3rem); --t-5: clamp(2.5rem, 1.5rem + 4.8vw, 4.4rem);
+  --t-xs: .8125rem; --t-s: .9rem; --t-b: 1.0625rem; --t-m: 1.2rem; --t-l: 1.45rem; --t-xl: 1.8rem;
+  --e-1: .25rem; --e-2: .5rem; --e-3: .75rem; --e-4: 1rem; --e-5: 1.5rem; --e-6: 2rem; --e-7: 3rem; --e-8: 4.5rem;
+  --r-1: 3px; --r-2: 4px; --r-3: 8px;
+  --sombra: 0 1px 0 rgba(20, 32, 58, .04), 0 12px 28px -18px rgba(20, 32, 58, .38);
+  --barra: 56px;
+  --dock: 64px;
+  --lateral: 300px;
+  --medida: 70ch;
+  --margen: 16px;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --fondo: #101a2b; --superficie: #162238; --superficie-2: #1f2e4b; --tinta: #e8edf6; --tinta-2: #c4cddd; --tenue: #97a4bc; --linea: #2b3a58; --grid: #1a2741;
+    --mark: rgba(255, 220, 80, .3); --ok: #55c993; --ok-suave: #15301f; --aviso: #f0b44c; --aviso-suave: #33290f; --error: #ff8080; --error-suave: #3a1a20;
+    --codigo-fondo: #0c1322; --codigo-tinta: #dfe5f0; --sobre-acento: #0f1626;
+    --p1: #82a4ff; --p1-suave: #1d2c50; --p2: #b993ff; --p2-suave: #2b1f4a; --pi: #ff7a8c; --pi-suave: #401c27;
+    --c-msg: #ffa04d; --c-obj: #82a4ff; --c-if: #3fd1bd; --c-x: #f477a6;
+    --sombra: 0 1px 0 rgba(0, 0, 0, .25), 0 12px 30px -16px rgba(0, 0, 0, .7);
+    color-scheme: dark;
+  }
+}
+:root[data-theme='dark'] {
+  --fondo: #101a2b; --superficie: #162238; --superficie-2: #1f2e4b; --tinta: #e8edf6; --tinta-2: #c4cddd; --tenue: #97a4bc; --linea: #2b3a58; --grid: #1a2741;
+  --mark: rgba(255, 220, 80, .3); --ok: #55c993; --ok-suave: #15301f; --aviso: #f0b44c; --aviso-suave: #33290f; --error: #ff8080; --error-suave: #3a1a20;
+  --codigo-fondo: #0c1322; --codigo-tinta: #dfe5f0; --sobre-acento: #0f1626;
+  --p1: #82a4ff; --p1-suave: #1d2c50; --p2: #b993ff; --p2-suave: #2b1f4a; --pi: #ff7a8c; --pi-suave: #401c27;
+  --c-msg: #ffa04d; --c-obj: #82a4ff; --c-if: #3fd1bd; --c-x: #f477a6;
+  --sombra: 0 1px 0 rgba(0, 0, 0, .25), 0 12px 30px -16px rgba(0, 0, 0, .7);
+  color-scheme: dark;
+}
+
+/* El acento sigue al parcial: el de la página (body) o el de cada bloque (data-u) */
+body[data-unit='p2'], [data-u='p2'] { --acento: var(--p2); --acento-suave: var(--p2-suave); --acento-tinta: var(--p2); }
+body[data-unit='int'], [data-u='int'] { --acento: var(--pi); --acento-suave: var(--pi-suave); --acento-tinta: var(--pi); }
+[data-u='p1'] { --acento: var(--p1); --acento-suave: var(--p1-suave); --acento-tinta: var(--p1); }
+[data-u] { --u: var(--acento); --u-suave: var(--acento-suave); }
+
+@media (min-width: 768px) { :root { --margen: 32px; } }
+@media (min-width: 1024px) { :root { --margen: 48px; } }
