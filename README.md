@@ -59,11 +59,11 @@ Si el generador de resúmenes vuelve a escribir `src/resumenes/datos.js`, tiene 
 - [Iterando Ando](https://franco704.github.io/iterando-ando/): Matemática Superior ([repositorio](https://github.com/Franco704/iterando-ando))
 - [Modulando Ando](https://franco704.github.io/modulando-ando/): Comunicación de Datos ([repositorio](https://github.com/Franco704/modulando-ando))
 - [Probando Ando](https://franco704.github.io/probando-ando/): Probabilidad y Estadística ([repositorio](https://github.com/Franco704/probando-ando))
-- [Economizar](https://franco704.github.io/economizar/): Economía ([repositorio](https://github.com/Franco704/economizar))
+- [Economizando Ando](https://franco704.github.io/economizando-ando/): Economía ([repositorio](https://github.com/Franco704/economizando-ando))
 
 ## Agradecimientos
 
-A **Mateo Rusconi**, autor original de las animaciones que esta guía hereda de Backeando Ando y Economizar: la pantalla de entrada a cada tema, los glifos animados de las lecciones y los microefectos de los cuestionarios vienen de su "Laboratorio Frontend DSW".
+A **Mateo Rusconi**, autor original de las animaciones que esta guía hereda de Backeando Ando y Economizando Ando: la pantalla de entrada a cada tema, los glifos animados de las lecciones y los microefectos de los cuestionarios vienen de su "Laboratorio Frontend DSW".
 
 A **Malena Musumeci**, autora del resumen del segundo parcial publicado en la sección Resúmenes.
 
