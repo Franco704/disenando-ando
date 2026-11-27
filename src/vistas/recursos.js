@@ -71,10 +71,10 @@ export function vistaResumenes(main, id) {
     <article class="lesson resumen-page">
       <h1>Resúmenes de compañeros</h1>
       <p class="tldr">Resúmenes escritos por estudiantes de la materia, tal como los armaron sus autores. Sirven para repasar de corrido; para cada tema en detalle, con ejercicios, andá a su lección.</p>
-      <nav class="filtro" aria-label="Elegí un resumen">${RESUMENES.map((x) => `<a class="btn sm" href="#/resumenes/${x.id}" data-u="${x.unit}"${x === r ? ' aria-current="page"' : ''}>${x.author}</a>`).join('')}</nav>
+      <nav class="filtro" aria-label="Elegí un resumen">${RESUMENES.map((x) => `<a class="btn sm" href="#/resumenes/${x.id}" data-u="${x.unit}"${x === r ? ' aria-current="page"' : ''}>${x.author}, ${x.title.replace('Resumen del ', '')}</a>`).join('')}</nav>
       ${r ? `<section data-u="${r.unit}">
         <div class="resumen-ficha"><h2>${r.title}</h2><p>por <strong>${r.author}</strong>. ${r.sub}.</p>${r.file ? `<a class="btn sm" href="${r.file}" download>Descargar el original (.${r.file.split('.').pop()})</a>` : ''}</div>
-        <div class="body">${r.html}</div></section>` : '<p>Todavía no hay resúmenes cargados.</p>'}
+        ${r.html ? `<div class="body">${r.html}</div>` : `<object class="resumen-pdf" data="${r.file}" type="application/pdf" aria-label="${r.title} de ${r.author}"><p>Tu navegador no muestra PDF acá. <a href="${r.file}" target="_blank" rel="noopener">Abrí el resumen en otra pestaña</a>.</p></object>`}</section>` : '<p>Todavía no hay resúmenes cargados.</p>'}
     </article>`;
   pintarRiel(main, [...main.querySelectorAll('.resumen-page .body > h2')], 'En este resumen');
 }

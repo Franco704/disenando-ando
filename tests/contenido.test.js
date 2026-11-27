@@ -23,5 +23,6 @@ const resueltas = LECCIONES.flatMap((l) => (l.exercises || []).flatMap((x) => x.
 resueltas.forEach((k) => assert(items.has(k), `etiqueta de parcial inexistente: ${k}`));
 items.forEach((k) => assert(resueltas.includes(k), `consigna de parcial sin resolver: ${k}`));
 FICHAS.forEach((f) => assert(TODOS.some((m) => m.id === f.m), `ficha con módulo inexistente: ${f.n}`));
-RESUMENES.forEach((r) => assert(r.id && r.author && r.html, `resumen incompleto: ${r.id}`));
+// Un resumen se muestra como HTML convertido o, si no lo tiene, como el PDF original
+RESUMENES.forEach((r) => assert(r.id && r.author && (r.html || r.file?.endsWith(".pdf")), `resumen incompleto: ${r.id}`));
 console.log(`contenido OK: ${LECCIONES.length} lecciones, ${PREGUNTAS.length} preguntas, ${PREGUNTAS_INTEGRAL.length} del integral, ${EXAMENES.length} parciales (${items.size} consignas), ${FICHAS.length} fichas, ${RESUMENES.length} resúmenes`);
